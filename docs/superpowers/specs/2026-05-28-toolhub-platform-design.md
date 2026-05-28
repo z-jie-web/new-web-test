@@ -1,147 +1,156 @@
-# ToolHub Platform Design Spec
+# ToolHub 平台设计文档
 
-**Date**: 2026-05-28
-**Status**: Draft
+**日期**：2026-05-28
+**状态**：草稿
 
 ---
 
-## 1. Overview
+## 1. 项目概述
 
-ToolHub is a multi-category tools platform targeting overseas (English-speaking) users. It combines free online tools with a curated tools directory and review section. Revenue comes from affiliate commissions and display ads.
+做一个面向海外用户的多品类工具平台。核心模式：免费在线工具 + 工具导航评测。收入靠联盟佣金和广告。
 
-**Positioning**: Discover the best online tools and AI products. Every tool can be used for free.
+**一句话定位**：发现最好用的在线工具和 AI 产品，所有工具都可以免费使用。
 
-## 2. Site Architecture
+## 2. 网站结构
 
 ```
-/                              Home: featured tools + trending comparisons + latest articles
-/tools/[slug]                  Free online tool (functional, runs in browser)
-/reviews/[slug]                Tool review/directory entry (informational)
-/compare/[a]-vs-[b]            Comparison page (programmatic, covers long-tail)
-/categories/[slug]             Category listing page
-/blog/[slug]                   Blog article (keyword-driven topic selection)
-/llms.txt                      AI search engine entry point
+/                             首页：精选工具 + 热门对比 + 最新文章
+/tools/[slug]                 免费在线工具（功能型，浏览器内直接使用）
+/reviews/[slug]               工具评测/收录（信息型，帮用户做决策）
+/compare/[a]-vs-[b]           对比页（程序化批量生成，覆盖长尾搜索）
+/categories/[slug]            分类列表页
+/blog/[slug]                  博客文章（关键词驱动选题）
+/llms.txt                     AI 搜索引擎入口
 ```
 
-**Key distinction**:
-- `/tools/` — interactive utility that users actually use (image compressor, JSON formatter, etc.)
-- `/reviews/` — informational page helping users decide which tool to choose
-- `/compare/` — programmatically generated comparison pages for every tool pair
+**两种核心页面的区别**：
 
-## 3. Tech Stack
+| | /tools/ 免费工具 | /reviews/ 工具评测 |
+|---|---|---|
+| 目的 | 让用户直接使用，获取外链和社交分享 | 帮用户做决策，获取搜索流量 |
+| 内容 | 一个能用的在线小工具 | 介绍、优缺点、价格、同类对比 |
+| 变现 | 页面放广告 | 放 Affiliate 推荐链接 |
+| 举例 | 图片压缩器、JSON 格式化 | Sora 评测、HeyGen 介绍 |
 
-- Next.js 14 (App Router) + TypeScript
-- Tailwind CSS + shadcn/ui
-- MDX for content (tools data, reviews, blog posts — file-based, no CMS)
-- Vercel deployment
-- Umami analytics (self-hosted, free, no page slowdown)
+## 3. 技术方案
 
-## 4. Data Model
+- Next.js 14（App Router）+ TypeScript
+- Tailwind CSS + shadcn/ui 组件库
+- MDX 存储所有内容（工具数据、评测、博客 — 基于文件，不需要数据库）
+- Vercel 部署
+- Umami 数据统计（免费、自建、不拖页面速度）
 
-All content stored as MDX files under `/content/`:
+**为什么选 MDX 而不是 CMS/数据库？**
+- 内容都是静态的，不需要后台编辑
+- 基于 Git 管理版本，加一个工具就是新建一个文件
+- 部署时编译成静态 HTML，加载最快，Google 最喜欢
+
+## 4. 数据结构
+
+所有内容以 MDX 文件存放在 `/content/` 目录下：
 
 ```
 /content/
-  /tools/           Free online tools (one per file)
-  /reviews/         Tool directory entries (one per file)
-  /blog/            Blog articles
-  /categories/      Category definitions
+  /tools/           免费在线工具（每个一个文件）
+  /reviews/         工具收录（每个一个文件）
+  /blog/            博客文章
+  /categories/      分类定义
 ```
 
-**Review MDX frontmatter schema**:
+**评测页 MDX 格式**：
 ```yaml
 slug: "sora"
 name: "Sora"
-category: "ai-video"
+category: "ai-video"          # 所属分类
 description: "..."
 tags: ["Text-to-Video", "Cinematic Output"]
 url: "https://openai.com/sora"
-affiliateUrl: ""        # affiliate link if available
-pricing: "Paid"
-pros: ["...", "..."]
-cons: ["...", "..."]
-bestFor: ["..."]
+affiliateUrl: ""               # 有联盟链接就填
+pricing: "Paid"                # Free / Freemium / Paid
+pros: ["优点1", "优点2"]
+cons: ["缺点1"]
+bestFor: ["适合谁用"]
 ```
 
-**Tool MDX frontmatter schema**:
+**免费工具页 MDX 格式**：
 ```yaml
 slug: "image-compressor"
-name: "Image Compressor"
+name: "图片压缩器"
 category: "image-tools"
-description: "Compress images online for free, no upload required."
+description: "免费在线压缩图片，无需上传"
 keywords: ["compress image", "image optimizer"]
-type: "browser"          # browser | api-backed
+type: "browser"                # browser（纯前端）或 api（调后端接口）
 ```
 
-## 5. Content Workflow (Keyword-Driven SOP)
+## 5. 内容生产 SOP（核心纪律）
 
-Every new piece of content must follow this pipeline:
+每新增一篇内容，必须走完这 5 步：
 
 ```
-1. Keyword research → verify search volume > 200, KD < 30
-2. If pass → select target keyword, determine title
-3. Write content targeting that keyword
-4. Publish and submit to GSC
-5. Monitor ranking, iterate based on data
+① 关键词研究 → 确认这个词月搜索量 > 200，竞争难度 < 30
+② 通过验证 → 确定目标关键词和标题
+③ 围绕关键词写内容
+④ 发布并提交 GSC 收录
+⑤ 监控排名，根据数据反馈迭代
 ```
 
-**Rule**: Never write content based on "I think users search this." Only write based on "data proves users already search this."
+**铁律**：绝不拍脑袋写"我觉得用户会搜这个词"，只写"数据证明用户已经在搜这个词"。
 
-**Proactive mode**: Claude periodically identifies keyword opportunities, presents options to user, user picks direction, Claude executes.
+**我来驱动**：我会定期找关键词机会，给你选项，你选方向，我来执行。
 
-## 6. Monetization
+## 6. 怎么赚钱
 
-Three revenue lines:
+三条收入线：
 
-| Line | Description | Activation |
-|------|-------------|------------|
-| Affiliate | Commission links on /reviews/ and /compare/ pages | Month 1 |
-| Google Adsense | Ads on /tools/ pages | Month 2-3 (after 20-30 pages) |
-| Sponsored Listing | Paid placement on category/home pages | After 10K+ monthly visits |
+| 收入线 | 怎么赚 | 启动时间 |
+|--------|--------|----------|
+| 联盟佣金 | /reviews/ 和 /compare/ 页面的推荐链接 | 第 1 个月就加 |
+| Google Adsense | /tools/ 工具页放广告 | 第 2-3 个月（满 20-30 个页面后申请） |
+| 付费置顶 | 工具方付费在分类页/首页占好位置 | 月访问过万以后 |
 
-**Revenue milestones (estimated)**:
-- Month 1-3: $0-5/month (affiliate clicks trickle in)
-- Month 4-6: $20-100/month (Adsense + affiliate)
-- Month 7-12: $200-1000/month (content scale + backlinks)
-- Month 12+: $500-3000/month (50-100K monthly visits)
+**收入预估**：
+- 第 1-3 个月：$0-5/月（零星点击）
+- 第 4-6 个月：$20-100/月（Adsense 开通 + affiliate 起量）
+- 第 7-12 个月：$200-1000/月（内容规模效应 + 外链积累）
+- 12 个月以后：$500-3000/月（月访问 5-10 万）
 
-The key is not the absolute numbers but seeing the growth curve by month 3.
+关键不是具体数字，而是**第 3 个月就要看到增长曲线**——只要曲线在涨，方向就对了。
 
-## 7. Implementation Phases
+## 7. 实施阶段
 
-### Phase 1: Foundation (Week 1-2)
-- Scaffold Next.js project with App Router
-- Set up Tailwind + shadcn/ui
-- Create MDX content pipeline
-- Implement `/reviews/[slug]` and `/categories/[slug]` dynamic routes
-- Migrate existing 30 tool data from data.js into MDX
+### 第一阶段：搭架子（第 1-2 周）
+- 创建 Next.js 项目（App Router）
+- 配置 Tailwind + shadcn/ui
+- 搭建 MDX 内容渲染管线
+- 实现 `/reviews/[slug]` 和 `/categories/[slug]` 动态路由
+- 把现有 data.js 里 30 个工具数据迁移成 MDX 文件
 
-### Phase 2: Core Pages (Week 3-4)
-- Build homepage layout
-- Implement `/compare/[a]-vs-[b]` programmatic comparison pages
-- Add `/blog/[slug]` route
-- Create `/llms.txt` endpoint
-- SEO: Schema markup, sitemap generation, canonical URLs, OG images
+### 第二阶段：核心页面（第 3-4 周）
+- 首页布局
+- 实现 `/compare/[a]-vs-[b]` 程序化对比页
+- 添加 `/blog/[slug]` 博客路由
+- 创建 `/llms.txt`
+- SEO：结构化数据、自动生成 sitemap、规范链接、OG 图片
 
-### Phase 3: Free Tools (Week 5-8)
-- Build first 10-15 free online tools
-- Each tool targets specific low-KD keywords
-- Add Google Adsense to tool pages
+### 第三阶段：免费工具（第 5-8 周）
+- 做第一批 10-15 个免费在线工具
+- 每个工具瞄准具体的低竞争关键词
+- 工具页接入 Google Adsense
 
-### Phase 4: Scale Content (Ongoing)
-- Expand to more categories (AI image, AI writing, AI audio)
-- Programmatic compare pages for all tool pairs
-- Blog articles driven by keyword research
-- Backlink outreach
+### 第四阶段：铺内容（持续进行）
+- 扩展到更多品类（AI 图片、AI 写作、AI 音频）
+- 为所有工具配对批量生成对比页
+- 关键词驱动的博客文章
+- 外链推广
 
-### Phase 5: Monetization Optimization (After 5K monthly visits)
-- A/B test affiliate link placement
-- Optimize ad placement
-- Pitch sponsored listings to tool vendors
+### 第五阶段：变现优化（月访问 5000 以后）
+- A/B 测试 affiliate 链接位置
+- 优化广告位
+- 联系工具方卖置顶位
 
-## 8. Success Metrics
+## 8. 成功指标
 
-- Month 3: GSC impressions growing, first affiliate click
-- Month 6: 5K+ monthly page views, AdSense approved
-- Month 12: 20K+ monthly page views, $200+/month revenue
-- Leading indicator: keyword ranking velocity (how many new keywords entering top 30 each week)
+- 第 3 个月：GSC 展示量持续增长，收到第一笔 affiliate 佣金
+- 第 6 个月：月访问 5000+，Adsense 审核通过
+- 第 12 个月：月访问 20000+，月收入 $200+
+- 核心领先指标：关键词排名速度（每周有多少新词进入 Top 30）
