@@ -3,7 +3,7 @@ export const SITE = {
   tagline: 'Discover the best online tools and AI products',
   description:
     'Curated directory of the best online tools, AI products, and free utilities. Compare, review, and find the right tool for your workflow.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://toolhub.dev',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://toolporto.com',
   locale: 'en_US',
 };
 
