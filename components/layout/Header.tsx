@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
-import { SITE } from '@/lib/constants';
+import { usePathname } from 'next/navigation';
+import { SITE, CATEGORIES } from '@/lib/constants';
 
 export function Header() {
+  const pathname = usePathname();
+
   return (
     <header className="border-b border-border/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -15,21 +20,30 @@ export function Header() {
           {SITE.name}
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link
-            href="/categories/video-generation"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            AI Video
-          </Link>
-          <Link
-            href="/categories/ai-avatars"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            AI Avatars
-          </Link>
+          {CATEGORIES.map((cat) => {
+            const href = `/categories/${cat.slug}`;
+            const isActive = pathname.startsWith(href);
+            return (
+              <Link
+                key={cat.slug}
+                href={href}
+                className={`transition-colors ${
+                  isActive
+                    ? 'text-foreground font-medium'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {cat.name}
+              </Link>
+            );
+          })}
           <Link
             href="/blog"
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className={`transition-colors ${
+              pathname.startsWith('/blog')
+                ? 'text-foreground font-medium'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
           >
             Blog
           </Link>
