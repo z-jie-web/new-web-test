@@ -23,8 +23,44 @@ Swapface provides real-time face swapping for live streaming and video calls, us
 
 ## Our Take
 
-Swapface is the go-to tool for streamers who want real-time face swap. The Windows-only limitation is a real constraint, but for its target audience, it is unmatched. The real-time performance depends heavily on GPU — plan accordingly.
+Swapface is the go-to tool for streamers who want real-time face swap for live content. It integrates directly with OBS and streaming software, replacing your webcam face with a target face in real time with low enough latency for live broadcast. The use cases range from VTuber-style anonymity (stream as a character instead of yourself) to pure entertainment (swap faces with a celebrity during a livestream). The Windows-only limitation and GPU requirements (NVIDIA RTX 2060+) are real constraints, but for its specific audience — Twitch and YouTube streamers — it is unmatched. Free tier is functional for basic real-time swaps. Premium models unlock higher quality and more face options.
+
+## What Swapface Actually Does
+
+Swapface replaces your face in real time on your webcam feed. You select a target face (a photo, a 3D character, a celebrity image), and Swapface maps it onto your face as you move, talk, and emote. The processed feed appears as a virtual camera that any streaming or video call software recognizes — OBS, Streamlabs, Zoom, Discord, Skype.
+
+The real-time performance is the key technical achievement. Face detection, alignment, blending, and rendering happen within milliseconds per frame. This requires a decent GPU — NVIDIA RTX 2060 or better with 6GB+ VRAM is recommended. Lower-end GPUs will struggle with frame rate drops and desync.
+
+Integration with streaming software is straightforward: install Swapface, configure the virtual camera in OBS or Streamlabs as your video source, and your swapped face appears on stream. You can switch faces mid-stream without restarting.
+
+## Limitations
+
+Swapface is Windows-only. Mac and Linux users are out of luck. The real-time quality is good enough for streaming (where compression and lower resolutions hide artifacts) but not for pre-rendered production work — FaceFusion or Reface produce higher quality for recorded content. Face tracking can jitter in low light or when the face is partially obscured. Legal and platform considerations apply — swapping someone else's face in a live stream without consent may violate platform TOS (Twitch, YouTube) and privacy laws.
 
 ## Pricing
 
-Freemium — basic real-time swaps free, premium models require subscription.
+Freemium model. Basic real-time face swap is free with watermark. Premium subscription unlocks higher-quality face models, more face slots, watermark removal, and priority support. Specific subscription pricing varies — check swapface.org for current rates.
+
+## Who Should Use Swapface
+
+**Swapface is a strong fit if you:**
+- Are a Twitch, YouTube, or TikTok live streamer on Windows
+- Want VTuber-style anonymity without the full 3D avatar setup
+- Do entertainment streams where face swap adds viewer engagement
+- Have an NVIDIA RTX 2060+ GPU with 6GB+ VRAM
+
+**Swapface is not the best choice if you:**
+- Are on Mac or Linux (not supported)
+- Need high-quality pre-rendered face swap for recorded video (use FaceFusion or Reface)
+- Lack a discrete GPU — integrated graphics cannot handle real-time face swap
+- Want a mobile app (use Reface)
+
+## vs FaceFusion and Reface
+
+Swapface, FaceFusion, and Reface serve different use cases despite all being face swap tools. Swapface is the only one that does real-time face swap for live streaming — FaceFusion and Reface process pre-recorded content. FaceFusion produces the highest quality output with HyperSwap 256px models and desktop GPU processing, but requires technical setup. Reface is the most accessible for casual mobile use with its massive template library. Choose Swapface for live content, FaceFusion for recorded quality, Reface for mobile convenience.
+
+## FAQ
+
+**Is Swapface free?** Basic real-time face swap is free. Premium face models and watermark removal require a paid subscription.
+
+**Does Swapface work on Mac?** No. Windows only.
