@@ -4,6 +4,17 @@
 
 ---
 
+## 硬性规则
+
+**写完文章 → 立即跑验证 → 不合格当场修 → 全部通过才可提交。**
+
+- 验证输出必须完整贴出来，不许只贴汇总表
+- 任何一项不通过，原地修改，改完重新验证，直到全部通过
+- 不许说"验证完成"但不贴命令输出
+- 不许跳过任何一项
+
+---
+
 ## 校验清单
 
 ### 一、元数据完整性（6 项）
@@ -43,6 +54,68 @@
 - [ ] **构建通过**：`npm run build` 零错误
 - [ ] **页面 HTTP 200**：`curl -s -o /dev/null -w "%{http_code}" https://toolporto.com/reviews/[slug]` 返回 200
 - [ ] **Sitemap 包含**：生产环境 sitemap.xml 包含该 review URL
+
+---
+
+## 一键验证脚本
+
+写完文章后执行，一键跑完核心验证：
+
+```bash
+FILE="content/reviews/[slug].mdx"
+
+echo "=== SOP 验证: $FILE ==="
+echo ""
+echo "1. Frontmatter 字段 (需=10):"
+FIELDS=$(grep -cE '^(slug|name|category|description|tags|url|pricing|pros|cons|bestFor):' "$FILE")
+echo "   $FIELDS/10"
+[ "$FIELDS" -eq 10 ] && echo "   ✅" || echo "   ❌ 缺少字段"
+
+echo "2. URL https (需以https开头):"
+grep -q '"https://' "$FILE" && echo "   ✅" || echo "   ❌"
+
+echo "3. 品类有效性:"
+CAT=$(grep '^category:' "$FILE" | grep -oE '(video-generation|ai-avatars|ai-subtitles|face-swap|ai-voice|ai-image)')
+[ -n "$CAT" ] && echo "   ✅ $CAT" || echo "   ❌ 无效品类"
+
+echo "4. Slug 唯一性:"
+SLUG=$(grep '^slug:' "$FILE" | sed 's/.*"\(.*\)".*/\1/')
+COUNT=$(grep -rl "slug.*\"$SLUG\"" content/reviews/ | wc -l | tr -d ' ')
+[ "$COUNT" -eq 1 ] && echo "   ✅ 唯一" || echo "   ❌ 重复($COUNT次)"
+
+echo "5. Tags (需≥2):"
+grep '^tags:' "$FILE"
+TAGS_COUNT=$(grep -o '"[^"]*"' "$FILE" | head -3 | wc -l | tr -d ' ')
+[ "$TAGS_COUNT" -ge 2 ] && echo "   ✅ $TAGS_COUNT 个" || echo "   ❌ 不足2个"
+
+echo "6. Pros/Cons:"
+grep -A10 '^pros:' "$FILE" | head -5
+grep -A10 '^cons:' "$FILE" | head -5
+
+echo "7. 字数 (需 800-1200):"
+wc -w "$FILE"
+
+echo "8. 5章节 (需=5):"
+CH_COUNT=$(grep -c '## What.*Actually Does\|## Pricing\|## Who Should Use\|## vs \|## FAQ' "$FILE")
+echo "   $CH_COUNT/5"
+[ "$CH_COUNT" -ge 5 ] && echo "   ✅" || echo "   ❌"
+
+echo "9. very=0 (需=0):"
+V=$(grep -ci '\bvery\b' "$FILE")
+echo "   $V"
+[ "$V" -eq 0 ] && echo "   ✅" || echo "   ❌"
+
+echo "10. 中文=0 (需=0):"
+C=$(grep -cP '[一-龥]' "$FILE" 2>/dev/null || echo 0)
+echo "   $C"
+[ "$C" -eq 0 ] && echo "   ✅" || echo "   ❌"
+
+echo "11. 构建:"
+npm run build 2>&1 | grep -ci "error" | xargs -I{} sh -c '[ {} -eq 0 ] && echo "   ✅" || echo "   ❌"'
+
+echo "12. HTTP 200:"
+curl -s -o /dev/null -w "   %{http_code}\n" "https://toolporto.com/reviews/$SLUG"
+```
 
 ---
 
