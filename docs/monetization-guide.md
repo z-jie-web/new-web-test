@@ -31,13 +31,15 @@
 |------|------|------|--------|
 | **HeyGen** | Rewardful | 🔴 已提交 Google 表单，等审核 | 审核通过后去 heygen.getrewardful.com/signup 注册 |
 | **Synthesia** | Rewardful | ✅ 完成 | 链接：synthesia.io?via=jie，已嵌入文章 |
-| **InVideo AI** | 直接申请 | ⬜ 待申请 | help.invideo.io |
-| **Kapwing** | 直接申请 | ⬜ 待申请 | kapwing.com |
-| **Descript** | 直接申请 | ⬜ 待申请 | descript.com/affiliate |
+| **InVideo AI** | Impact.com | ✅ 合同已批 | app.impact.com 等 tracking link 可获取 |
+| **Kapwing** | Rewardful | 🔴 Pending 审核 | kapwing.getrewardful.com |
+| **Descript** | PartnerStack | ❌ 被拒 | 网站流量和受众规模不足，等流量起来再试 |
 | **DeepSwapper** | 直接申请 | ⬜ 待申请 | 官网查入口 |
 | **PixVerse** | Impact | ⬜ 待申请 | Impact 被拒，替代方案待定 |
 | **VEED.io** | Impact | ⬜ 待申请 | Impact 被拒，替代方案待定 |
 | **CapCut** | Impact | ⬜ 待申请 | Impact 被拒，替代方案待定 |
+
+> 所有仪表盘地址见 [docs/affiliate-dashboards.md](affiliate-dashboards.md)
 
 ---
 
