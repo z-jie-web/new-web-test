@@ -37,6 +37,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="impact-site-verification" content="ccb6d2c9-dbbb-4ad7-9073-7fec8d30bdac" />
+      </head>
       <body className={`${inter.className} antialiased bg-background text-foreground`}>
         {children}
         <Script
