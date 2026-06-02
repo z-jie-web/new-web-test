@@ -22,10 +22,59 @@ Topaz Video AI is a premium enhancement tool for upscaling, denoising, sharpenin
 
 ## Our Take
 
-Topaz Video AI is in a class of its own for video enhancement. The upscaling quality — especially for archival and low-resolution footage — is the best you can get without a professional post-production house. The trade-off is hardware: you need a powerful NVIDIA GPU and patience, as processing large files can take hours. For professional editors restoring old footage, upscaling for 4K/8K delivery, or cleaning noisy video, Topaz is worth every dollar. Casual users should look at cloud-based alternatives — the hardware requirements are no joke.
+Topaz Video AI is the broadcast-grade gold standard for AI video enhancement — no other consumer tool comes close to its upscaling and restoration quality. The March 2026 update unlocked the full Starlight and Bloom diffusion model suite for all paid tiers, eliminating the previous enterprise gating that frustrated prosumer users. The trade-offs remain significant: the subscription-only pricing ($299/year minimum) replaced the beloved perpetual license model in 2025, and you need a serious NVIDIA GPU (RTX 4070 or better) to process at usable speeds. For professional editors restoring archival footage, upscaling 1080p masters to 4K/8K for modern delivery, or cleaning noisy video for broadcast, Topaz is unmatched. Casual users who occasionally upscale a clip should use cloud-based alternatives — the cost and hardware requirements only make sense with regular use.
 
-## Pricing
+## What Topaz Video AI Actually Does
 
-One-time purchase at $299 for Video AI. No subscription required — buy once, use forever. Free trial available with watermarked output. Bundles with Gigapixel (photo AI) available at a discount.
+Topaz Video AI uses machine learning models to enhance video in ways that traditional filters cannot. It does not just sharpen pixels — it reconstructs missing detail by analyzing surrounding frames and understanding what hair, skin, fabric, and text should look like at higher resolutions.
+
+The platform has four core capabilities. **Upscaling** increases resolution: SD to HD, 1080p to 4K, 4K to 8K or even 16K. The AI rebuilds edges, textures, and facial features rather than just stretching pixels. **Denoising** removes grain and digital noise without the waxy, over-smoothed look of traditional noise reduction. **Frame interpolation** creates new frames between existing ones for smooth slow motion — converting 24fps footage to 60fps or 120fps with natural motion. **Stabilization** corrects shaky handheld footage without the warping artifacts of basic stabilizers.
+
+The model library is deep: 19+ specialized AI models as of version 3.26 (2026). **Proteus** handles general live-action upscaling as the default model. **Iris** specializes in face detail recovery from noisy or compressed sources. **Artemis** targets heavily compressed archival material — old DVDs, VHS rips, low-bitrate streaming downloads. **Gaia** is purpose-built for anime and cel animation, preserving clean line art at 4K and 8K. The **Starlight** family (Precise, HQ, Sharp, Mini, Fast) covers the full spectrum from degraded archival restoration to modern high-resolution enhancement, now included in all paid plans. **Chronos** and **Aion** handle cinematic frame interpolation for slow-motion, with Aion producing the highest quality at the cost of heavy GPU usage.
+
+Topaz also converts SDR to HDR (Hyperion model), deinterlaces old video sources (Dione), and supports batch processing with job queues for overnight rendering sessions.
+
+## Performance and Hardware Reality
+
+Processing speed depends entirely on your GPU. On an RTX 4070: Proteus runs at ~7-8 fps, Nyx at ~4-5 fps, and Aion at ~1-2 fps for 4K output. Upscaling a 1-hour video from 1080p to 4K takes roughly 1-3 hours. On older GPUs or integrated graphics, the same task can run overnight. Apple Silicon Macs are supported via Metal acceleration — M3/M4 Pro chips handle most models adequately, though CUDA on NVIDIA remains faster for the heaviest workloads.
+
+Local rendering is unlimited on all plans — your footage never leaves your machine unless you opt into cloud rendering. Cloud rendering costs extra credits (Personal: 25/mo, Pro: 100/mo) but offloads processing to Topaz servers, useful for laptop users without a discrete GPU.
+
+## Pricing Breakdown
+
+Topaz ended perpetual licenses in October 2025. All plans are now subscription-based:
+
+| Plan | Annual Price | Monthly | Cloud Credits | Commercial Use |
+|------|-------------|---------|---------------|----------------|
+| Personal | $299/yr | $33/mo (if monthly) | 25/mo | Limited (orgs under $1M revenue) |
+| Pro | $699/yr | $67/mo (if monthly) | 100/mo | Full commercial rights |
+| Topaz Studio | ~$399/yr | $69/mo (if monthly) | 300+/mo | Full, includes Photo AI + Gigapixel |
+
+The Personal plan is the practical entry point for most editors. Pro is necessary if you are delivering commercial work for clients. Topaz Studio bundles Video AI with Photo AI and Gigapixel for photographers who also need image upscaling.
+
+There is a free demo with watermarked output — useful for testing whether your hardware handles the workload before committing $299.
+
+## Who Should Use Topaz Video AI
+
+**Topaz Video AI is a strong fit if you:**
+- Restore archival or low-resolution footage for professional delivery
+- Upscale 1080p masters to 4K/8K for modern distribution
+- Own a powerful NVIDIA GPU (RTX 4070+) and process video regularly
+- Need frame interpolation for cinematic slow motion
+- Work in broadcast or film post-production where VMAF 88-94 quality matters
+
+**Topaz Video AI is not the best choice if you:**
+- Only occasionally need to upscale a clip (use a cloud service like Runway or Kling)
+- Lack a discrete GPU — CPU-only processing is impractical
+- Prefer a one-time purchase (all plans are subscription-only since 2025)
+- Need a simple, one-click solution — the model selection and settings require learning
+
+## FAQ
+
+**Can I still buy a perpetual license?** No. Topaz ended perpetual licenses in October 2025. All plans are subscription-based. Existing perpetual license holders retain their access but do not receive new model updates.
+
+**What GPU do I need?** NVIDIA RTX 3060 minimum, RTX 4070+ recommended for 4K workloads. Apple Silicon M2+ supported via Metal. AMD GPUs not officially supported.
+
+**How long does processing take?** A 1-hour 1080p video upscaled to 4K: 1-3 hours on RTX 4070, 4-8 hours on RTX 3060, overnight on integrated graphics.
 
 [Visit Topaz Video AI](https://www.topazlabs.com/topaz-video-ai)

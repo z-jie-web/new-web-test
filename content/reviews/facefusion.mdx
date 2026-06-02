@@ -23,8 +23,43 @@ FaceFusion is the leading open-source face swap and enhancement tool, offering p
 
 ## Our Take
 
-FaceFusion is the best face swap tool for technically inclined users. The setup barrier is real — you need Python and a decent GPU — but once running, the output quality rivals and often exceeds paid alternatives. For professional work where quality and privacy matter, it is the clear winner. Not for casual users.
+FaceFusion is the best face swap tool for technically inclined users — and the gap has only widened with the 3.x series. The 3.6.1 release (May 2026) added HyperSwap 256px models that deliver four times the pixel resolution of older inswapper models, capturing eye reflections and skin texture that paid cloud tools struggle to match. The setup barrier is real: you need Python, a CUDA-compatible GPU (NVIDIA or AMD via ROCm), and comfort with the command line. But once running, FaceFusion offers features that no cloud-based competitor can touch — real-time streaming face swap, local processing for total privacy, and unlimited usage with zero ongoing costs. For professional editors, privacy-conscious creators, and developers building face swap into their pipelines, FaceFusion is unmatched. Not for casual users who want a mobile app.
 
-## Pricing
+## What FaceFusion Actually Does
 
-Free — fully open source. No paid tiers, no watermarks, no usage limits.
+FaceFusion processes images, videos, and live camera streams to replace faces with pixel-level precision. You provide a source face (photo or video) and a target (the media you want to swap into), and FaceFusion handles detection, alignment, blending, and enhancement automatically.
+
+The 3.x series added capabilities far beyond basic face swapping. **Pixel Boost** sharpens edge detail around the swapped face for seamless blending with the target body and background. **Live Portrait** lets you control the target person's expressions using a driving video — raise an eyebrow, smile, turn your head — giving you puppet-like control over facial performance. **Wav2Lip integration** synchronizes lip movements to audio tracks, making it viable for dubbing and digital human projects. **Age Modifier** can make a face look younger or older with adjustable intensity. **Multi-face support** handles group shots — swap all faces in a crowd scene in a single processing pass.
+
+**Local processing** is FaceFusion's defining advantage. No uploading faces to a cloud server. No usage limits. No watermark. No subscription. Everything runs on your own hardware, making it the only viable option for sensitive content, celebrity face swaps (with consent), or any project where data privacy matters.
+
+The model ecosystem has grown substantially. **HyperSwap 1a/1b/1c** at 256x256 resolution replaced the aging inswapper_128 model, quadrupling pixel count for far better eye detail, skin texture, and expression fidelity. Enhancement models support up to 2048x2048 pixels. The frame enhancement pipeline combines Real-ESRGAN with motion-compensated temporal filtering to reduce flicker across video frames.
+
+## Setup and Technical Requirements
+
+FaceFusion runs on Windows, Linux, and macOS. You need Python 3.10+, a CUDA GPU for NVIDIA cards (RTX 3060 or better recommended), or AMD GPUs via ROCm. Installation is a single command: `pip install facefusion` followed by downloading the model files (~2GB for the full set). An official GUI is included for those who prefer not to script everything, and the web UI mode lets you access FaceFusion from any browser on your local network.
+
+Community-driven installers and one-click deployment scripts have made setup much easier than the early days. Chinese-language forks with integrated NSFW filters and platform-specific optimizations are available on major developer platforms. Still, expect to spend 30-60 minutes on first-time setup if you are new to Python environments.
+
+## Who Should Use FaceFusion
+
+**FaceFusion is a strong fit if you:**
+- Have Python and GPU experience and want the highest quality face swaps available
+- Need privacy — no cloud upload, no data collection, everything stays local
+- Work on sensitive or high-volume projects where per-credit pricing would add up fast
+- Want programmatic control — FaceFusion's CLI and Python API enable batch processing and pipeline integration
+- Need real-time face swap for streaming or live performance
+
+**FaceFusion is not the best choice if you:**
+- Want a mobile app or web-based tool with no setup (use Remaker or Swapface)
+- Lack a discrete GPU — CPU-only processing is painfully slow
+- Are uncomfortable with terminal/command-line tools
+- Need a commercial license with vendor support (open source means self-supported)
+
+## FAQ
+
+**Is FaceFusion really free?** Yes. Apache 2.0 license. No paid tiers, no usage caps, no watermarks. The project is community-maintained and accepts donations but charges nothing.
+
+**What GPU do I need?** NVIDIA RTX 3060 or better with 8GB+ VRAM for smooth 1080p video processing. AMD GPUs supported via ROCm. Apple Silicon (M1/M2/M3) works via Metal but is slower than CUDA.
+
+**Is FaceFusion legal?** The software itself is legal. How you use it determines legality. Face swapping real people without consent may violate privacy laws, defamation statutes, or platform terms of service in your jurisdiction. Always obtain consent.
