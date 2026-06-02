@@ -100,7 +100,30 @@ www.toolporto.com    → 308 Redirect → toolporto.com
 
 ---
 
-## 4. 代码中的域名配置
+## 4. Google Search Console
+
+### 验证域名所有权
+
+**方式**：HTML 文件验证（不是 TXT 记录验证）
+
+1. GSC → 添加资源 → 选 **"网址前缀"**（URL prefix），输入 `https://toolporto.com`
+2. 选 "HTML 文件" 验证 → 下载 Google 给的 HTML 文件
+3. 将文件放入项目 `public/` 目录
+4. 提交代码 → Vercel 自动部署 → 文件可通过 `https://toolporto.com/googleXXXX.html` 访问
+5. 回 GSC 点 "验证"
+
+> 注意：域名验证（Domain 方式）对新注册域名可能失败，URL 前缀 + HTML 文件是更可靠的方式。
+
+### 提交 Sitemap
+
+1. GSC 左侧菜单 → **"站点地图"**（Sitemaps）
+2. 输入完整 URL：`https://toolporto.com/sitemap.xml`（非仅路径 `sitemap.xml`）
+3. 点提交
+4. 确认状态 "成功"，URL 数量 86 个
+
+---
+
+## 5. 代码中的域名配置
 
 **文件**：`lib/constants.ts`
 
@@ -119,27 +142,45 @@ export const SITE = {
 
 ---
 
-## 5. 验证清单
+## 6. 部署验证清单（全部完成 ✅）
 
 部署完成后逐项检查：
 
-- [ ] `https://toolporto.com` → 200，页面正常加载
-- [ ] `https://www.toolporto.com` → 308 跳转到 `https://toolporto.com`
-- [ ] `http://toolporto.com` → 308 跳转到 `https://toolporto.com`
-- [ ] `https://toolporto.com/sitemap.xml` → 正常返回 XML
-- [ ] `https://toolporto.com/robots.txt` → 正常返回
-- [ ] 随机点 5 个 review 页面 → 全部 200
-- [ ] 随机点 3 个 compare 页面 → 全部 200
-- [ ] Google Search Console 提交 sitemap
-- [ ] Cloudflare SSL/TLS → Full (strict)
+- [x] `https://toolporto.com` → 200，页面正常加载
+- [x] `https://www.toolporto.com` → 308 跳转到 `https://toolporto.com`
+- [x] `http://toolporto.com` → 308 跳转到 `https://toolporto.com`
+- [x] `https://toolporto.com/sitemap.xml` → 正常返回 XML（86 URL）
+- [x] `https://toolporto.com/robots.txt` → 正常返回
+- [x] 随机点 5 个 review 页面 → 全部 200
+- [x] 随机点 3 个 compare 页面 → 全部 200
+- [x] Google Search Console 验证通过（2026-06-02）
+- [x] Google Search Console 提交 sitemap（86 URL，成功）
+- [x] Cloudflare SSL/TLS → Full (strict)
 
 ---
 
-## 6. 后续工作
+## 7. 完成时间线
+
+| 日期 | 事项 |
+|------|------|
+| 2026-05-29 | 域名 `toolporto.com` 在 Spaceship 购买（$11.48） |
+| 2026-05-29 | Cloudflare DNS 托管配置（Free plan） |
+| 2026-05-29 | Vercel 首次部署（`new-web-test-two.vercel.app`） |
+| 2026-05-29 | 域名 Nameserver 切换至 Cloudflare |
+| 2026-06-02 | 域名 DNS 生效，自定义域名绑定 Vercel |
+| 2026-06-02 | `www` → 主域名 308 重定向配置 |
+| 2026-06-02 | Google Search Console 验证 + Sitemap 提交 |
+| 2026-06-02 | **网站正式上线：`https://toolporto.com`** |
+
+---
+
+## 8. 后续工作
 
 见 `docs/superpowers/plans/2026-05-29-launch-and-growth-roadmap.md`：
 
-1. GSC 提交 sitemap（当天完成）
+1. ~~GSC 提交 sitemap~~ ✅ 已完成
 2. 22 篇 review 内容扩充到 800-1200 词（1-4 周）
 3. 接入 Umami 统计
 4. Affiliate 链接申请 + AdSense 申请
+5. Blog 内容创建
+6. 外链获取
