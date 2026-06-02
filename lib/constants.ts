@@ -31,4 +31,16 @@ export const CATEGORIES = [
     name: 'Face Swap Tools',
     description: 'AI face swap tools for creative video content.',
   },
+  {
+    slug: 'ai-voice',
+    name: 'AI Voice & Audio',
+    description:
+      'AI voice generation, text-to-speech, voice cloning, and audio creation tools.',
+  },
+  {
+    slug: 'ai-image',
+    name: 'AI Image Generation',
+    description:
+      'AI-powered image and art generation tools for creators, designers, and marketers.',
+  },
 ] as const;

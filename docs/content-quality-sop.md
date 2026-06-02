@@ -10,7 +10,7 @@
 
 - [ ] **Frontmatter 10 字段**：slug, name, category, description, tags, url, pricing, pros, cons, bestFor 全部填写
 - [ ] **URL 有效性**：`url` 字段必须以 `https://` 开头，指向官方域名
-- [ ] **品类归属**：`category` 值必须在 4 个有效品类内（video-generation / ai-avatars / ai-subtitles / face-swap）
+- [ ] **品类归属**：`category` 值必须在 6 个有效品类内（video-generation / ai-avatars / ai-subtitles / face-swap / ai-voice / ai-image）
 - [ ] **Slug 唯一性**：不与已有文章 slug 重复
 - [ ] **Tags 相关性**：至少 2 个 tag，与工具核心功能对应
 - [ ] **Pros/Cons 真实**：每条必须对应真实用户反馈或官方功能说明，不编造
