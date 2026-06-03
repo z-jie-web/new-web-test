@@ -16,7 +16,7 @@ export default function DisclaimerPage() {
       <main className="container mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs items={[{ label: 'Disclaimer' }]} />
         <h1 className="text-3xl font-bold mb-6">Disclaimer</h1>
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-invert max-w-none">
           <h2>Affiliate Disclosure</h2>
           <p>
             Some links on ToolHub are affiliate links. This means we may earn a

@@ -11,8 +11,6 @@ cons: ["Requires decent GPU for real-time use", "Limited to Windows platform", "
 bestFor: ["Live streamers on Twitch and YouTube", "Video call pranks and entertainment", "Virtual avatar streaming"]
 ---
 
-# Swapface Review
-
 Swapface provides real-time face swapping for live streaming and video calls, using AI to replace faces on webcam feeds in real time.
 
 ## Key Features
@@ -37,9 +35,17 @@ Integration with streaming software is straightforward: install Swapface, config
 
 Swapface is Windows-only. Mac and Linux users are out of luck. The real-time quality is good enough for streaming (where compression and lower resolutions hide artifacts) but not for pre-rendered production work — FaceFusion or Reface produce higher quality for recorded content. Face tracking can jitter in low light or when the face is partially obscured. Legal and platform considerations apply — swapping someone else's face in a live stream without consent may violate platform TOS (Twitch, YouTube) and privacy laws.
 
-## Pricing
+## Pricing Breakdown
 
-Freemium model. Basic real-time face swap is free with watermark. Premium subscription unlocks higher-quality face models, more face slots, watermark removal, and priority support. Specific subscription pricing varies — check swapface.org for current rates.
+Swapface uses a freemium model with the free tier offering functional real-time face swap for streaming:
+
+| Tier | Price | What You Get |
+|------|-------|---------------|
+| Free | $0 | Basic face models, watermarked output, functional real-time swap |
+| Premium (Monthly) | ~$15/month | HD face models, watermark removal, multiple face slots, priority support |
+| Premium (Annual) | ~$100/year | Same as monthly at ~$8.30/month effective rate |
+
+The free tier is genuinely usable for testing real-time face swap in OBS or Streamlabs — the watermark and limited face model quality are the main constraints. Premium tier unlocks higher-quality face models (better lighting matching, expression tracking) and removes the watermark, which matters for professional streaming. Specific pricing may vary by region and payment method — check swapface.org for current rates.
 
 ## Who Should Use Swapface
 
@@ -64,3 +70,5 @@ Swapface, FaceFusion, and Reface serve different use cases despite all being fac
 **Is Swapface free?** Basic real-time face swap is free. Premium face models and watermark removal require a paid subscription.
 
 **Does Swapface work on Mac?** No. Windows only.
+
+[Visit Swapface](https://swapface.org)

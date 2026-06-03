@@ -61,7 +61,7 @@ export default async function ToolPage({
         <p className="text-lg text-muted-foreground mb-8">
           {frontmatter.description}
         </p>
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-invert max-w-none">
           <MDXRemote source={content} />
         </div>
 

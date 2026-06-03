@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@plugin "@tailwindcss/typography";
+
 @theme inline {
   --color-background: hsl(225 12% 6%);
   --color-foreground: hsl(210 15% 82%);
@@ -21,4 +23,57 @@
   --color-input: hsl(217 12% 24% / 0.35);
   --color-ring: hsl(160 55% 42%);
   --radius: 0.75rem;
+}
+
+/* Unlayered overrides — wins over plugin defaults. Sharpens tables and spacing. */
+.prose {
+  & :where(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875em;
+    line-height: 1.71429;
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  & :where(thead) {
+    border-bottom-width: 2px;
+    border-bottom-color: hsl(217 12% 36%);
+  }
+
+  & :where(thead th) {
+    color: hsl(210 15% 95%);
+    font-weight: 600;
+    text-align: start;
+    padding: 0.75rem 1rem;
+    vertical-align: bottom;
+  }
+
+  & :where(tbody tr) {
+    border-bottom-width: 1px;
+    border-bottom-color: hsl(217 12% 26%);
+  }
+
+  & :where(tbody tr:last-child) {
+    border-bottom-width: 0;
+  }
+
+  & :where(tbody td) {
+    padding: 0.625rem 1rem;
+    vertical-align: top;
+  }
+
+  & :where(tbody tr:nth-child(even)) {
+    background-color: hsl(217 12% 10% / 0.5);
+  }
+
+  & :where(thead th:first-child),
+  & :where(tbody td:first-child) {
+    padding-inline-start: 0;
+  }
+
+  & :where(thead th:last-child),
+  & :where(tbody td:last-child) {
+    padding-inline-end: 0;
+  }
 }

@@ -1,15 +1,22 @@
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
+import Link from 'next/link';
 import {
   getBySlug,
   getAllSlugs,
   type BlogFrontmatter,
+  type ReviewFrontmatter,
+  getBySlug as getReview,
 } from '@/lib/content';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { ReviewCard } from '@/components/ReviewCard';
 import { JsonLd } from '@/components/JsonLd';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 export async function generateStaticParams() {
   return getAllSlugs('blog').map((slug) => ({ slug }));
@@ -42,6 +49,10 @@ export default async function BlogPage({
   if (!item) notFound();
 
   const { frontmatter, content } = item;
+
+  const relatedReviews = (frontmatter.relatedReviews || [])
+    .map((slug) => getReview<ReviewFrontmatter>('reviews', slug))
+    .filter((r): r is { frontmatter: ReviewFrontmatter; content: string } => r !== null);
 
   return (
     <>
@@ -79,11 +90,37 @@ export default async function BlogPage({
             <p className="text-lg text-muted-foreground mt-2">
               {frontmatter.description}
             </p>
+            {frontmatter.category && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                <Link href={`/categories/${frontmatter.category}`}>
+                  <Badge variant="secondary">{frontmatter.category}</Badge>
+                </Link>
+              </div>
+            )}
           </header>
-          <div className="prose prose-zinc dark:prose-invert max-w-none">
-            <MDXRemote source={content} />
+          <div className="prose prose-invert max-w-none">
+            <MDXRemote source={content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
         </article>
+
+        {relatedReviews.length > 0 && (
+          <>
+            <Separator className="my-10" />
+            <section>
+              <h2 className="text-2xl font-bold mb-4">
+                Tools Mentioned in This Article
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {relatedReviews.map((r) => (
+                  <ReviewCard
+                    key={r.frontmatter.slug}
+                    review={r.frontmatter}
+                  />
+                ))}
+              </div>
+            </section>
+          </>
+        )}
       </main>
       <Footer />
     </>

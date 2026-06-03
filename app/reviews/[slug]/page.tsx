@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import {
   getBySlug,
@@ -188,8 +189,8 @@ export default async function ReviewPage({
 
           <Separator className="my-8" />
 
-          <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
-            <MDXRemote source={content} />
+          <div className="prose prose-invert max-w-none mb-8">
+            <MDXRemote source={content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
 
           {(frontmatter.pros.length > 0 || frontmatter.cons.length > 0) && (

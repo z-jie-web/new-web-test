@@ -18,7 +18,7 @@ export default function ContactPage() {
       <main className="container mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs items={[{ label: 'Contact' }]} />
         <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
-        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
+        <div className="prose prose-invert max-w-none mb-8">
           <p>
             Have a tool you would like listed on ToolHub? Found incorrect
             information? Want to advertise with us? Reach out and we will get

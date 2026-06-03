@@ -32,15 +32,15 @@ export const CATEGORIES = [
     description: 'AI face swap tools for creative video content.',
   },
   {
+    slug: 'ai-image',
+    name: 'AI Image Generation',
+    description:
+      'AI-powered image and art creation tools — Midjourney, DALL-E, Stable Diffusion, and more.',
+  },
+  {
     slug: 'ai-voice',
     name: 'AI Voice & Audio',
     description:
       'AI voice generation, text-to-speech, voice cloning, and audio creation tools.',
-  },
-  {
-    slug: 'ai-image',
-    name: 'AI Image Generation',
-    description:
-      'AI-powered image and art generation tools for creators, designers, and marketers.',
   },
 ] as const;

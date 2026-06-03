@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <main className="container mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs items={[{ label: 'Privacy Policy' }]} />
         <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-invert max-w-none">
           <p><strong>Last updated:</strong> May 28, 2026</p>
           <h2>1. Information We Collect</h2>
           <p>

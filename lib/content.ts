@@ -40,9 +40,10 @@ export interface BlogFrontmatter {
   date: string;
   category?: string;
   author?: string;
+  relatedReviews?: string[];
 }
 
-type ContentType = 'reviews' | 'tools' | 'blog' | 'categories';
+export type ContentType = 'reviews' | 'tools' | 'blog' | 'categories' | 'compare';
 
 function getContentDir(type: ContentType): string {
   return path.join(CONTENT_ROOT, type);

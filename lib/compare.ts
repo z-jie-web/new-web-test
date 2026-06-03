@@ -1,10 +1,20 @@
-import { getAll, ReviewFrontmatter } from './content';
+import { getAll, ReviewFrontmatter, getBySlug, ContentType } from './content';
+
+export interface CompareFrontmatter {
+  toolA: string;
+  toolB: string;
+  verdict: string;
+  winner: string;
+  lastUpdated: string;
+}
 
 export interface ComparePair {
   a: ReviewFrontmatter;
   b: ReviewFrontmatter;
   slugA: string;
   slugB: string;
+  compareContent?: string;
+  compareData?: CompareFrontmatter;
 }
 
 export function getAllComparePairs(): ComparePair[] {
@@ -16,7 +26,16 @@ export function getAllComparePairs(): ComparePair[] {
       const a = reviews[i].frontmatter;
       const b = reviews[j].frontmatter;
       if (a.category === b.category) {
-        pairs.push({ a, b, slugA: a.slug, slugB: b.slug });
+        // Check for rich compare content
+        const compareResult = getCompareContent(a.slug, b.slug);
+        pairs.push({
+          a,
+          b,
+          slugA: a.slug,
+          slugB: b.slug,
+          compareContent: compareResult?.content,
+          compareData: compareResult?.frontmatter,
+        });
       }
     }
   }
@@ -41,5 +60,22 @@ export function getComparePair(
         (p.slugA === slugA && p.slugB === slugB) ||
         (p.slugA === slugB && p.slugB === slugA)
     ) || null
+  );
+}
+
+export function getCompareContent(
+  slugA: string,
+  slugB: string
+): { frontmatter: CompareFrontmatter; content: string } | null {
+  const result = getBySlug<CompareFrontmatter>('compare' as ContentType, `${slugA}-vs-${slugB}`);
+  if (result) return result;
+  return getBySlug<CompareFrontmatter>('compare' as ContentType, `${slugB}-vs-${slugA}`);
+}
+
+export function getComparisonsForTool(
+  slug: string
+): ComparePair[] {
+  return getAllComparePairs().filter(
+    (p) => p.slugA === slug || p.slugB === slug
   );
 }

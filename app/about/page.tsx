@@ -18,7 +18,7 @@ export default function AboutPage() {
       <main className="container mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs items={[{ label: 'About' }]} />
         <h1 className="text-3xl font-bold mb-6">About ToolHub</h1>
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-invert max-w-none">
           <p>
             ToolHub is a curated directory of the best online tools, AI
             products, and free utilities. We help creators, developers, and

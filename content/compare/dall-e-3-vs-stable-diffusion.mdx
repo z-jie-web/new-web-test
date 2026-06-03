@@ -1,0 +1,68 @@
+---
+toolA: "dall-e-3"
+toolB: "stable-diffusion"
+verdict: "DALL-E 3 is the easiest AI image generator — natural language prompting via ChatGPT, no setup, no learning curve. Stable Diffusion is the most flexible — open-source, self-hosted, infinitely customizable. For beginners and quick results, choose DALL-E 3. For developers and power users who want full control, choose Stable Diffusion."
+winner: "depends"
+lastUpdated: "2026-06-03"
+---
+
+## At a Glance
+
+|  | DALL-E 3 | Stable Diffusion |
+|--|---------|-----------------|
+| **Type** | Closed, cloud API | Open-source, self-hosted |
+| **Starting price** | Free (limited) / $20/month ChatGPT Plus | Free (self-hosted, needs GPU) |
+| **Ease of use** | Natural language, no syntax | Complex setup, prompt engineering |
+| **Customization** | Minimal | Unlimited (models, LoRAs, ControlNet) |
+| **API access** | OpenAI API | Self-hosted or cloud providers |
+| **Privacy** | Images go through OpenAI servers | Full privacy (local generation) |
+| **NSFW** | Blocked | No restrictions (local) |
+
+## Ease of Use vs. Control
+
+This is the clearest trade-off in AI image generation.
+
+DALL-E 3 requires zero technical knowledge. You type what you want in plain English — through ChatGPT or the OpenAI API — and you get an image. ChatGPT acts as a prompt engineer, expanding your description into the detailed prompt the model needs. Refine conversationally: "make it warmer," "add a dog," "change to watercolor."
+
+Stable Diffusion requires technical setup (Python, GPU, front-end selection) and prompt engineering skill (positive/negative prompts, CFG scale, sampling steps, seed management). But once set up, you can do things DALL-E 3 cannot: ControlNet for precise spatial control, LoRA fine-tuning for specific characters/styles, batch generation pipelines, and unlimited free generation on your own hardware.
+
+## Image Quality
+
+DALL-E 3 excels at photorealism and literal prompt interpretation. "A photograph of a specific object in a specific setting" — DALL-E 3 reliably produces images that look like photographs.
+
+Stable Diffusion's base models (SDXL, SD3) produce adequate but uninspiring images. With community fine-tuned models and LoRAs, quality can exceed DALL-E 3 for specific domains (anime, oil painting, architectural rendering). But achieving this requires curation and experimentation.
+
+**Winner: DALL-E 3** for out-of-box quality. **Stable Diffusion** for maximum achievable quality with effort.
+
+## Pricing
+
+|  | DALL-E 3 | Stable Diffusion |
+|--|---------|-----------------|
+| Free | Limited via Bing / ChatGPT free | Completely free (self-hosted) |
+| Entry | $20/month (ChatGPT Plus) | Free (own hardware) or ~$10/month (cloud GPU) |
+| API | ~$0.04/image | ~$0.001/image (own hardware) or $0.50-2/hr (cloud) |
+| Commercial use | Included | No restrictions |
+
+DALL-E 3 via ChatGPT Plus bundles image generation with GPT-4, browsing, and data analysis — $20/month for the suite is strong value. Stable Diffusion's cost advantage grows with volume. For high-frequency generation, the near-zero marginal cost of local generation saves hundreds per month.
+
+## Who Should Choose DALL-E 3
+
+- Beginners who want to describe images in plain English
+- Anyone already paying for ChatGPT Plus ($20/month includes DALL-E 3)
+- Developers who need a simple, reliable image generation API
+- Projects where photorealism is the primary goal
+
+## Who Should Choose Stable Diffusion
+
+- Developers who want unlimited, free generation on their own hardware
+- Privacy-focused users who need all processing to stay local
+- Power users who want fine-grained control (ControlNet, LoRAs, custom models)
+- Anyone generating content that would violate closed-platform content policies
+
+## FAQ
+
+**Which is better for commercial use?** Both grant commercial rights. Stable Diffusion has no usage restrictions. DALL-E 3's terms are standard for OpenAI products.
+
+**Can I run Stable Diffusion without a GPU?** Cloud GPU services (RunPod, Replicate) let you run Stable Diffusion for $0.50-2/hour without owning hardware.
+
+**Which is cheaper for high volume?** Stable Diffusion on your own GPU has near-zero marginal cost. DALL-E 3 via API costs ~$0.04/image.
