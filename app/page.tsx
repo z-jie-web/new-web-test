@@ -11,8 +11,9 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata = seoMeta({
-  title: 'Discover the Best Online Tools & AI Products',
-  description: SITE.description,
+  title: 'AI Tools Reviews & Comparisons — Best AI Software in 2026',
+  description:
+    'Expert reviews, pricing breakdowns, and honest comparisons of the best AI tools for video generation, image creation, voice synthesis, face swap, and more. Find the right AI tool for your workflow.',
   path: '/',
 });
 
@@ -42,11 +43,11 @@ export default function HomePage() {
         <section className="border-b border-border/20">
           <div className="container mx-auto max-w-4xl px-4 py-20 sm:py-28 text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-              Discover the Best{' '}
-              <span className="text-primary">Online Tools</span> & AI Products
+              AI Tools Reviews &amp; Comparisons
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              {SITE.description}
+              Expert reviews and honest comparisons of the best AI tools for
+              video generation, image creation, voice synthesis, and more.
             </p>
             <SearchBar tools={allReviews.map((r) => r.frontmatter)} />
           </div>

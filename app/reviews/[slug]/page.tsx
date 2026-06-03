@@ -54,13 +54,22 @@ export default async function ReviewPage({
     CATEGORIES.find((c) => c.slug === frontmatter.category)?.name ||
     frontmatter.category;
 
-  const relatedReviews = getAll<ReviewFrontmatter>('reviews')
-    .filter(
-      (r) =>
-        r.frontmatter.category === frontmatter.category &&
-        r.frontmatter.slug !== slug
-    )
-    .slice(0, 3);
+  const allReviews = getAll<ReviewFrontmatter>('reviews');
+  const sameCategory = allReviews.filter(
+    (r) =>
+      r.frontmatter.category === frontmatter.category &&
+      r.frontmatter.slug !== slug
+  );
+  const crossCategory = sameCategory.length < 3
+    ? allReviews
+        .filter(
+          (r) =>
+            r.frontmatter.category !== frontmatter.category &&
+            r.frontmatter.slug !== slug
+        )
+        .slice(0, 3 - sameCategory.length)
+    : [];
+  const relatedReviews = [...sameCategory, ...crossCategory].slice(0, 3);
 
   const jsonLd = {
     '@context': 'https://schema.org',
