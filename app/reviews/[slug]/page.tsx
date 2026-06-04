@@ -16,6 +16,8 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
 import { Disclosure } from '@/components/Disclosure';
 import { mdxComponents } from '@/components/MdxComponents';
+import { TldrBox, MobileStickyCta } from '@/components/TldrBox';
+import { readingTime, fileMtime, formatDate } from '@/lib/article-meta';
 import { JsonLd } from '@/components/JsonLd';
 import { getComparisonsForTool } from '@/lib/compare';
 import { Badge } from '@/components/ui/badge';
@@ -152,7 +154,7 @@ export default async function ReviewPage({
     <>
       <JsonLd data={jsonLd} />
       <Header />
-      <main className="container mx-auto max-w-4xl px-4 py-8">
+      <main className="container mx-auto max-w-4xl px-4 py-8 pb-24 md:pb-8">
         <Breadcrumbs
           items={[
             {
@@ -181,6 +183,13 @@ export default async function ReviewPage({
             <p className="text-lg text-muted-foreground">
               {frontmatter.description}
             </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-muted-foreground">
+              <span>Updated {formatDate(fileMtime('reviews', frontmatter.slug))}</span>
+              <span>·</span>
+              <span>{readingTime(content)} min read</span>
+              <span>·</span>
+              <span>Hands-on tested by {SITE.name}</span>
+            </div>
             <div className="flex flex-wrap gap-2 mt-4">
               {frontmatter.tags.map((tag) => (
                 <Badge key={tag} variant="outline">
@@ -191,6 +200,8 @@ export default async function ReviewPage({
           </header>
 
           <Separator className="my-8" />
+
+          <TldrBox review={frontmatter} />
 
           <div className="prose prose-invert max-w-none mb-8">
             <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
@@ -281,6 +292,7 @@ export default async function ReviewPage({
         <CompareWith currentSlug={frontmatter.slug} currentName={frontmatter.name} />
         <Disclosure />
       </main>
+      <MobileStickyCta review={frontmatter} />
       <Footer />
     </>
   );

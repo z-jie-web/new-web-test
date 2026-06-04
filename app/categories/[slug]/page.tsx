@@ -12,7 +12,7 @@ import { generateMetadata as seoMeta } from '@/lib/seo';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { ReviewCard } from '@/components/ReviewCard';
+import { ReviewGrid } from '@/components/ReviewGrid';
 import { JsonLd } from '@/components/JsonLd';
 import { ArrowRight } from 'lucide-react';
 
@@ -90,11 +90,7 @@ export default async function CategoryPage({
             No tools in this category yet.
           </p>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tools.map((t) => (
-              <ReviewCard key={t.frontmatter.slug} review={t.frontmatter} />
-            ))}
-          </div>
+          <ReviewGrid reviews={tools.map((t) => t.frontmatter)} />
         )}
 
         {/* Cross-category navigation */}

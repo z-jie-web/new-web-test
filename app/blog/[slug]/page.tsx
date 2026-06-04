@@ -16,6 +16,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
 import { Disclosure } from '@/components/Disclosure';
 import { mdxComponents } from '@/components/MdxComponents';
+import { readingTime } from '@/lib/article-meta';
 import { JsonLd } from '@/components/JsonLd';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -77,15 +78,19 @@ export default async function BlogPage({
         />
         <article>
           <header className="mb-8">
-            {frontmatter.date && (
-              <time className="text-sm text-muted-foreground mb-2 block">
-                {new Date(frontmatter.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </time>
-            )}
+            <div className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground mb-3">
+              {frontmatter.date && (
+                <time>
+                  {new Date(frontmatter.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              )}
+              {frontmatter.date && <span>·</span>}
+              <span>{readingTime(content)} min read</span>
+            </div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
               {frontmatter.title}
             </h1>
