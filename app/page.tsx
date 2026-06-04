@@ -79,8 +79,9 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
               <Button size="lg" asChild>
-                <Link href="/categories/video-generation">
-                  Browse All Tools <ArrowRight className="ml-2 h-4 w-4" />
+                <Link href="/reviews">
+                  Browse All {allReviews.length} Tools{' '}
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
@@ -125,8 +126,9 @@ export default function HomePage() {
               <h2 className="text-2xl font-bold">Featured AI Tools</h2>
             </div>
             <Button variant="ghost" asChild>
-              <Link href="/categories/video-generation">
-                View all <ArrowRight className="ml-1 h-4 w-4" />
+              <Link href="/reviews">
+                View all {allReviews.length} tools{' '}
+                <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
           </div>
