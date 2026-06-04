@@ -152,7 +152,16 @@ SEO_OK=true
 if [ "$TYPE" = "compare" ]; then
   echo "  ℹ️  Compare type — title/description generated dynamically from generateMetadata, skipping frontmatter title/description check"
 else
-  TITLE=$(awk '/^title:/{sub(/^title: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+  # Review 类型使用 title: 字段（如有），否则从 name: 生成；blog 类型使用 title: 字段
+  if [ "$TYPE" = "review" ]; then
+    TITLE=$(awk '/^title:/{sub(/^title: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+    if [ -z "$TITLE" ]; then
+      REVIEW_NAME=$(awk '/^name:/{sub(/^name: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+      TITLE="${REVIEW_NAME} Review (2026) — Is It Worth It?"
+    fi
+  else
+    TITLE=$(awk '/^title:/{sub(/^title: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+  fi
   TITLE_LEN=${#TITLE}
   echo "  Title ($TITLE_LEN chars): $TITLE"
   if [ "$TITLE_LEN" -lt 30 ] || [ "$TITLE_LEN" -gt 70 ]; then
