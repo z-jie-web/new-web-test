@@ -1,6 +1,40 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { AnchorHTMLAttributes, ImgHTMLAttributes } from 'react';
+import type { AnchorHTMLAttributes, HTMLAttributes, ImgHTMLAttributes, ReactNode } from 'react';
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+function nodeToText(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(nodeToText).join('');
+  if (node && typeof node === 'object' && 'props' in node) {
+    const props = (node as { props?: { children?: ReactNode } }).props;
+    return props ? nodeToText(props.children ?? '') : '';
+  }
+  return '';
+}
+
+function HeadingWithId({
+  level,
+  children,
+  ...rest
+}: HTMLAttributes<HTMLHeadingElement> & { level: 2 | 3 }) {
+  const Tag = (level === 2 ? 'h2' : 'h3') as 'h2' | 'h3';
+  const text = nodeToText(children);
+  const id = slugify(text);
+  return (
+    <Tag id={id} {...rest}>
+      {children}
+    </Tag>
+  );
+}
 
 function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   const { src, alt = '', width, height, className } = props;
@@ -74,6 +108,12 @@ function MdxLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
 export const mdxComponents = {
   img: MdxImage,
   a: MdxLink,
+  h2: (props: HTMLAttributes<HTMLHeadingElement>) => (
+    <HeadingWithId level={2} {...props} />
+  ),
+  h3: (props: HTMLAttributes<HTMLHeadingElement>) => (
+    <HeadingWithId level={3} {...props} />
+  ),
 };
 
 

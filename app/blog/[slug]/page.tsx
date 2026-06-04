@@ -16,8 +16,11 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
 import { Disclosure } from '@/components/Disclosure';
 import { mdxComponents } from '@/components/MdxComponents';
-import { readingTime } from '@/lib/article-meta';
+import { readingTime, fileMtime } from '@/lib/article-meta';
+import { TableOfContents } from '@/components/TableOfContents';
+import { extractToc } from '@/lib/toc';
 import { JsonLd } from '@/components/JsonLd';
+import { SITE } from '@/lib/constants';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
@@ -57,17 +60,51 @@ export default async function BlogPage({
     .map((slug) => getReview<ReviewFrontmatter>('reviews', slug))
     .filter((r): r is { frontmatter: ReviewFrontmatter; content: string } => r !== null);
 
+  const blogUrl = `${SITE.url}/blog/${frontmatter.slug}`;
+  const mtime = fileMtime('blog', frontmatter.slug);
+  const datePublished = frontmatter.date
+    ? new Date(frontmatter.date).toISOString()
+    : (mtime ?? new Date()).toISOString();
+  const dateModified = (mtime ?? new Date()).toISOString();
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        '@id': `${blogUrl}#post`,
+        url: blogUrl,
+        mainEntityOfPage: blogUrl,
+        headline: frontmatter.title,
+        description: frontmatter.description,
+        datePublished,
+        dateModified,
+        image: `${SITE.url}/blog/${frontmatter.slug}/opengraph-image`,
+        author: {
+          '@type': 'Organization',
+          name: frontmatter.author || SITE.name,
+          url: SITE.url,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: SITE.name,
+          url: SITE.url,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+          { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.url}/blog` },
+          { '@type': 'ListItem', position: 3, name: frontmatter.title },
+        ],
+      },
+    ],
+  };
+
   return (
     <>
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          headline: frontmatter.title,
-          description: frontmatter.description,
-          datePublished: frontmatter.date,
-        }}
-      />
+      <JsonLd data={jsonLd} />
       <Header />
       <main className="container mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs
@@ -105,6 +142,8 @@ export default async function BlogPage({
               </div>
             )}
           </header>
+          <TableOfContents items={extractToc(content)} />
+
           <div className="prose prose-invert max-w-none">
             <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>

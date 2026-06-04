@@ -13,6 +13,13 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
+  alternates: {
+    types: {
+      'application/rss+xml': [
+        { url: '/feed.xml', title: `${SITE.name} RSS Feed` },
+      ],
+    },
+  },
   openGraph: {
     type: 'website',
     siteName: SITE.name,
@@ -27,6 +34,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
+  },
+  // verification: fill these in after registering on each platform
+  verification: {
+    // google: 'paste-from-Google-Search-Console',
+    // other: { 'msvalidate.01': 'paste-from-Bing-Webmaster-Tools' },
   },
 };
 

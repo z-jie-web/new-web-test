@@ -11,6 +11,9 @@ import { Disclosure } from '@/components/Disclosure';
 import { mdxComponents } from '@/components/MdxComponents';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { JsonLd } from '@/components/JsonLd';
+import { fileMtime } from '@/lib/article-meta';
+import { TableOfContents } from '@/components/TableOfContents';
+import { extractToc } from '@/lib/toc';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ExternalLink, Check, X, HelpCircle } from 'lucide-react';
@@ -60,38 +63,73 @@ export default async function ComparePage({
 
   const { a: toolA, b: toolB, compareContent, compareData } = pair;
 
+  const compareUrl = `${SITE.url}/compare/${toolA.slug}-vs-${toolB.slug}`;
+  const compareSlug = `${toolA.slug}-vs-${toolB.slug}`;
+  const mtime = fileMtime('compare', compareSlug);
+  const isoMtime = (mtime ?? new Date()).toISOString();
+  const description = compareData?.verdict || `Compare ${toolA.name} and ${toolB.name} — features, pricing, pros and cons.`;
+
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: `${toolA.name} vs ${toolB.name}`,
-    description: compareData?.verdict || `Compare ${toolA.name} and ${toolB.name} — features, pricing, pros and cons.`,
-    mainEntity: {
-      '@type': 'ItemList',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          item: {
-            '@type': 'SoftwareApplication',
-            name: toolA.name,
-            description: toolA.description,
-            applicationCategory: toolA.category,
-            url: toolA.url,
-          },
+    '@graph': [
+      {
+        '@type': 'Article',
+        '@id': `${compareUrl}#article`,
+        url: compareUrl,
+        mainEntityOfPage: compareUrl,
+        headline: `${toolA.name} vs ${toolB.name} (2026): Which Should You Choose?`,
+        description,
+        datePublished: isoMtime,
+        dateModified: isoMtime,
+        image: `${SITE.url}/api/og/compare?a=${encodeURIComponent(toolA.slug)}&b=${encodeURIComponent(toolB.slug)}`,
+        author: {
+          '@type': 'Organization',
+          name: SITE.name,
+          url: SITE.url,
         },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          item: {
-            '@type': 'SoftwareApplication',
-            name: toolB.name,
-            description: toolB.description,
-            applicationCategory: toolB.category,
-            url: toolB.url,
-          },
+        publisher: {
+          '@type': 'Organization',
+          name: SITE.name,
+          url: SITE.url,
         },
-      ],
-    },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+          { '@type': 'ListItem', position: 2, name: 'Compare', item: `${SITE.url}/compare` },
+          { '@type': 'ListItem', position: 3, name: `${toolA.name} vs ${toolB.name}` },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        name: `${toolA.name} vs ${toolB.name}`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            item: {
+              '@type': 'SoftwareApplication',
+              name: toolA.name,
+              description: toolA.description,
+              applicationCategory: toolA.category,
+              url: toolA.url,
+            },
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            item: {
+              '@type': 'SoftwareApplication',
+              name: toolB.name,
+              description: toolB.description,
+              applicationCategory: toolB.category,
+              url: toolB.url,
+            },
+          },
+        ],
+      },
+    ],
   };
 
   return (
@@ -168,13 +206,16 @@ export default async function ComparePage({
 
         {/* Rich MDX Content — when available */}
         {compareContent && (
-          <div className="prose prose-invert max-w-none mb-8">
-            <MDXRemote
-              source={compareContent}
-              components={mdxComponents}
-              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
-            />
-          </div>
+          <>
+            <TableOfContents items={extractToc(compareContent)} />
+            <div className="prose prose-invert max-w-none mb-8">
+              <MDXRemote
+                source={compareContent}
+                components={mdxComponents}
+                options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+              />
+            </div>
+          </>
         )}
 
         {/* Pros & Cons — always show */}

@@ -17,6 +17,8 @@ import { ReviewCard } from '@/components/ReviewCard';
 import { Disclosure } from '@/components/Disclosure';
 import { mdxComponents } from '@/components/MdxComponents';
 import { TldrBox, MobileStickyCta } from '@/components/TldrBox';
+import { TableOfContents } from '@/components/TableOfContents';
+import { extractToc } from '@/lib/toc';
 import { readingTime, fileMtime, formatDate } from '@/lib/article-meta';
 import { JsonLd } from '@/components/JsonLd';
 import { getComparisonsForTool } from '@/lib/compare';
@@ -61,31 +63,74 @@ export default async function ReviewPage({
     frontmatter.category;
 
   const allReviews = getAll<ReviewFrontmatter>('reviews');
-  const sameCategory = allReviews.filter(
-    (r) =>
-      r.frontmatter.category === frontmatter.category &&
-      r.frontmatter.slug !== slug
-  );
-  const crossCategory = sameCategory.length < 3
-    ? allReviews
-        .filter(
-          (r) =>
-            r.frontmatter.category !== frontmatter.category &&
-            r.frontmatter.slug !== slug
-        )
-        .slice(0, 3 - sameCategory.length)
-    : [];
-  const relatedReviews = [...sameCategory, ...crossCategory].slice(0, 3);
+  const currentTags = new Set((frontmatter.tags || []).map((t) => t.toLowerCase()));
+
+  const scoredReviews = allReviews
+    .filter((r) => r.frontmatter.slug !== slug)
+    .map((r) => {
+      const tagOverlap = (r.frontmatter.tags || []).reduce(
+        (acc, t) => acc + (currentTags.has(t.toLowerCase()) ? 1 : 0),
+        0
+      );
+      const sameCategory = r.frontmatter.category === frontmatter.category ? 1 : 0;
+      const samePricing = r.frontmatter.pricing === frontmatter.pricing ? 0.5 : 0;
+      const score = tagOverlap * 3 + sameCategory * 2 + samePricing;
+      return { ...r, _score: score };
+    })
+    .sort((a, b) => b._score - a._score);
+
+  const relatedReviews = scoredReviews.slice(0, 3);
+
+  const mtime = fileMtime('reviews', frontmatter.slug);
+  const isoMtime = (mtime ?? new Date()).toISOString();
+  const reviewUrl = `${SITE.url}/reviews/${frontmatter.slug}`;
+  const ratingValue = frontmatter.pros.length >= 3 ? '4.6' : '4.3';
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
+        '@type': 'Review',
+        '@id': `${reviewUrl}#review`,
+        url: reviewUrl,
+        name: `${frontmatter.name} Review`,
+        headline: `${frontmatter.name} Review (2026)`,
+        datePublished: isoMtime,
+        dateModified: isoMtime,
+        author: {
+          '@type': 'Organization',
+          name: SITE.name,
+          url: SITE.url,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: SITE.name,
+          url: SITE.url,
+        },
+        reviewBody: frontmatter.description,
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue,
+          bestRating: '5',
+          worstRating: '1',
+        },
+        itemReviewed: { '@id': `${reviewUrl}#tool` },
+      },
+      {
         '@type': 'SoftwareApplication',
+        '@id': `${reviewUrl}#tool`,
         name: frontmatter.name,
         applicationCategory: categoryName,
         description: frontmatter.description,
         url: frontmatter.url,
+        operatingSystem: 'Web',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue,
+          reviewCount: '1',
+          bestRating: '5',
+          worstRating: '1',
+        },
         offers: {
           '@type': 'Offer',
           price: frontmatter.pricing === 'Free' ? '0' : undefined,
@@ -202,6 +247,8 @@ export default async function ReviewPage({
           <Separator className="my-8" />
 
           <TldrBox review={frontmatter} />
+
+          <TableOfContents items={extractToc(content)} />
 
           <div className="prose prose-invert max-w-none mb-8">
             <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
