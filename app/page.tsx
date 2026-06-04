@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getAll, type ReviewFrontmatter } from '@/lib/content';
+import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE, CATEGORIES } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
@@ -20,6 +21,11 @@ export const metadata = seoMeta({
 export default function HomePage() {
   const allReviews = getAll<ReviewFrontmatter>('reviews');
   const featuredTools = allReviews.slice(0, 9);
+  const latestCompares = getAllComparePairs()
+    .filter((p) => Boolean(p.compareContent))
+    .slice(0, 6);
+  const fallbackCompares = getAllComparePairs().slice(0, 6);
+  const compareCards = latestCompares.length > 0 ? latestCompares : fallbackCompares;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -42,13 +48,28 @@ export default function HomePage() {
         {/* Hero */}
         <section className="border-b border-border/20">
           <div className="container mx-auto max-w-4xl px-4 py-20 sm:py-28 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full border border-primary/30 bg-primary/5 text-xs font-medium text-primary">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              Updated weekly · {allReviews.length}+ tools tested
+            </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-              AI Tools Reviews &amp; Comparisons
+              Find the right AI tool<br className="hidden sm:block" />
+              <span className="text-primary"> in 30 seconds.</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Expert reviews and honest comparisons of the best AI tools for
-              video generation, image creation, voice synthesis, and more.
+              Hands-on reviews and head-to-head comparisons of the best AI tools
+              for video, voice, image, avatars, subtitles, and face swap.
             </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+              <Button size="lg" asChild>
+                <Link href="/categories/video-generation">
+                  Browse All Tools <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/compare">Compare Side-by-Side</Link>
+              </Button>
+            </div>
             <SearchBar tools={allReviews.map((r) => r.frontmatter)} />
           </div>
         </section>
@@ -79,8 +100,13 @@ export default function HomePage() {
 
         {/* Featured Tools */}
         <section className="container mx-auto max-w-6xl px-4 py-16 border-t border-border/20">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">Featured Tools</h2>
+          <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
+            <div>
+              <div className="text-xs font-bold tracking-widest text-primary mb-1">
+                ⭐ TRENDING THIS WEEK
+              </div>
+              <h2 className="text-2xl font-bold">Featured AI Tools</h2>
+            </div>
             <Button variant="ghost" asChild>
               <Link href="/categories/video-generation">
                 View all <ArrowRight className="ml-1 h-4 w-4" />
@@ -93,6 +119,53 @@ export default function HomePage() {
                 key={review.frontmatter.slug}
                 review={review.frontmatter}
               />
+            ))}
+          </div>
+        </section>
+
+        {/* Latest Comparisons */}
+        <section className="container mx-auto max-w-6xl px-4 py-16 border-t border-border/20">
+          <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
+            <div>
+              <div className="text-xs font-bold tracking-widest text-primary mb-1">
+                🥊 HEAD-TO-HEAD
+              </div>
+              <h2 className="text-2xl font-bold">Latest Comparisons</h2>
+            </div>
+            <Button variant="ghost" asChild>
+              <Link href="/compare">
+                Browse all comparisons <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {compareCards.map((pair) => (
+              <Link
+                key={`${pair.slugA}-${pair.slugB}`}
+                href={`/compare/${pair.slugA}-vs-${pair.slugB}`}
+                className="group rounded-lg border p-5 hover:border-primary/50 hover:bg-accent/30 hover:shadow-md transition-all"
+              >
+                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                  {pair.a.category.replace(/-/g, ' ')}
+                </div>
+                <div className="text-lg font-semibold mb-2">
+                  {pair.a.name}{' '}
+                  <span className="text-muted-foreground font-normal">vs</span>{' '}
+                  {pair.b.name}
+                </div>
+                {pair.compareData?.verdict ? (
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {pair.compareData.verdict}
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    Side-by-side comparison on features, pricing, and best use cases.
+                  </p>
+                )}
+                <div className="mt-3 text-xs text-primary group-hover:underline">
+                  Read comparison →
+                </div>
+              </Link>
             ))}
           </div>
         </section>
