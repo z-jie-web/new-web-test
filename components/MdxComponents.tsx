@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { AnchorHTMLAttributes, ImgHTMLAttributes } from 'react';
 
 function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
-  const { src, alt = '', width, height, className, ...rest } = props;
+  const { src, alt = '', width, height, className } = props;
 
   if (typeof src !== 'string' || src.length === 0) return null;
 
@@ -26,21 +26,17 @@ function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
 
   if (isLogo) {
     return (
-      <span
+      <Image
+        src={src}
+        alt={alt}
+        width={140}
+        height={40}
         className={
-          'relative inline-block align-middle h-10 w-32' +
+          'inline-block align-middle !my-0 mx-2 h-10 w-auto' +
           (className ? ` ${className}` : '')
         }
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-contain"
-          sizes="128px"
-          unoptimized={src.endsWith('.svg')}
-        />
-      </span>
+        unoptimized
+      />
     );
   }
 
@@ -79,4 +75,5 @@ export const mdxComponents = {
   img: MdxImage,
   a: MdxLink,
 };
+
 

@@ -76,4 +76,21 @@
   & :where(tbody td:last-child) {
     padding-inline-end: 0;
   }
+
+  /* MDX inline logos — keep them on the same line, fixed height, vertically centered with text */
+  & :where(img[src^="/logos/"]) {
+    display: inline-block;
+    vertical-align: middle;
+    height: 2.25rem;
+    width: auto;
+    margin: 0 0.5rem;
+  }
+
+  & :where(p:has(> img[src^="/logos/"])) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
 }
