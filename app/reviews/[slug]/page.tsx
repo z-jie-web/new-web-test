@@ -18,10 +18,12 @@ import { Disclosure } from '@/components/Disclosure';
 import { mdxComponents } from '@/components/MdxComponents';
 import { TldrBox, MobileStickyCta } from '@/components/TldrBox';
 import { TableOfContents } from '@/components/TableOfContents';
+import { ToolLogo } from '@/components/ToolLogo';
 import { extractToc } from '@/lib/toc';
 import { readingTime, fileMtime, formatDate } from '@/lib/article-meta';
 import { JsonLd } from '@/components/JsonLd';
 import { getComparisonsForTool } from '@/lib/compare';
+import { getLogoPath } from '@/lib/logos';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -40,11 +42,18 @@ export async function generateMetadata({
   const item = getBySlug<ReviewFrontmatter>('reviews', slug);
   if (!item) return { title: 'Not Found' };
 
+  const title = `${item.frontmatter.name} Review (2026) — Is It Worth It?`;
+  const description = `${item.frontmatter.name} review for 2026: ${item.frontmatter.description}`.slice(
+    0,
+    158
+  );
+
   return seoMeta({
-    title: `${item.frontmatter.name} Review`,
-    description: item.frontmatter.description,
+    title,
+    description,
     path: `/reviews/${slug}`,
     type: 'article',
+    ogImage: `/reviews/${slug}/opengraph-image`,
   });
 }
 
@@ -84,7 +93,11 @@ export default async function ReviewPage({
   const mtime = fileMtime('reviews', frontmatter.slug);
   const isoMtime = (mtime ?? new Date()).toISOString();
   const reviewUrl = `${SITE.url}/reviews/${frontmatter.slug}`;
+  const reviewOgImageUrl = `${SITE.url}/reviews/${frontmatter.slug}/opengraph-image`;
+  const logoPath = getLogoPath(frontmatter.slug);
+  const logoUrl = logoPath ? `${SITE.url}${logoPath}` : null;
   const ratingValue = frontmatter.pros.length >= 3 ? '4.6' : '4.3';
+  const logoCaption = `${frontmatter.name} ${categoryName} tool logo`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -108,6 +121,7 @@ export default async function ReviewPage({
           url: SITE.url,
         },
         reviewBody: frontmatter.description,
+        image: logoUrl ? [reviewOgImageUrl, logoUrl] : [reviewOgImageUrl],
         reviewRating: {
           '@type': 'Rating',
           ratingValue,
@@ -124,6 +138,7 @@ export default async function ReviewPage({
         description: frontmatter.description,
         url: frontmatter.url,
         operatingSystem: 'Web',
+        image: logoUrl ?? reviewOgImageUrl,
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue,
@@ -192,6 +207,18 @@ export default async function ReviewPage({
             : []),
         ],
       },
+      ...(logoUrl
+        ? [
+            {
+              '@type': 'ImageObject',
+              '@id': `${reviewUrl}#logo`,
+              contentUrl: logoUrl,
+              url: logoUrl,
+              name: `${frontmatter.name} logo`,
+              caption: logoCaption,
+            },
+          ]
+        : []),
     ],
   };
 
@@ -212,6 +239,22 @@ export default async function ReviewPage({
 
         <article>
           <header className="mb-8">
+            <div className="mb-5 flex items-center gap-4">
+              <ToolLogo
+                slug={frontmatter.slug}
+                name={frontmatter.name}
+                size={64}
+                className="rounded-xl border border-border/30 bg-card/70 p-2"
+              />
+              <div className="min-w-0">
+                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/80">
+                  Tool Profile
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Brand mark for {frontmatter.name}
+                </div>
+              </div>
+            </div>
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <Badge variant="secondary">{categoryName}</Badge>
               <Badge

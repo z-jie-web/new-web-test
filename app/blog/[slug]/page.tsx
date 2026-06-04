@@ -106,7 +106,7 @@ export default async function BlogPage({
     <>
       <JsonLd data={jsonLd} />
       <Header />
-      <main className="container mx-auto max-w-3xl px-4 py-8">
+      <main className="container mx-auto max-w-4xl px-4 py-8">
         <Breadcrumbs
           items={[
             { label: 'Blog', href: '/blog' },
