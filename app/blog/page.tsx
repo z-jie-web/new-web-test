@@ -22,7 +22,11 @@ function readingTime(content: string): number {
 }
 
 export default function BlogIndexPage() {
-  const posts = getAll<BlogFrontmatter>('blog');
+  const posts = getAll<BlogFrontmatter>('blog').sort(
+    (a, b) =>
+      new Date(b.frontmatter.date).getTime() -
+      new Date(a.frontmatter.date).getTime()
+  );
 
   return (
     <>

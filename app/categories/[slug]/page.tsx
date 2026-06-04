@@ -11,6 +11,7 @@ import {
 import { getAllComparePairs } from '@/lib/compare';
 import { CATEGORIES } from '@/lib/constants';
 import { generateMetadata as seoMeta } from '@/lib/seo';
+import { fileMtime } from '@/lib/article-meta';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -49,19 +50,32 @@ export default async function CategoryPage({
 
   const { frontmatter } = category;
 
-  const tools = getAll<ReviewFrontmatter>('reviews').filter(
-    (r) => r.frontmatter.category === slug
-  );
+  const tools = getAll<ReviewFrontmatter>('reviews')
+    .filter((r) => r.frontmatter.category === slug)
+    .sort((a, b) => {
+      const ma = fileMtime('reviews', a.frontmatter.slug);
+      const mb = fileMtime('reviews', b.frontmatter.slug);
+      return (mb?.getTime() ?? 0) - (ma?.getTime() ?? 0);
+    });
 
-  const relatedPosts = getAll<BlogFrontmatter>('blog').filter(
-    (b) => b.frontmatter.category === slug
-  );
+  const relatedPosts = getAll<BlogFrontmatter>('blog')
+    .filter((b) => b.frontmatter.category === slug)
+    .sort(
+      (a, b) =>
+        new Date(b.frontmatter.date).getTime() -
+        new Date(a.frontmatter.date).getTime()
+    );
 
-  const relatedCompares = getAllComparePairs().filter(
-    (p) =>
-      p.a.category === slug ||
-      p.b.category === slug
-  );
+  const relatedCompares = getAllComparePairs()
+    .filter((p) => p.a.category === slug || p.b.category === slug)
+    .sort((a, b) => {
+      const getMaxMtime = (pair: typeof a) => {
+        const ma = fileMtime('reviews', pair.a.slug);
+        const mb = fileMtime('reviews', pair.b.slug);
+        return Math.max(ma?.getTime() ?? 0, mb?.getTime() ?? 0);
+      };
+      return getMaxMtime(b) - getMaxMtime(a);
+    });
 
   const otherCategories = CATEGORIES.filter((c) => c.slug !== slug);
 

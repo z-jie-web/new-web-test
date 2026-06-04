@@ -27,10 +27,21 @@ export default function HomePage() {
     return (mb?.getTime() ?? 0) - (ma?.getTime() ?? 0);
   });
   const featuredTools = sortedByLatest.slice(0, 9);
-  const latestCompares = getAllComparePairs()
-    .filter((p) => Boolean(p.compareContent))
-    .slice(0, 6);
-  const fallbackCompares = getAllComparePairs().slice(0, 6);
+
+  const sortByReviewMtime = (pairs: ReturnType<typeof getAllComparePairs>) =>
+    [...pairs].sort((a, b) => {
+      const getMaxMtime = (pair: (typeof pairs)[number]) => {
+        const ma = fileMtime('reviews', pair.a.slug);
+        const mb = fileMtime('reviews', pair.b.slug);
+        return Math.max(ma?.getTime() ?? 0, mb?.getTime() ?? 0);
+      };
+      return getMaxMtime(b) - getMaxMtime(a);
+    });
+
+  const latestCompares = sortByReviewMtime(
+    getAllComparePairs().filter((p) => Boolean(p.compareContent))
+  ).slice(0, 6);
+  const fallbackCompares = sortByReviewMtime(getAllComparePairs()).slice(0, 6);
   const compareCards = latestCompares.length > 0 ? latestCompares : fallbackCompares;
 
   const jsonLd = {

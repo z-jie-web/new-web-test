@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { CATEGORIES } from '@/lib/constants';
+import { fileMtime } from '@/lib/article-meta';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -18,7 +19,16 @@ export default function CompareIndexPage() {
 
   const grouped = CATEGORIES.map((cat) => ({
     ...cat,
-    pairs: allPairs.filter((p) => p.a.category === cat.slug),
+    pairs: allPairs
+      .filter((p) => p.a.category === cat.slug)
+      .sort((a, b) => {
+        const getMaxMtime = (pair: typeof a) => {
+          const ma = fileMtime('reviews', pair.a.slug);
+          const mb = fileMtime('reviews', pair.b.slug);
+          return Math.max(ma?.getTime() ?? 0, mb?.getTime() ?? 0);
+        };
+        return getMaxMtime(b) - getMaxMtime(a);
+      }),
   })).filter((group) => group.pairs.length > 0);
 
   return (
