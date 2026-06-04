@@ -1,0 +1,16 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Luma Dream Machine logo placeholder</title>
+  <desc id="desc">Temporary Luma Dream Machine wordmark placeholder until the official logo asset is available.</desc>
+  <rect width="320" height="320" rx="48" fill="#09090B"/>
+  <rect x="24" y="24" width="272" height="272" rx="36" fill="#111827" stroke="#27272A" stroke-width="4"/>
+  <circle cx="102" cy="160" r="54" fill="url(#paint0_linear)"/>
+  <circle cx="102" cy="160" r="26" fill="#09090B"/>
+  <text x="172" y="148" fill="#F4F4F5" font-family="Arial, sans-serif" font-size="28" font-weight="700">Luma</text>
+  <text x="172" y="182" fill="#A78BFA" font-family="Arial, sans-serif" font-size="24" font-weight="700">Dream Machine</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="48" y1="106" x2="156" y2="214" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+  </defs>
+</svg>

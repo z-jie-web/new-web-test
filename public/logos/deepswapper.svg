@@ -1,0 +1,11 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">DeepSwapper logo placeholder</title>
+  <desc id="desc">Temporary DeepSwapper wordmark placeholder until the official logo asset is available.</desc>
+  <rect width="320" height="320" rx="48" fill="#0F172A"/>
+  <rect x="24" y="24" width="272" height="272" rx="36" fill="#111827" stroke="#334155" stroke-width="4"/>
+  <circle cx="94" cy="160" r="42" fill="#22C55E"/>
+  <path d="M77 160C77 150.611 84.6112 143 94 143H109V177H94C84.6112 177 77 169.389 77 160Z" fill="#0F172A"/>
+  <path d="M117 143H132C141.389 143 149 150.611 149 160C149 169.389 141.389 177 132 177H117V143Z" fill="#86EFAC"/>
+  <text x="168" y="150" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="30" font-weight="700">Deep</text>
+  <text x="168" y="186" fill="#86EFAC" font-family="Arial, sans-serif" font-size="30" font-weight="700">Swapper</text>
+</svg>
