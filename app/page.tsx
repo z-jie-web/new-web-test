@@ -3,6 +3,7 @@ import { getAll, type ReviewFrontmatter } from '@/lib/content';
 import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE, CATEGORIES } from '@/lib/constants';
+import { fileMtime } from '@/lib/article-meta';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ReviewCard } from '@/components/ReviewCard';
@@ -20,7 +21,12 @@ export const metadata = seoMeta({
 
 export default function HomePage() {
   const allReviews = getAll<ReviewFrontmatter>('reviews');
-  const featuredTools = allReviews.slice(0, 9);
+  const sortedByLatest = [...allReviews].sort((a, b) => {
+    const ma = fileMtime('reviews', a.frontmatter.slug);
+    const mb = fileMtime('reviews', b.frontmatter.slug);
+    return (mb?.getTime() ?? 0) - (ma?.getTime() ?? 0);
+  });
+  const featuredTools = sortedByLatest.slice(0, 9);
   const latestCompares = getAllComparePairs()
     .filter((p) => Boolean(p.compareContent))
     .slice(0, 6);
