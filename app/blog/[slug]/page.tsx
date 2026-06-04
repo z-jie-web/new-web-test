@@ -14,6 +14,8 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
+import { Disclosure } from '@/components/Disclosure';
+import { mdxComponents } from '@/components/MdxComponents';
 import { JsonLd } from '@/components/JsonLd';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -99,7 +101,7 @@ export default async function BlogPage({
             )}
           </header>
           <div className="prose prose-invert max-w-none">
-            <MDXRemote source={content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+            <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
         </article>
 
@@ -121,6 +123,7 @@ export default async function BlogPage({
             </section>
           </>
         )}
+        <Disclosure />
       </main>
       <Footer />
     </>

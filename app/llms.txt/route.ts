@@ -13,7 +13,7 @@ export async function GET() {
     `- ${SITE.url}/: Homepage — featured tools, categories, and latest content`,
     `- ${SITE.url}/categories/[slug]: Browse tools by category`,
     `- ${SITE.url}/reviews/[slug]: Detailed tool reviews and comparisons`,
-    `- ${SITE.url}/tools/[slug]: Free online tools`,
+    `- ${SITE.url}/compare: All side-by-side tool comparisons`,
     `- ${SITE.url}/compare/[a]-vs-[b]: Side-by-side tool comparisons`,
     `- ${SITE.url}/blog/[slug]: Articles and guides`,
     '',

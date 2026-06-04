@@ -7,6 +7,8 @@ import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Disclosure } from '@/components/Disclosure';
+import { mdxComponents } from '@/components/MdxComponents';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { JsonLd } from '@/components/JsonLd';
 import { Button } from '@/components/ui/button';
@@ -39,6 +41,7 @@ export async function generateMetadata({
     description: `Compare ${pair.a.name} and ${pair.b.name} head-to-head on features, pricing, quality, and use cases. Find out which tool is right for your workflow.`,
     path: `/compare/${slug}`,
     type: 'article',
+    ogImage: `/api/og/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`,
   });
 }
 
@@ -168,6 +171,7 @@ export default async function ComparePage({
           <div className="prose prose-invert max-w-none mb-8">
             <MDXRemote
               source={compareContent}
+              components={mdxComponents}
               options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
             />
           </div>
@@ -310,23 +314,33 @@ export default async function ComparePage({
         )}
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-3 justify-center mb-8">
+        <div className="flex flex-wrap gap-3 justify-center mb-4">
           <Button asChild size="lg">
-            <a href={toolA.affiliateUrl || toolA.url} target="_blank" rel="noopener noreferrer">
+            <a href={`/go/${toolA.slug}`} rel="sponsored noopener">
               Try {toolA.name} <ExternalLink className="ml-2 h-4 w-4" />
             </a>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <a href={toolB.affiliateUrl || toolB.url} target="_blank" rel="noopener noreferrer">
+            <a href={`/go/${toolB.slug}`} rel="sponsored noopener">
               Try {toolB.name} <ExternalLink className="ml-2 h-4 w-4" />
             </a>
           </Button>
+        </div>
+
+        <div className="flex flex-wrap gap-4 justify-center mb-8 text-sm">
+          <Link href={`/reviews/${toolA.slug}`} className="text-primary hover:underline">
+            Read full {toolA.name} review →
+          </Link>
+          <Link href={`/reviews/${toolB.slug}`} className="text-primary hover:underline">
+            Read full {toolB.name} review →
+          </Link>
         </div>
 
         <Separator className="my-8" />
 
         {/* Related comparisons — same category */}
         <RelatedComparisons current={pair} />
+        <Disclosure />
       </main>
       <Footer />
     </>

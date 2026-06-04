@@ -14,7 +14,10 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
+import { Disclosure } from '@/components/Disclosure';
+import { mdxComponents } from '@/components/MdxComponents';
 import { JsonLd } from '@/components/JsonLd';
+import { getComparisonsForTool } from '@/lib/compare';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -190,7 +193,7 @@ export default async function ReviewPage({
           <Separator className="my-8" />
 
           <div className="prose prose-invert max-w-none mb-8">
-            <MDXRemote source={content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+            <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
 
           {(frontmatter.pros.length > 0 || frontmatter.cons.length > 0) && (
@@ -246,9 +249,8 @@ export default async function ReviewPage({
           <div className="flex flex-wrap gap-3 mb-8">
             <Button asChild size="lg">
               <a
-                href={frontmatter.affiliateUrl || frontmatter.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/go/${frontmatter.slug}`}
+                rel="sponsored noopener"
               >
                 Visit {frontmatter.name}{' '}
                 <ExternalLink className="ml-2 h-4 w-4" />
@@ -275,8 +277,45 @@ export default async function ReviewPage({
             </div>
           </section>
         )}
+
+        <CompareWith currentSlug={frontmatter.slug} currentName={frontmatter.name} />
+        <Disclosure />
       </main>
       <Footer />
     </>
+  );
+}
+
+function CompareWith({
+  currentSlug,
+  currentName,
+}: {
+  currentSlug: string;
+  currentName: string;
+}) {
+  const pairs = getComparisonsForTool(currentSlug).slice(0, 6);
+  if (pairs.length === 0) return null;
+
+  return (
+    <section className="mt-12">
+      <h2 className="text-2xl font-bold mb-4">Compare {currentName} With</h2>
+      <ul className="grid sm:grid-cols-2 gap-3">
+        {pairs.map((pair) => {
+          const other = pair.slugA === currentSlug ? pair.b : pair.a;
+          return (
+            <li key={`${pair.slugA}-${pair.slugB}`}>
+              <Link
+                href={`/compare/${pair.slugA}-vs-${pair.slugB}`}
+                className="block rounded-lg border px-4 py-3 hover:border-primary/50 hover:bg-primary/5 transition-colors"
+              >
+                <span className="font-medium">{currentName}</span>
+                <span className="text-muted-foreground"> vs </span>
+                <span className="font-medium">{other.name}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
