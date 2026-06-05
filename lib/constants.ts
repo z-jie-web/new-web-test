@@ -10,7 +10,7 @@ export const SITE = {
 export const CATEGORIES = [
   {
     slug: 'video-generation',
-    name: 'AI Video Generation',
+    name: 'AI Video',
     description:
       'AI-powered video creation tools for cinematic content, ads, and social media.',
   },
@@ -22,24 +22,24 @@ export const CATEGORIES = [
   },
   {
     slug: 'ai-subtitles',
-    name: 'AI Subtitles & Captions',
+    name: 'AI Subtitles',
     description:
       'Auto-generate subtitles, captions, and transcriptions for your videos.',
   },
   {
     slug: 'face-swap',
-    name: 'Face Swap Tools',
+    name: 'AI Face Swap',
     description: 'AI face swap tools for creative video content.',
   },
   {
     slug: 'ai-image',
-    name: 'AI Image Generation',
+    name: 'AI Image',
     description:
       'AI-powered image and art creation tools — Midjourney, DALL-E, Stable Diffusion, and more.',
   },
   {
     slug: 'ai-voice',
-    name: 'AI Voice & Audio',
+    name: 'AI Voice',
     description:
       'AI voice generation, text-to-speech, voice cloning, and audio creation tools.',
   },

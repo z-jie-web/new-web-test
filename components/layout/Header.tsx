@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { SITE, CATEGORIES } from '@/lib/constants';
+import { SITE } from '@/lib/constants';
 
 export function Header() {
   const pathname = usePathname();
@@ -25,7 +25,8 @@ export function Header() {
   }, [mobileOpen]);
 
   const navLinks = [
-    ...CATEGORIES.map((c) => ({ href: `/categories/${c.slug}`, label: c.name })),
+    { href: '/', label: 'Home' },
+    { href: '/reviews', label: 'Reviews' },
     { href: '/compare', label: 'Compare' },
     { href: '/blog', label: 'Blog' },
   ];
@@ -42,43 +43,25 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-5 text-sm">
-          {CATEGORIES.slice(0, 4).map((cat) => {
-            const href = `/categories/${cat.slug}`;
-            const isActive = pathname.startsWith(href);
+          {navLinks.map((link) => {
+            const isActive =
+              link.href === '/'
+                ? pathname === '/'
+                : pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
-                key={cat.slug}
-                href={href}
+                key={link.href}
+                href={link.href}
                 className={`transition-colors ${
                   isActive
                     ? 'text-foreground font-medium'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {cat.name}
+                {link.label}
               </Link>
             );
           })}
-          <Link
-            href="/compare"
-            className={`transition-colors ${
-              pathname === '/compare' || pathname.startsWith('/compare/')
-                ? 'text-foreground font-medium'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Compare
-          </Link>
-          <Link
-            href="/blog"
-            className={`transition-colors ${
-              pathname.startsWith('/blog')
-                ? 'text-foreground font-medium'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Blog
-          </Link>
         </nav>
 
         {/* Mobile hamburger */}

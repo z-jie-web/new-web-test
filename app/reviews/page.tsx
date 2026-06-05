@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { getAll, type ReviewFrontmatter } from '@/lib/content';
 import { generateMetadata as seoMeta } from '@/lib/seo';
-import { CATEGORIES } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ReviewCard } from '@/components/ReviewCard';
+import { Pagination } from '@/components/Pagination';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 export const metadata = seoMeta({
@@ -14,17 +14,26 @@ export const metadata = seoMeta({
   path: '/reviews',
 });
 
-export default function ReviewsIndexPage() {
+const PER_PAGE = 12;
+
+export default async function ReviewsIndexPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page } = await searchParams;
+  const pageNum = Math.max(1, Number(page) || 1);
+
   const allReviews = getAll<ReviewFrontmatter>('reviews').sort((a, b) => {
     const da = a.frontmatter.lastUpdated ?? '';
     const db = b.frontmatter.lastUpdated ?? '';
     return db.localeCompare(da);
   });
 
-  const grouped = CATEGORIES.map((cat) => ({
-    ...cat,
-    reviews: allReviews.filter((r) => r.frontmatter.category === cat.slug),
-  })).filter((g) => g.reviews.length > 0);
+  const totalPages = Math.ceil(allReviews.length / PER_PAGE);
+  const currentPage = Math.min(pageNum, totalPages);
+  const start = (currentPage - 1) * PER_PAGE;
+  const visible = allReviews.slice(start, start + PER_PAGE);
 
   return (
     <>
@@ -42,51 +51,20 @@ export default function ReviewsIndexPage() {
           </p>
         </header>
 
-        {/* Category quick nav */}
-        <nav className="flex flex-wrap gap-2 mb-10">
-          {grouped.map((g) => (
-            <a
-              key={g.slug}
-              href={`#${g.slug}`}
-              className="inline-flex items-center gap-1 rounded-full border border-border/30 px-3 py-1 text-sm text-muted-foreground hover:text-foreground hover:border-border/60 transition-colors"
-            >
-              {g.name}
-              <span className="text-xs text-muted-foreground/60">
-                ({g.reviews.length})
-              </span>
-            </a>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {visible.map((review) => (
+            <ReviewCard
+              key={review.frontmatter.slug}
+              review={review.frontmatter}
+            />
           ))}
-        </nav>
+        </div>
 
-        {grouped.map((group) => (
-          <section key={group.slug} id={group.slug} className="mb-12">
-            <div className="flex items-baseline justify-between mb-5">
-              <h2 className="text-2xl font-bold">
-                <Link
-                  href={`/categories/${group.slug}`}
-                  className="hover:text-primary transition-colors"
-                >
-                  {group.name}
-                </Link>
-              </h2>
-              <Link
-                href={`/categories/${group.slug}`}
-                className="text-sm text-primary hover:underline"
-              >
-                View category →
-              </Link>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {group.reviews.map((review) => (
-                <ReviewCard
-                  key={review.frontmatter.slug}
-                  review={review.frontmatter}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/reviews"
+        />
       </main>
       <Footer />
     </>

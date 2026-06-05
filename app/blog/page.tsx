@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { getAll, type BlogFrontmatter, type ReviewFrontmatter } from '@/lib/content';
+import { getAll, type BlogFrontmatter } from '@/lib/content';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { CATEGORIES } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Pagination } from '@/components/Pagination';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Badge } from '@/components/ui/badge';
 
@@ -15,18 +16,31 @@ export const metadata = seoMeta({
 });
 
 const WORDS_PER_MINUTE = 238;
+const PER_PAGE = 12;
 
 function readingTime(content: string): number {
   const words = content.trim().split(/\s+/).length;
   return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
 }
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page } = await searchParams;
+  const pageNum = Math.max(1, Number(page) || 1);
+
   const posts = getAll<BlogFrontmatter>('blog').sort(
     (a, b) =>
       new Date(b.frontmatter.date).getTime() -
       new Date(a.frontmatter.date).getTime()
   );
+
+  const totalPages = Math.ceil(posts.length / PER_PAGE);
+  const currentPage = Math.min(pageNum, totalPages);
+  const start = (currentPage - 1) * PER_PAGE;
+  const visible = posts.slice(start, start + PER_PAGE);
 
   return (
     <>
@@ -41,62 +55,55 @@ export default function BlogIndexPage() {
           find the best AI tools for your workflow.
         </p>
 
-        {posts.length === 0 ? (
-          <div className="rounded-lg border border-dashed p-12 text-center">
-            <p className="text-muted-foreground">
-              No articles yet. Check back soon for in-depth tool guides and
-              comparisons.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {posts.map((post) => {
-              const categoryName = post.frontmatter.category
-                ? CATEGORIES.find((c) => c.slug === post.frontmatter.category)?.name
-                : null;
-              const readMin = post.content
-                ? readingTime(post.content)
-                : null;
+        <div className="space-y-6">
+          {visible.map((post) => {
+            const categoryName = post.frontmatter.category
+              ? CATEGORIES.find((c) => c.slug === post.frontmatter.category)
+                  ?.name
+              : null;
+            const readMin = post.content ? readingTime(post.content) : null;
 
-              return (
-                <Link
-                  key={post.frontmatter.slug}
-                  href={`/blog/${post.frontmatter.slug}`}
-                  className="block rounded-lg border p-6 hover:border-primary/50 hover:bg-accent/50 transition-all group"
-                >
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    {categoryName && (
-                      <Badge variant="secondary" className="text-xs">
-                        {categoryName}
-                      </Badge>
-                    )}
-                    {readMin && (
-                      <span className="text-xs text-muted-foreground">
-                        {readMin} min read
-                      </span>
-                    )}
-                  </div>
-                  <h2 className="text-xl font-semibold group-hover:text-primary transition-colors">
-                    {post.frontmatter.title}
-                  </h2>
-                  <p className="text-muted-foreground mt-2 line-clamp-2">
-                    {post.frontmatter.description}
-                  </p>
-                  <time className="text-sm text-muted-foreground mt-3 block">
-                    {new Date(post.frontmatter.date).toLocaleDateString(
-                      'en-US',
-                      {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      }
-                    )}
-                  </time>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+            return (
+              <Link
+                key={post.frontmatter.slug}
+                href={`/blog/${post.frontmatter.slug}`}
+                className="block rounded-lg border p-6 hover:border-primary/50 hover:bg-accent/50 transition-all group"
+              >
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  {categoryName && (
+                    <Badge variant="secondary" className="text-xs">
+                      {categoryName}
+                    </Badge>
+                  )}
+                  {readMin && (
+                    <span className="text-xs text-muted-foreground">
+                      {readMin} min read
+                    </span>
+                  )}
+                </div>
+                <h2 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                  {post.frontmatter.title}
+                </h2>
+                <p className="text-muted-foreground mt-2 line-clamp-2">
+                  {post.frontmatter.description}
+                </p>
+                <time className="text-sm text-muted-foreground mt-3 block">
+                  {new Date(post.frontmatter.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              </Link>
+            );
+          })}
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/blog"
+        />
       </main>
       <Footer />
     </>

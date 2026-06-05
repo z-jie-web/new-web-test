@@ -4,7 +4,9 @@ import { generateMetadata as seoMeta } from '@/lib/seo';
 import { CATEGORIES } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Pagination } from '@/components/Pagination';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { Badge } from '@/components/ui/badge';
 
 export const metadata = seoMeta({
   title: 'All AI Tool Comparisons (2026) — Side-by-Side Reviews',
@@ -13,23 +15,30 @@ export const metadata = seoMeta({
   path: '/compare',
 });
 
-export default function CompareIndexPage() {
-  const allPairs = getAllComparePairs();
+const PER_PAGE = 12;
 
-  const grouped = CATEGORIES.map((cat) => ({
-    ...cat,
-    pairs: allPairs
-      .filter((p) => p.a.category === cat.slug)
-      .sort((a, b) => {
-        const da = a.a.lastUpdated ?? '';
-        const db = a.b.lastUpdated ?? '';
-        const maxA = da > db ? da : db;
-        const dc = b.a.lastUpdated ?? '';
-        const dd = b.b.lastUpdated ?? '';
-        const maxB = dc > dd ? dc : dd;
-        return maxB.localeCompare(maxA);
-      }),
-  })).filter((group) => group.pairs.length > 0);
+export default async function CompareIndexPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page } = await searchParams;
+  const pageNum = Math.max(1, Number(page) || 1);
+
+  const allPairs = getAllComparePairs().sort((a, b) => {
+    const da = a.a.lastUpdated ?? '';
+    const db = a.b.lastUpdated ?? '';
+    const maxA = da > db ? da : db;
+    const dc = b.a.lastUpdated ?? '';
+    const dd = b.b.lastUpdated ?? '';
+    const maxB = dc > dd ? dc : dd;
+    return maxB.localeCompare(maxA);
+  });
+
+  const totalPages = Math.ceil(allPairs.length / PER_PAGE);
+  const currentPage = Math.min(pageNum, totalPages);
+  const start = (currentPage - 1) * PER_PAGE;
+  const visible = allPairs.slice(start, start + PER_PAGE);
 
   return (
     <>
@@ -47,53 +56,46 @@ export default function CompareIndexPage() {
             All AI Tool Comparisons
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            {allPairs.length} head-to-head comparisons across {grouped.length}{' '}
-            categories. Find which tool wins for your specific workflow.
+            {allPairs.length} head-to-head comparisons. Find which tool wins for
+            your specific workflow.
           </p>
         </header>
 
-        {grouped.map((group) => (
-          <section key={group.slug} className="mb-12">
-            <div className="flex items-baseline justify-between mb-5">
-              <h2 className="text-2xl font-bold">
-                {group.name}{' '}
-                <span className="text-sm font-normal text-muted-foreground">
-                  ({group.pairs.length})
-                </span>
-              </h2>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {visible.map((pair) => {
+            const catName =
+              CATEGORIES.find((c) => c.slug === pair.a.category)?.name ?? '';
+            return (
               <Link
-                href={`/categories/${group.slug}`}
-                className="text-sm text-primary hover:underline"
+                key={`${pair.slugA}-${pair.slugB}`}
+                href={`/compare/${pair.slugA}-vs-${pair.slugB}`}
+                className="block rounded-lg border px-4 py-3 hover:border-primary/50 hover:bg-primary/5 transition-colors"
               >
-                View category →
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="secondary" className="text-xs">
+                    {catName}
+                  </Badge>
+                </div>
+                <div className="font-medium">
+                  {pair.a.name}{' '}
+                  <span className="text-muted-foreground font-normal">vs</span>{' '}
+                  {pair.b.name}
+                </div>
+                {pair.compareData?.verdict && (
+                  <div className="text-xs text-muted-foreground mt-1 line-clamp-1">
+                    {pair.compareData.verdict}
+                  </div>
+                )}
               </Link>
-            </div>
+            );
+          })}
+        </div>
 
-            <ul className="grid sm:grid-cols-2 gap-3">
-              {group.pairs.map((pair) => (
-                <li key={`${pair.slugA}-${pair.slugB}`}>
-                  <Link
-                    href={`/compare/${pair.slugA}-vs-${pair.slugB}`}
-                    className="block rounded-lg border px-4 py-3 hover:border-primary/50 hover:bg-primary/5 transition-colors"
-                  >
-                    <div className="font-medium">
-                      {pair.a.name}{' '}
-                      <span className="text-muted-foreground font-normal">
-                        vs
-                      </span>{' '}
-                      {pair.b.name}
-                    </div>
-                    {pair.compareData?.verdict && (
-                      <div className="text-xs text-muted-foreground mt-1 line-clamp-1">
-                        {pair.compareData.verdict}
-                      </div>
-                    )}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/compare"
+        />
       </main>
       <Footer />
     </>
