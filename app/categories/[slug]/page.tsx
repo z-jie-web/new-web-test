@@ -95,7 +95,7 @@ export default async function CategoryPage({
     <>
       <JsonLd data={jsonLd} />
       <Header />
-      <main className="container mx-auto max-w-4xl px-4 py-8">
+      <main className="container mx-auto max-w-6xl px-4 py-8">
         <Breadcrumbs items={[{ label: frontmatter.name }]} />
 
         <header className="mb-8">

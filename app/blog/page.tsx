@@ -45,7 +45,7 @@ export default async function BlogIndexPage({
   return (
     <>
       <Header />
-      <main className="container mx-auto max-w-4xl px-4 py-8">
+      <main className="container mx-auto max-w-6xl px-4 py-8">
         <Breadcrumbs items={[{ label: 'Blog' }]} />
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
           Blog

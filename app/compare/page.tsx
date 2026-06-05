@@ -43,7 +43,7 @@ export default async function CompareIndexPage({
   return (
     <>
       <Header />
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <main className="container mx-auto max-w-6xl px-4 py-8">
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
