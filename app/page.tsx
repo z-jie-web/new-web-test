@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { getAll, type ReviewFrontmatter } from '@/lib/content';
+import { getAll, getCategories, type ReviewFrontmatter } from '@/lib/content';
 import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
-import { SITE, CATEGORIES } from '@/lib/constants';
+import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ReviewCard } from '@/components/ReviewCard';
@@ -20,6 +20,8 @@ export const metadata = seoMeta({
 
 export default function HomePage() {
   const allReviews = getAll<ReviewFrontmatter>('reviews');
+  const categories = getCategories();
+
   const sortedByLatest = [...allReviews].sort((a, b) => {
     const da = a.frontmatter.lastUpdated ?? '';
     const db = b.frontmatter.lastUpdated ?? '';
@@ -96,17 +98,17 @@ export default function HomePage() {
         <section className="container mx-auto max-w-6xl px-4 py-16">
           <h2 className="text-2xl font-bold mb-8">Browse by Category</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const count = allReviews.filter(
-                (r) => r.frontmatter.category === cat.slug
+                (r) => r.frontmatter.category === cat.frontmatter.slug
               ).length;
               return (
                 <Link
-                  key={cat.slug}
-                  href={`/categories/${cat.slug}`}
+                  key={cat.frontmatter.slug}
+                  href={`/categories/${cat.frontmatter.slug}`}
                   className="rounded-lg border p-6 hover:border-primary/50 hover:bg-accent/50 transition-all"
                 >
-                  <h3 className="font-semibold mb-1">{cat.name}</h3>
+                  <h3 className="font-semibold mb-1">{cat.frontmatter.name}</h3>
                   <p className="text-sm text-muted-foreground">
                     {count} tools
                   </p>

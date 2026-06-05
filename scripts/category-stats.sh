@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# category-stats.sh — 分类健康度仪表盘
-# 展示每个分类的评测数、博客数、对比数 + 最后更新时间
+# category-stats.sh — 分类健康度仪表盘（动态派生）
+# 从实际内容中提取所有分类，不硬编码
 # Usage: bash scripts/category-stats.sh
 # 退出码: 0=始终 (信息展示)
 
@@ -8,26 +8,49 @@ set -uo pipefail
 
 CONTENT_ROOT="content"
 
+# 从所有 review 和 blog 文件中收集唯一的 category slug
+get_category_name() {
+  local slug="$1"
+  local f="$CONTENT_ROOT/categories/${slug}.mdx"
+  if [ -f "$f" ]; then
+    awk '/^name:/{sub(/^name: */,""); gsub(/^"|"$/,""); print; exit}' "$f"
+  else
+    # 没有 category MDX 就用 slug 生成名字
+    echo "$slug" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1'
+  fi
+}
+
+# 收集所有分类 slug
+ALL_SLUGS=()
+
+# 从 reviews 收集
+for f in "$CONTENT_ROOT/reviews"/*.mdx; do
+  [ ! -f "$f" ] && continue
+  CAT=$(awk '/^category:/{sub(/^category: */,""); gsub(/^"|"$/,""); print; exit}' "$f")
+  [ -n "$CAT" ] && ALL_SLUGS+=("$CAT")
+done
+
+# 从 blogs 收集
+for f in "$CONTENT_ROOT/blog"/*.mdx; do
+  [ ! -f "$f" ] && continue
+  CAT=$(awk '/^category:/{sub(/^category: */,""); gsub(/^"|"$/,""); print; exit}' "$f")
+  [ -n "$CAT" ] && ALL_SLUGS+=("$CAT")
+done
+
+# 去重
+SLUGS=($(printf '%s\n' "${ALL_SLUGS[@]}" | sort -u))
+
 echo "========================================"
 echo "Category Health Dashboard"
+echo "  (derived from content — ${#SLUGS[@]} categories)"
 echo "========================================"
 echo ""
 
 printf "  %-18s  %7s  %5s  %7s  %8s\n" "CATEGORY" "REVIEWS" "BLOG" "COMPARE" "LAST UPD"
 printf "  %-18s  %7s  %5s  %7s  %8s\n" "------------------" "-------" "-----" "-------" "--------"
 
-cats=(
-  "video-generation|AI Video"
-  "ai-avatars|AI Avatars"
-  "ai-subtitles|AI Subtitles"
-  "face-swap|AI Face Swap"
-  "ai-image|AI Image"
-  "ai-voice|AI Voice"
-)
-
-for entry in "${cats[@]}"; do
-  SLUG="${entry%%|*}"
-  NAME="${entry##*|}"
+for SLUG in "${SLUGS[@]}"; do
+  NAME=$(get_category_name "$SLUG")
 
   # 统计评测
   REVIEWS=0
@@ -121,5 +144,7 @@ echo "  🟢 ≥8 articles — healthy, maintain cadence"
 echo "  🟡 4-7 articles — growing, 1-2 more needed"
 echo "  🔴 <4 articles — thin, priority for new content"
 echo ""
-echo "💡 Run when planning content calendar."
-echo "   Focus new articles on 🔴 categories first."
+echo "📋 To add a new category:"
+echo "   1. Write a review with: category: \"your-new-category\""
+echo "   2. (Optional) Create content/categories/your-new-category.mdx"
+echo "      with name and description in frontmatter"

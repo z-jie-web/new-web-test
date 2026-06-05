@@ -4,12 +4,12 @@ import {
   getAll,
   getBySlug,
   getAllSlugs,
+  getCategories,
   type ReviewFrontmatter,
   type CategoryFrontmatter,
   type BlogFrontmatter,
 } from '@/lib/content';
 import { getAllComparePairs } from '@/lib/compare';
-import { CATEGORIES } from '@/lib/constants';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -77,7 +77,8 @@ export default async function CategoryPage({
       return maxB.localeCompare(maxA);
     });
 
-  const otherCategories = CATEGORIES.filter((c) => c.slug !== slug);
+  const allCategories = getCategories();
+  const otherCategories = allCategories.filter((c) => c.frontmatter.slug !== slug);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -181,11 +182,11 @@ export default async function CategoryPage({
           <div className="flex flex-wrap gap-2">
             {otherCategories.map((c) => (
               <Link
-                key={c.slug}
-                href={`/categories/${c.slug}`}
+                key={c.frontmatter.slug}
+                href={`/categories/${c.frontmatter.slug}`}
                 className="inline-flex items-center gap-1 rounded-full border border-border/30 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:border-border/60 transition-colors"
               >
-                {c.name}
+                {c.frontmatter.name}
                 <ArrowRight className="h-3 w-3" />
               </Link>
             ))}

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
-import { CATEGORIES } from '@/lib/constants';
+import { getCategories } from '@/lib/content';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Pagination } from '@/components/Pagination';
@@ -24,6 +24,8 @@ export default async function CompareIndexPage({
 }) {
   const { page } = await searchParams;
   const pageNum = Math.max(1, Number(page) || 1);
+  const categories = getCategories();
+  const catMap = new Map(categories.map((c) => [c.frontmatter.slug, c.frontmatter.name]));
 
   const allPairs = getAllComparePairs().sort((a, b) => {
     const da = a.a.lastUpdated ?? '';
@@ -63,8 +65,7 @@ export default async function CompareIndexPage({
 
         <div className="grid sm:grid-cols-2 gap-3">
           {visible.map((pair) => {
-            const catName =
-              CATEGORIES.find((c) => c.slug === pair.a.category)?.name ?? '';
+            const catName = catMap.get(pair.a.category) ?? '';
             return (
               <Link
                 key={`${pair.slugA}-${pair.slugB}`}

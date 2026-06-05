@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { getAll, type BlogFrontmatter } from '@/lib/content';
+import { getAll, getCategories, type BlogFrontmatter } from '@/lib/content';
 import { generateMetadata as seoMeta } from '@/lib/seo';
-import { CATEGORIES } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Pagination } from '@/components/Pagination';
@@ -30,6 +29,8 @@ export default async function BlogIndexPage({
 }) {
   const { page } = await searchParams;
   const pageNum = Math.max(1, Number(page) || 1);
+  const categories = getCategories();
+  const catMap = new Map(categories.map((c) => [c.frontmatter.slug, c.frontmatter.name]));
 
   const posts = getAll<BlogFrontmatter>('blog').sort(
     (a, b) =>
@@ -58,8 +59,7 @@ export default async function BlogIndexPage({
         <div className="space-y-6">
           {visible.map((post) => {
             const categoryName = post.frontmatter.category
-              ? CATEGORIES.find((c) => c.slug === post.frontmatter.category)
-                  ?.name
+              ? (catMap.get(post.frontmatter.category) ?? null)
               : null;
             const readMin = post.content ? readingTime(post.content) : null;
 

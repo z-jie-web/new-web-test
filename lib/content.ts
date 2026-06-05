@@ -89,3 +89,7 @@ export function getByCategory<T extends { category: string }>(
     (item) => item.frontmatter.category === category
   );
 }
+
+export function getCategories(): { frontmatter: CategoryFrontmatter; content: string }[] {
+  return getAll<CategoryFrontmatter>('categories');
+}

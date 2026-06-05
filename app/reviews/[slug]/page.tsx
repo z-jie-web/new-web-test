@@ -6,10 +6,11 @@ import {
   getBySlug,
   getAll,
   getAllSlugs,
+  getCategories,
   type ReviewFrontmatter,
 } from '@/lib/content';
 import { generateMetadata as seoMeta } from '@/lib/seo';
-import { CATEGORIES, SITE } from '@/lib/constants';
+import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -68,7 +69,7 @@ export default async function ReviewPage({
 
   const { frontmatter, content } = item;
   const categoryName =
-    CATEGORIES.find((c) => c.slug === frontmatter.category)?.name ||
+    getCategories().find((c) => c.frontmatter.slug === frontmatter.category)?.frontmatter.name ||
     frontmatter.category;
 
   const allReviews = getAll<ReviewFrontmatter>('reviews');
