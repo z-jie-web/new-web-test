@@ -3,7 +3,6 @@ import { getAll, type ReviewFrontmatter } from '@/lib/content';
 import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE, CATEGORIES } from '@/lib/constants';
-import { fileMtime } from '@/lib/article-meta';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ReviewCard } from '@/components/ReviewCard';
@@ -22,26 +21,27 @@ export const metadata = seoMeta({
 export default function HomePage() {
   const allReviews = getAll<ReviewFrontmatter>('reviews');
   const sortedByLatest = [...allReviews].sort((a, b) => {
-    const ma = fileMtime('reviews', a.frontmatter.slug);
-    const mb = fileMtime('reviews', b.frontmatter.slug);
-    return (mb?.getTime() ?? 0) - (ma?.getTime() ?? 0);
+    const da = a.frontmatter.lastUpdated ?? '';
+    const db = b.frontmatter.lastUpdated ?? '';
+    return db.localeCompare(da);
   });
   const featuredTools = sortedByLatest.slice(0, 9);
 
-  const sortByReviewMtime = (pairs: ReturnType<typeof getAllComparePairs>) =>
+  const sortByReviewDate = (pairs: ReturnType<typeof getAllComparePairs>) =>
     [...pairs].sort((a, b) => {
-      const getMaxMtime = (pair: (typeof pairs)[number]) => {
-        const ma = fileMtime('reviews', pair.a.slug);
-        const mb = fileMtime('reviews', pair.b.slug);
-        return Math.max(ma?.getTime() ?? 0, mb?.getTime() ?? 0);
-      };
-      return getMaxMtime(b) - getMaxMtime(a);
+      const da = a.a.lastUpdated ?? '';
+      const db = a.b.lastUpdated ?? '';
+      const maxA = da > db ? da : db;
+      const dc = b.a.lastUpdated ?? '';
+      const dd = b.b.lastUpdated ?? '';
+      const maxB = dc > dd ? dc : dd;
+      return maxB.localeCompare(maxA);
     });
 
-  const latestCompares = sortByReviewMtime(
+  const latestCompares = sortByReviewDate(
     getAllComparePairs().filter((p) => Boolean(p.compareContent))
   ).slice(0, 6);
-  const fallbackCompares = sortByReviewMtime(getAllComparePairs()).slice(0, 6);
+  const fallbackCompares = sortByReviewDate(getAllComparePairs()).slice(0, 6);
   const compareCards = latestCompares.length > 0 ? latestCompares : fallbackCompares;
 
   const jsonLd = {

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { getAllComparePairs } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { CATEGORIES } from '@/lib/constants';
-import { fileMtime } from '@/lib/article-meta';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -22,12 +21,13 @@ export default function CompareIndexPage() {
     pairs: allPairs
       .filter((p) => p.a.category === cat.slug)
       .sort((a, b) => {
-        const getMaxMtime = (pair: typeof a) => {
-          const ma = fileMtime('reviews', pair.a.slug);
-          const mb = fileMtime('reviews', pair.b.slug);
-          return Math.max(ma?.getTime() ?? 0, mb?.getTime() ?? 0);
-        };
-        return getMaxMtime(b) - getMaxMtime(a);
+        const da = a.a.lastUpdated ?? '';
+        const db = a.b.lastUpdated ?? '';
+        const maxA = da > db ? da : db;
+        const dc = b.a.lastUpdated ?? '';
+        const dd = b.b.lastUpdated ?? '';
+        const maxB = dc > dd ? dc : dd;
+        return maxB.localeCompare(maxA);
       }),
   })).filter((group) => group.pairs.length > 0);
 

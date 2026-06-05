@@ -6,7 +6,6 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ReviewCard } from '@/components/ReviewCard';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { fileMtime } from '@/lib/article-meta';
 
 export const metadata = seoMeta({
   title: 'All AI Tool Reviews (2026) — 32 Tools Tested & Ranked',
@@ -17,9 +16,9 @@ export const metadata = seoMeta({
 
 export default function ReviewsIndexPage() {
   const allReviews = getAll<ReviewFrontmatter>('reviews').sort((a, b) => {
-    const ma = fileMtime('reviews', a.frontmatter.slug);
-    const mb = fileMtime('reviews', b.frontmatter.slug);
-    return (mb?.getTime() ?? 0) - (ma?.getTime() ?? 0);
+    const da = a.frontmatter.lastUpdated ?? '';
+    const db = b.frontmatter.lastUpdated ?? '';
+    return db.localeCompare(da);
   });
 
   const grouped = CATEGORIES.map((cat) => ({
