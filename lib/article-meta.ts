@@ -15,21 +15,25 @@ export function fileMtime(
   type: 'reviews' | 'blog' | 'compare' | 'categories',
   slug: string
 ): Date | null {
-  const filePath = path.join(CONTENT_ROOT, type, `${slug}.mdx`);
-  if (!fs.existsSync(filePath)) return null;
+  const relPath = path.join('content', type, `${slug}.mdx`);
+  const absPath = path.join(process.cwd(), relPath);
+  if (!fs.existsSync(absPath)) return null;
 
   try {
-    // 用 git log 获取文件最后修改时间（Vercel CI 环境 mtime 不可靠）
-    const ts = execSync(
-      `git log -1 --format="%ct" -- "${filePath}"`,
-      { encoding: 'utf-8', timeout: 3000 }
-    ).trim();
-    if (ts) return new Date(parseInt(ts, 10) * 1000);
+    // git log 获取文件最后修改时间（Vercel CI 环境 fs mtime 不可靠）
+    const cwd = process.cwd();
+    const ts = execSync(`git log -1 --format=%ct -- "${relPath}"`, {
+      encoding: 'utf-8',
+      cwd,
+    }).trim();
+    if (ts && /^\d+$/.test(ts)) {
+      return new Date(parseInt(ts, 10) * 1000);
+    }
   } catch {
-    // git 不可用时 fallback 到文件系统 mtime
+    // git 不可用时 fallback
   }
 
-  return fs.statSync(filePath).mtime;
+  return fs.statSync(absPath).mtime;
 }
 
 export function formatDate(date: Date | string | null | undefined): string {
