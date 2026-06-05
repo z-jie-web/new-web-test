@@ -13,7 +13,7 @@ if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then
 fi
 
 PASS=0
-TOTAL=8
+TOTAL=9
 FAILS=()
 
 echo "========================================"
@@ -193,6 +193,21 @@ if $SEO_OK; then
   PASS=$((PASS+1))
 else
   FAILS+=("8: SEO frontmatter")
+fi
+echo ""
+
+# ===== Check 9: lastUpdated ISO 8601 =====
+echo "▶ Check 9: lastUpdated (ISO 8601 date)"
+LASTUPDATED=$(awk '/^lastUpdated:/{sub(/^lastUpdated: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+if [ -z "$LASTUPDATED" ]; then
+  echo "  ❌ FAIL — missing lastUpdated field in frontmatter"
+  FAILS+=("9: lastUpdated")
+elif echo "$LASTUPDATED" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}'; then
+  echo "  ✅ PASS ($LASTUPDATED)"
+  PASS=$((PASS+1))
+else
+  echo "  ❌ FAIL — invalid format: '$LASTUPDATED' (need ISO 8601, e.g. 2026-06-04T12:53:58Z)"
+  FAILS+=("9: lastUpdated")
 fi
 echo ""
 

@@ -289,6 +289,7 @@ pricing: "Paid"
 pros: []
 cons: []
 bestFor: []
+lastUpdated: "${new Date().toISOString()}"
 ---
 
 # ${tool.name} Review
@@ -322,7 +323,7 @@ if (!fs.existsSync(CATEGORIES_DIR))
 const categories = [
   {
     slug: 'video-generation',
-    name: 'AI Video Generation',
+    name: 'AI Video',
     description:
       'AI-powered video creation tools for cinematic content, ads, and social media.',
   },
@@ -334,20 +335,26 @@ const categories = [
   },
   {
     slug: 'ai-subtitles',
-    name: 'AI Subtitles & Captions',
+    name: 'AI Subtitles',
     description:
       'Auto-generate subtitles, captions, and transcriptions for your videos.',
   },
   {
-    slug: 'video-enhancer',
-    name: 'Video Enhancers',
-    description:
-      'Upscale, sharpen, and improve video quality with AI enhancement tools.',
+    slug: 'face-swap',
+    name: 'AI Face Swap',
+    description: 'AI face swap tools for creative video content.',
   },
   {
-    slug: 'face-swap',
-    name: 'Face Swap Tools',
-    description: 'AI face swap tools for creative video content.',
+    slug: 'ai-image',
+    name: 'AI Image',
+    description:
+      'AI-powered image and art creation tools — Midjourney, DALL-E, Stable Diffusion, and more.',
+  },
+  {
+    slug: 'ai-voice',
+    name: 'AI Voice',
+    description:
+      'AI voice generation, text-to-speech, voice cloning, and audio creation tools.',
   },
 ];
 
