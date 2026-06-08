@@ -1,0 +1,114 @@
+---
+slug: "veo-3-1"
+name: "Google Veo 3.1"
+category: "video-generation"
+description: "Google Veo 3.1 is the AI video leader after Sora's shutdown — native audio, 4K resolution, timestamp prompting, and $0.05/sec Lite tier for budget iteration."
+lastUpdated: "2026-06-08T12:00:00Z"
+tags: ["AI Video Generation", "Google DeepMind", "Text-to-Video"]
+url: "https://deepmind.google/technologies/veo/"
+pricing: "Paid"
+pros: ["Native audio generation in the same pass — no separate audio post-production required", "Timestamp prompting enables multi-shot sequences in a single 8s generation call", "Three-tier pricing from $0.05/sec (Lite) to $0.40/sec (Standard) fits any budget", "4K upscaling and 60fps output — the highest ceiling in the market"]
+cons: ["8-second clip length cap — longer videos require chaining up to 20 clips manually", "SynthID watermark is permanently embedded and cannot be removed for any use case", "Requires Gemini API Paid Tier — no free tier access, $0.30 credit only", "No native long-form generation — 60+ second videos are assembled, not generated whole"]
+bestFor: ["Video production teams replacing stock footage with AI-generated B-roll", "Content creators on YouTube Shorts who want native vertical video generation", "Ad agencies producing short-form commercial content with synced dialogue", "Developers who need timestamp-precise control over multi-shot video sequences"]
+---
+
+![Google Veo 3.1 official logo for AI video generation AI tool review](/logos/veo-3-1.svg)
+
+Google Veo 3.1 is the AI video generator that inherited the throne after OpenAI pulled the plug on Sora. As of mid-2026, it is the consensus best-in-class model — PCMag's Editor's Pick, 4.5/5 from ad production tests — and the only model that generates synchronized audio and video in a single pass. The trade-off: you pay per second, you cap at 8 seconds per generation, and every output carries a permanent SynthID watermark.
+
+## Key Features
+
+- **Native Audio Generation** — dialogue, sound effects, and ambient audio generated in the same pass as video, no separate audio post-production
+- **Timestamp Prompting** — direct up to 4 shots within a single 8s generation using `[HH:MM–HH:MM]` notation, unique in the market
+- **Three-Tier Model Structure** — Standard ($0.40/s, 4K, 9.2/10 quality), Fast ($0.15/s, 1080p, 8.7/10), Lite ($0.05/s, 720p, budget iteration)
+- **Ingredients to Video** — feed 1-3 reference images to anchor character appearance and style across multiple generations
+- **Scene Extension** — chain up to 20 clips for 140+ second narratives with character and camera consistency
+- **Ecosystem Integration** — embedded in YouTube Shorts, Google Vids, Gemini app, and Google Ads, with 10 free generations/month for Google account holders
+
+## Our Take
+
+Veo 3.1 wins because it solves the problem every other AI video generator created: you generate a clip, then you spend another hour adding audio in a separate tool. Veo generates the visuals and the sound in one pass — dialogue, thunder cracks, ambient starship hum, all synced to the frame. That single feature saves more production time than any resolution bump or speed gain.
+
+The pricing looks expensive on the surface. $0.40/second for Standard mode means a single 8-second clip costs $3.20. But compared to stock footage licensing ($50-200 per clip) or a half-day shoot ($500-2,000), it is not expensive at all. And the Lite tier at $0.05/second — $0.40 per 8-second clip — is cheap enough for unlimited iteration before committing to a Standard render.
+
+The 8-second cap is the real constraint. Competitors like Kling 3.0 offer 15-second generations. Veo's answer is scene extension: chain up to 20 clips with consistent characters and camera. It works, but it is a workflow — not a "generate my whole 3-minute ad" button. For production teams used to editing, this is normal. For solo creators expecting one-click output, it will feel like a limitation.
+
+The SynthID watermark is worth understanding upfront. Every Veo output carries an imperceptible-but-permanent digital watermark that identifies it as AI-generated. Google does not let you remove it, period. For commercial use, this is a compliance feature. For creators who want their AI-assisted work to pass as fully original, it is a constraint. Know which camp you are in before you build a pipeline around Veo.
+
+The competitive landscape shifted dramatically when Sora shut down in March 2026. OpenAI cited unsustainable compute demands. Overnight, Veo went from "strong competitor" to "default choice." Kling 3.0 is the budget alternative with longer clip lengths. Runway Gen-4.5 has the more mature API for multi-shot control. But neither generates audio natively, and neither matches Veo's 4K output ceiling.
+
+## What Google Veo 3.1 Actually Does
+
+Veo 3.1 takes a text prompt — and optionally reference images — and generates video clips with synchronized audio. The core differentiator is the **audio-visual single pass**: the model generates pixels and sound waves together, so dialogue lip movement matches speech timing, and sound effects align to visual events.
+
+**Timestamp prompting** is the power-user feature. You write:
+
+```
+[00:00–00:03] A chef enters a dark kitchen, flips the light switch.
+[00:03–00:05] Fluorescent lights flicker on, revealing a pristine stainless steel workspace. SFX: electrical hum.
+[00:05–00:08] Close-up on the chef's hands tying an apron. She says, "Let's get to work."
+```
+
+Veo renders all three shots in one 8-second file with transitions and synchronized audio. No other video model offers this level of temporal control in a single API call.
+
+**Ingredients to Video** solves the consistency problem. Feed a reference image of a character and a reference image of a setting, and Veo keeps both consistent across multiple generations. This is how production teams maintain character identity across scenes without re-rendering the entire project.
+
+**The three-tier structure** is not just pricing — it is a workflow. Lite ($0.05/s) is for concept validation and prompt iteration. Fast ($0.15/s, ~70% of Standard quality) is for production pipelines where volume matters. Standard ($0.40/s, 4K upscaling) is for hero shots and client finals.
+
+**Scene extension** chains clips together. Generate an 8s opening, extend with another 8s, and repeat up to 20 times for a 140+ second video. The model maintains reasonable consistency across extensions, though complex scenes with multiple characters may drift by the 10th extension.
+
+## Pricing Breakdown
+
+| Tier | Cost per Second | 8s Clip Cost | Resolution | Best For |
+|------|----------------|-------------|------------|----------|
+| Lite | $0.05 | $0.40 | 720p | Prompt iteration, concept validation |
+| Fast | $0.15 | $1.20 | 1080p | Social content, production pipelines |
+| Standard (no audio) | $0.20 | $1.60 | 1080p | Visuals-only projects |
+| Standard (with audio) | $0.40 | $3.20 | 1080p + 4K upscale | Hero shots, broadcast, client finals |
+| 4K Upscaling | +$0.60/s | +$4.80 | 4K | Cinema, large-format displays |
+
+Consumer access via Google Vids: 10 free generations/month for all Google accounts, 100/month with Google AI Pro (~$22/mo), 1,000/month with Google AI Ultra (~$275/mo).
+
+At production scale, Veo is not cheap. A 60-second ad built from 8 chained Fast-tier clips costs about $9. But compared to a half-day shoot ($500-2,000) or stock footage ($50-200/clip), the math still favors AI generation for most commercial use cases.
+
+## Who Should Use Veo 3.1
+
+**Veo 3.1 is a strong fit if you:**
+- Produce short-form commercial video (ads, social, promos) and want synced audio without post-production
+- Already use Google Cloud/Vertex AI and want video generation in the same ecosystem
+- Need precise temporal control over multi-shot sequences via timestamp prompting
+- Want to iterate cheaply on Lite ($0.05/s) before committing to Standard renders
+- Create YouTube Shorts and want native 9:16 vertical video generation
+
+**Veo 3.1 is not the best choice if you:**
+- Need 15+ second single-generation clips (Kling 3.0 offers longer outputs)
+- Want watermark-free AI video output for any reason (SynthID is permanent)
+- Need a mature multi-shot editing API with scene-level control (Runway Gen-4.5 is stronger)
+- Are on a free-tier-only budget (Veo requires Gemini API Paid Tier; free tier gets $0.30 credit only)
+- Want one-click long-form video generation (Veo chains 8s clips; it does not generate 60s natively)
+
+## vs Kling 3.0, Runway Gen-4.5, and Seedance 2.0
+
+[Kling 3.0](/reviews/kling-ai) is the strongest budget competitor — 15-second single-generation clips at $0.02-0.10/second, native 4K support. It beats Veo on clip length and cost per second. It loses on audio (post-sync required) and temporal control (no timestamp prompting). For high-volume social content where you add audio separately anyway, Kling is often the better value.
+
+[Runway Gen-4.5](/reviews/runway-gen-3) has the most mature API for multi-shot control and editing workflows. Its strength is the full creative suite — not just generation but compositing, color grading, and scene management. It loses on audio (no native generation) and resolution ceiling (1080p max vs Veo's 4K upscaling). For teams that need a complete video editing workflow around AI generation, Runway is the better platform.
+
+[Seedance 2.0](https://seedance.ai) produces arguably the best raw visual quality — detail and lighting that sometimes surpass Veo Standard. But it suffers from fragmented regional availability and a less mature API. For pure visual fidelity in a single region, Seedance is worth testing. For production reliability across markets, Veo is safer.
+
+For a broader view, see our [full comparison of the best AI video generators →](/blog/best-ai-video-generators)
+
+## FAQ
+
+**Is Veo 3.1 really better than Sora was?** Sora never shipped as a production API — it was a research preview with a waitlist. Veo 3.1 is a generally available API with three pricing tiers, native audio, and ecosystem integration. In terms of real-world usability, there is no comparison: Veo wins by virtue of existing.
+
+**Can I remove the SynthID watermark?** No. Google embeds SynthID permanently into every Veo output. It is imperceptible to human eyes but detectable by Google's tools. There is no setting, flag, or workaround to disable it.
+
+**How long does generation take?** Veo 3.1 Fast generates an 8-second 1080p clip in about 1 minute 13 seconds. Standard mode takes about 2 minutes 41 seconds. Lite is faster but Google has not published exact benchmarks. Generation is asynchronous — you submit a job and poll for completion.
+
+**Does Veo support image-to-video?** Yes, via Ingredients to Video. Feed 1-3 reference images (character, setting, style reference) and Veo anchors the output to them. Best results with 2 images: one character reference and one setting reference.
+
+**Can I use Veo for free?** Google Vids offers 10 free generations per month for all Google account holders. The Gemini API provides a $0.30 free credit for new users — enough for one 8-second Fast clip. Beyond that, you need the Paid Tier.
+
+**What happened to Sora, and does it affect Veo?** OpenAI shut down Sora in March 2026, citing unsustainable compute costs. This removed Veo's primary competitor and accelerated adoption. Google responded by cutting Veo 3.1 Fast pricing and launching the Lite tier. Expect continued investment and price competition.
+
+[Visit Google Veo →](https://deepmind.google/technologies/veo/)
