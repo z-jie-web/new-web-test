@@ -34,7 +34,7 @@ Trigger when the user mentions:
 
 ## 网络代理（全局前置）
 
-> 参考：`references/network-proxy.md`
+> 参考：`.claude/skills/toolporto-writer/references/network-proxy.md`
 
 **在国内网络环境下，所有外部网络访问（WebFetch、WebSearch、curl 下载 logo、IndexNow ping）必须通过本地代理。**
 
@@ -65,7 +65,7 @@ echo "⚠️ 代理不可用，提示用户开启艾可云"
 
 ### Phase 1: 话题生成
 
-> 参考：`references/topic-engine.md`
+> 参考：`.claude/skills/toolporto-writer/references/topic-engine.md`
 
 **🚨 强制前置脚本（必须先跑，贴输出证据）：**
 
@@ -129,7 +129,7 @@ curl -x http://127.0.0.1:${PROXY_PORT:-33210} -sI https://www.google.com --max-t
 
 **筛选红线**：搜索量 < 100/月的长尾词不写。
 
-**Hub/Spoke 强制规划**（参考 `references/topic-engine.md`）：
+**Hub/Spoke 强制规划**（参考 `.claude/skills/toolporto-writer/references/topic-engine.md`）：
 - 每个话题必须明确角色：Hub（≥3000 词）/ Spoke（800-1500）/ Connector
 - 答出 3 个问题：支撑哪个 hub？链向哪 2+ 个 spoke？哪 2+ 个 spoke 反链回来？
 
@@ -141,7 +141,7 @@ curl -x http://127.0.0.1:${PROXY_PORT:-33210} -sI https://www.google.com --max-t
 
 ### Phase 2: 写作
 
-> 参考：`references/article-templates.md`
+> 参考：`.claude/skills/toolporto-writer/references/article-templates.md`
 
 **一次写 2 篇**，套用对应模板。不要多写，写完自检。
 
@@ -165,7 +165,7 @@ curl -x http://127.0.0.1:${PROXY_PORT:-33210} -sI https://www.google.com --max-t
 
 ### Phase 3: 视觉增强
 
-> 参考：`references/visual-enhance.md`
+> 参考：`.claude/skills/toolporto-writer/references/visual-enhance.md`
 
 **每篇文章插入**：
 1. 工具 Logo（从官网 favicon/press kit 获取 → `public/logos/{slug}.png`）
@@ -187,7 +187,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 
 ### Phase 4: 去 AI 味
 
-> 参考：`references/anti-ai-patterns-en.md`
+> 参考：`.claude/skills/toolporto-writer/references/anti-ai-patterns-en.md`
 
 **四步流程**：
 
@@ -206,7 +206,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 
 ### Phase 5: SEO 校验
 
-> 参考：`references/seo-checklist.md`
+> 参考：`.claude/skills/toolporto-writer/references/seo-checklist.md`
 
 - 标题含主关键词（前 60 字符）
 - meta description 110-160 字符
@@ -218,7 +218,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 
 ### Phase 6: 质量门禁
 
-> 参考：`references/quality-gate.md`
+> 参考：`.claude/skills/toolporto-writer/references/quality-gate.md`
 
 **🚨 唯一交付前置条件：跑脚本并贴完整输出。**
 
@@ -254,7 +254,7 @@ bash scripts/article-check.sh <path-to-mdx-file>
 
 ### Phase 8: 发布后闭环
 
-> 参考：`references/phase-8-post-publish.md`
+> 参考：`.claude/skills/toolporto-writer/references/phase-8-post-publish.md`
 
 **部署成功不是终点。新文章是孤岛 = 没流量。** 必须做四件事：
 
@@ -326,7 +326,7 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
 
 ## 文章更新 SOP
 
-> 参考：`references/content-refresh.md`
+> 参考：`.claude/skills/toolporto-writer/references/content-refresh.md`
 
 **触发前先跑**：
 
@@ -515,12 +515,12 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
 
 | 文件 | 内容 |
 |------|------|
-| `references/article-templates.md` | 六种文章类型完整模板 + 内链规则 + EEAT 标注 |
-| `references/anti-ai-patterns-en.md` | 英文 AI 味检测模式 + 四步重写法 + 人格注入 |
-| `references/seo-checklist.md` | SEO 检查清单（标题/描述/结构/图片/FAQ Schema） |
-| `references/quality-gate.md` | 发布前 9 项门禁 + bash 脚本强校验 + 三角色自检 |
-| `references/topic-engine.md` | 话题生成引擎（数据源/热度标准/筛选规则/Hub-Spoke/SERP 分析） |
-| `references/visual-enhance.md` | 视觉增强规范（Logo/配图/组件/图片 SEO） |
-| `references/content-refresh.md` | 文章更新 SOP（触发条件/更新深度/历史保留） |
-| `references/network-proxy.md` | 网络代理配置（艾可云/Clash 端口检测 + curl/WebFetch 代理注入） |
-| `references/phase-8-post-publish.md` | Phase 8 发布后闭环（find-link-ops.sh/反向内链/ping 引擎/社媒/数据回流） |
+| `.claude/skills/toolporto-writer/references/article-templates.md` | 六种文章类型完整模板 + 内链规则 + EEAT 标注 |
+| `.claude/skills/toolporto-writer/references/anti-ai-patterns-en.md` | 英文 AI 味检测模式 + 四步重写法 + 人格注入 |
+| `.claude/skills/toolporto-writer/references/seo-checklist.md` | SEO 检查清单（标题/描述/结构/图片/FAQ Schema） |
+| `.claude/skills/toolporto-writer/references/quality-gate.md` | 发布前 9 项门禁 + bash 脚本强校验 + 三角色自检 |
+| `.claude/skills/toolporto-writer/references/topic-engine.md` | 话题生成引擎（数据源/热度标准/筛选规则/Hub-Spoke/SERP 分析） |
+| `.claude/skills/toolporto-writer/references/visual-enhance.md` | 视觉增强规范（Logo/配图/组件/图片 SEO） |
+| `.claude/skills/toolporto-writer/references/content-refresh.md` | 文章更新 SOP（触发条件/更新深度/历史保留） |
+| `.claude/skills/toolporto-writer/references/network-proxy.md` | 网络代理配置（艾可云/Clash 端口检测 + curl/WebFetch 代理注入） |
+| `.claude/skills/toolporto-writer/references/phase-8-post-publish.md` | Phase 8 发布后闭环（find-link-ops.sh/反向内链/ping 引擎/社媒/数据回流） |

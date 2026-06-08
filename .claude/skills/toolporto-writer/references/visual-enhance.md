@@ -69,7 +69,7 @@ For compare pages:
 
 ### Source Priority
 1. **Official screenshots** — from tool website (no copyright issue, fair use for review)
-2. **AI generated** — using doubao-image skill, check for watermarks before using
+2. **AI generated** — using any available image generation tool, check for watermarks before using
 3. **Public domain / Unsplash** — when neither above works
 
 ### Watermark Policy
@@ -92,7 +92,7 @@ Per article minimum:
   ❌ "image1"
   ❌ "DeepSwapper" (too generic)
   ```
-- Add ImageObject Schema to page (see seo-checklist.md Section 6)
+- Add ImageObject Schema to page (see `.claude/skills/toolporto-writer/references/seo-checklist.md` Section 6)
 
 ---
 
