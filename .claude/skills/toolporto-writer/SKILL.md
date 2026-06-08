@@ -1,7 +1,7 @@
 ---
 name: toolporto-writer
-version: 1.3.0
-description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。"
+version: 1.3.1
+description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.1: 新增连续推进规则，防止 Agent 在 Phase 间无故中断。"
 author: toolporto
 license: MIT
 tags:
@@ -250,7 +250,7 @@ bash scripts/article-check.sh <path-to-mdx-file>
 - **读者**：读完知道选哪个了吗？还想继续看吗？有没有被推销感？
 - **魔鬼代言人**：给出 1 条最强反对理由。如果无法反驳 → 回去改
 
-**自检通过 → 输出文章 + 自检报告 → 等用户确认发布。**
+**自检通过 → 输出自检评语 → 直接进入 Phase 8。** 如果用户在此阶段明确要求暂停等待确认，则等待。否则默认连续推进。
 
 ### Phase 8: 发布后闭环
 
@@ -365,6 +365,14 @@ bash scripts/list-stale.sh
 ### 核心机制：Gate 不过 = 不允许进入下一 Phase
 
 每个 Phase 结束时，必须满足 **Exit Condition** 才能继续。不满足 → 停在该 Phase 修复，禁止前进。禁止跳过。禁止 "先前进再回来补"。
+
+**🚨 连续推进规则 (Continuous Push Rule):**
+- 用户确认话题后，Phase 2 → Phase 9 **必须一气呵成，禁止在中途等待用户输入**。
+- Gate 标记（`🔒 Gate N PASS → 进入 Phase N+1`）是**里程碑**，不是**红绿灯**。输出标记后立即进入下一 Phase。不准停。不准等。
+- 唯二合法暂停点：Phase 1（等待用户确认话题）+ Phase 9 交付后。
+- 如果上下文压缩导致中断 → 恢复后从最后完成的 Phase 继续推进，不等待用户追问。
+- **禁止**在 Phase 2/3/4/5/6/7/8 中途输出"是否继续？"或隐含等待。直接做。
+- Phase 2 的"一次写 2 篇"：用户确认几篇就写几篇。不因篇数不匹配而中断。
 
 ```
 Phase 1 ──[G1]──▶ Phase 2 ──[G2]──▶ Phase 3 ──[G3]──▶ Phase 4 ──[G4]──▶ Phase 5
