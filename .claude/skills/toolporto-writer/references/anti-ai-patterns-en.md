@@ -1,6 +1,6 @@
 # English Anti-AI Patterns
 
-29 common AI writing patterns detected in English content, adapted for AI tool review writing. Based on Wikipedia WikiProject AI Cleanup methodology with 4-step rewrite + 3-role review process.
+Based on `content-deai-engine` skill (29 patterns, Wikipedia WikiProject AI Cleanup methodology, 4-step rewrite + 3-role review process), adapted for English AI tool review content.
 
 ---
 

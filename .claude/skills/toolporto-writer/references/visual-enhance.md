@@ -69,7 +69,7 @@ For compare pages:
 
 ### Source Priority
 1. **Official screenshots** — from tool website (no copyright issue, fair use for review)
-2. **AI generated** — using any available image generation tool, check for watermarks before using
+2. **AI generated** — using `doubao-image` skill, check for watermarks before using
 3. **Public domain / Unsplash** — when neither above works
 
 ### Watermark Policy
