@@ -1,7 +1,7 @@
 ---
 name: toolporto-writer
-version: 1.3.1
-description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.1: 新增连续推进规则，防止 Agent 在 Phase 间无故中断。"
+version: 1.3.2
+description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.2: Gate 标记打包规则，防止 Agent 在 Gate 处结束回复。"
 author: toolporto
 license: MIT
 tags:
@@ -369,6 +369,7 @@ bash scripts/list-stale.sh
 **🚨 连续推进规则 (Continuous Push Rule):**
 - 用户确认话题后，Phase 2 → Phase 9 **必须一气呵成，禁止在中途等待用户输入**。
 - Gate 标记（`🔒 Gate N PASS → 进入 Phase N+1`）是**里程碑**，不是**红绿灯**。输出标记后立即进入下一 Phase。不准停。不准等。
+- **🚨 Gate 标记打包规则**：输出 Gate 标记的同一轮回复中，必须包含下一 Phase 的至少一个工具调用（bash/Write/Edit/WebSearch）。禁止单独输出 Gate 标记后结束回复。Gate 标记 + 下一 Phase 的第一个动作 = 同一轮回复，不可拆分。
 - 唯二合法暂停点：Phase 1（等待用户确认话题）+ Phase 9 交付后。
 - 如果上下文压缩导致中断 → 恢复后从最后完成的 Phase 继续推进，不等待用户追问。
 - **禁止**在 Phase 2/3/4/5/6/7/8 中途输出"是否继续？"或隐含等待。直接做。
