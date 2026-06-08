@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg)"/>
+  <path d="M40 100 Q70 30 100 40 Q130 30 160 100 Q130 170 100 160 Q70 170 40 100Z" fill="none" stroke="#38BDF8" stroke-width="5" opacity="0.9"/>
+  <path d="M55 100 Q80 50 100 58 Q120 50 145 100" fill="none" stroke="#818CF8" stroke-width="4" opacity="0.7"/>
+  <circle cx="100" cy="80" r="12" fill="#38BDF8" opacity="0.95"/>
+  <text x="100" y="150" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" fill="white" text-anchor="middle" letter-spacing="4">FLUX</text>
+</svg>

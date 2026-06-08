@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" rx="80" fill="#0F172A"/>
+  <text x="200" y="215" text-anchor="middle" fill="#F59E0B" font-family="system-ui, -apple-system, sans-serif" font-size="110" font-weight="800" letter-spacing="-3">IO</text>
+  <rect x="100" y="240" width="200" height="6" rx="3" fill="#F59E0B"/>
+</svg>
