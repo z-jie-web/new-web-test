@@ -1,7 +1,7 @@
 ---
 name: toolporto-writer
-version: 1.3.2
-description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.2: Gate 标记打包规则，防止 Agent 在 Gate 处结束回复。"
+version: 1.3.3
+description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.3: Phase 8 反向内链策略（编辑替换优先，防老文章膨胀）。"
 author: toolporto
 license: MIT
 tags:
@@ -258,10 +258,23 @@ bash scripts/article-check.sh <path-to-mdx-file>
 
 **部署成功不是终点。新文章是孤岛 = 没流量。** 必须做四件事：
 
-1. **反向内链更新（强制自动化）** — 先跑 `bash scripts/find-link-ops.sh <file>` 自动找出所有遗漏的链接候选，根据 MISSING 列表逐一补链到 ≥3 个老文章
+1. **反向内链更新（强制自动化）** — 先跑 `bash scripts/find-link-ops.sh <file>` 自动找出遗漏的链接候选，再按下方策略补链 ≥3 个老文章
 2. **主动 ping 搜索引擎** — sitemap 已自动更新，未来接入 IndexNow 可主动通知 Bing
 3. **社媒分享文案** — 至少 1 条针对该文章的具体 Reddit/X 文案
 4. **数据回流（条件触发）** — 已接 GSC/GA 后，4 周后核查收录与流量
+
+**🚨 反向内链策略（防老文章膨胀）**：
+
+新增工具时，绝不能在每个老文章里机械加一行——一个分类 20 篇 review 时每篇底部挂 19 条"如果你需要 X，用 Y"会撑爆文章。
+
+| 优先级 | 策略 | 示例 | 适用条件 |
+|--------|------|------|----------|
+| **P0: 编辑替换** | 老文章已提了工具名（外链或无链接），只替换为内链，零增量 | `[Tool](https://tool.com)` → `[Tool](/reviews/tool)` | find-link-ops.sh 报告 MISSING，但 grep 发现已有文字提及 |
+| **P1: 自然提及** | 在 vs 段、备选列表、FAQ 中加一句，替换同等长度的旧文字 | "如果你做 X，用 Y" 替换掉一段过时的通用建议 | 工具确实和老文章的使用场景产生分叉 |
+| **P2: 新增条目** | 在 "not the best choice" 列表或相关工具链中加一行 | d-id.mdx 加 `- 做 UGC 广告 → 用 ClipLoft` | 仅当老文章的 FAQ 或列表 ≤5 条时 |
+| **禁止** | 全分类每篇都加；在文章末尾堆砌链接；Best-of 文章机械追加表格行 | — | — |
+
+**单次新增工具最多在 3-5 篇老文章留反向链接（含编辑替换）。超过 5 篇 = 说明你没筛选，退回重选。**
 
 **Phase 8 不做 = 文章只是"上线"，不是"发布"。**
 
@@ -307,7 +320,7 @@ bash scripts/article-check.sh <path-to-mdx-file>
 
 📊 Phase 8 — 发布后闭环证据：
   - find-link-ops.sh 输出
-  - 反向内链清单（≥3 处修改链接）
+  - 反向内链清单（≥3 处修改链接，≤5 篇老文章，标注策略: P0编辑替换 / P1自然提及 / P2新增条目）
   - 社媒分享文案
 ═══════════════════════════════════════════
 ```
@@ -458,6 +471,8 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
 | 8 | **MDX 中出现 `<WinnerBadge>` `<ProsCons>` `<ScoreCard>` `<CTABox>` 等未实现组件** | 退回改为 Markdown fallback |
 | 9 | **未做 Phase 1 Hub/Spoke 规划 + SERP 竞品分析** | 重做 Phase 1 |
 | 10 | **未做 Phase 8 发布后闭环（反向内链 < 3 处）** | 退回补内链 |
+| 10.5 | **反向内链 > 5 篇老文章（全分类覆盖撑爆老文章）** | 退回，重新精选 ≤5 篇 |
+| 10.6 | **老文章已有工具名文字提及但未做 P0 编辑替换，反而新增一行** | 退回改用编辑替换 |
 | 11 | **Phase 1 未跑 `check-duplicate.sh` + `category-stats.sh` 并贴输出** | Phase 1 视为未执行，退回重做 |
 | 12 | **写文章不看 `category-stats.sh` 输出，盲写已饱和分类** | 退回该话题，从 Phase 1 重选 |
 
