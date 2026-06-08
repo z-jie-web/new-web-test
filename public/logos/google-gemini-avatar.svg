@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a73e8"/>
+      <stop offset="100%" stop-color="#4285F4"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg)"/>
+  <path d="M50 120 Q50 60 100 40 Q150 60 150 120 Q150 170 100 180 Q50 170 50 120Z" fill="none" stroke="white" stroke-width="8" opacity="0.9"/>
+  <path d="M70 110 Q70 75 100 62 Q130 75 130 110" fill="none" stroke="white" stroke-width="6" opacity="0.7"/>
+  <circle cx="100" cy="90" r="16" fill="white" opacity="0.95"/>
+  <text x="100" y="165" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" fill="white" text-anchor="middle" letter-spacing="2">GEMINI</text>
+</svg>
