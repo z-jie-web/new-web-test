@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
 import { getBySlug, type ReviewFrontmatter } from '@/lib/content';
 
 export const dynamic = 'force-static';
@@ -22,14 +22,16 @@ export async function GET(
   const review = getBySlug<ReviewFrontmatter>('reviews', slug);
 
   if (!review) {
-    redirect('/');
+    return NextResponse.redirect(new URL('/', _request.url), { status: 307 });
   }
 
   const target = review.frontmatter.affiliateUrl || review.frontmatter.url;
 
   if (!target) {
-    redirect(`/reviews/${slug}`);
+    return NextResponse.redirect(new URL(`/reviews/${slug}`, _request.url), { status: 307 });
   }
 
-  return Response.redirect(target, 302);
+  const res = NextResponse.redirect(target, { status: 302 });
+  res.headers.set('X-Robots-Tag', 'noindex');
+  return res;
 }
