@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getAll, getCategories, type ReviewFrontmatter } from '@/lib/content';
-import { getAllComparePairs } from '@/lib/compare';
+import { getAllComparePairsWithContent } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
@@ -29,7 +29,7 @@ export default function HomePage() {
   });
   const featuredTools = sortedByLatest.slice(0, 9);
 
-  const sortByReviewDate = (pairs: ReturnType<typeof getAllComparePairs>) =>
+  const sortByReviewDate = (pairs: ReturnType<typeof getAllComparePairsWithContent>) =>
     [...pairs].sort((a, b) => {
       const da = a.a.lastUpdated ?? '';
       const db = a.b.lastUpdated ?? '';
@@ -40,11 +40,7 @@ export default function HomePage() {
       return maxB.localeCompare(maxA);
     });
 
-  const latestCompares = sortByReviewDate(
-    getAllComparePairs().filter((p) => Boolean(p.compareContent))
-  ).slice(0, 6);
-  const fallbackCompares = sortByReviewDate(getAllComparePairs()).slice(0, 6);
-  const compareCards = latestCompares.length > 0 ? latestCompares : fallbackCompares;
+  const compareCards = sortByReviewDate(getAllComparePairsWithContent()).slice(0, 6);
 
   const jsonLd = {
     '@context': 'https://schema.org',

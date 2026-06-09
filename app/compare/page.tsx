@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAllComparePairs } from '@/lib/compare';
+import { getAllComparePairsWithContent } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { getCategories } from '@/lib/content';
 import { Header } from '@/components/layout/Header';
@@ -27,7 +27,7 @@ export default async function CompareIndexPage({
   const categories = getCategories();
   const catMap = new Map(categories.map((c) => [c.frontmatter.slug, c.frontmatter.name]));
 
-  const allPairs = getAllComparePairs().sort((a, b) => {
+  const allPairs = getAllComparePairsWithContent().sort((a, b) => {
     const da = a.a.lastUpdated ?? '';
     const db = a.b.lastUpdated ?? '';
     const maxA = da > db ? da : db;

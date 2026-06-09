@@ -9,7 +9,7 @@ import {
   type CategoryFrontmatter,
   type BlogFrontmatter,
 } from '@/lib/content';
-import { getAllComparePairs } from '@/lib/compare';
+import { getAllComparePairsWithContent } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -65,7 +65,7 @@ export default async function CategoryPage({
         new Date(a.frontmatter.date).getTime()
     );
 
-  const relatedCompares = getAllComparePairs()
+  const relatedCompares = getAllComparePairsWithContent()
     .filter((p) => p.a.category === slug || p.b.category === slug)
     .sort((a, b) => {
       const da = a.a.lastUpdated ?? '';

@@ -50,6 +50,18 @@ export function getAllCompareSlugs(): { a: string; b: string }[] {
   }));
 }
 
+/** Only pairs that have a dedicated MDX content file. Use for sitemap + static generation. */
+export function getAllComparePairsWithContent(): ComparePair[] {
+  return getAllComparePairs().filter((p) => p.compareContent != null);
+}
+
+export function getAllCompareSlugsWithContent(): { a: string; b: string }[] {
+  return getAllComparePairsWithContent().map((pair) => ({
+    a: pair.slugA,
+    b: pair.slugB,
+  }));
+}
+
 export function getComparePair(
   slugA: string,
   slugB: string

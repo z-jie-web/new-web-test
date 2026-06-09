@@ -1,5 +1,5 @@
 import { getAllSlugs } from '@/lib/content';
-import { getAllCompareSlugs } from '@/lib/compare';
+import { getAllCompareSlugsWithContent } from '@/lib/compare';
 import { SITE } from '@/lib/constants';
 import type { MetadataRoute } from 'next';
 
@@ -39,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const comparePages = getAllCompareSlugs().map(({ a, b }) => ({
+  const comparePages = getAllCompareSlugsWithContent().map(({ a, b }) => ({
     url: `${baseUrl}/compare/${a}-vs-${b}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
-import { getComparePair, getAllCompareSlugs, getAllComparePairs } from '@/lib/compare';
+import { getComparePair, getAllCompareSlugsWithContent, getAllComparePairsWithContent } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
@@ -19,7 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { ExternalLink, Check, X, HelpCircle } from 'lucide-react';
 
 export async function generateStaticParams() {
-  return getAllCompareSlugs().map(({ a, b }) => ({
+  return getAllCompareSlugsWithContent().map(({ a, b }) => ({
     slugs: [`${a}-vs-${b}`],
   }));
 }
@@ -59,7 +59,7 @@ export default async function ComparePage({
   if (!a || !b) notFound();
 
   const pair = getComparePair(a, b);
-  if (!pair) notFound();
+  if (!pair || !pair.compareContent) notFound();
 
   const { a: toolA, b: toolB, compareContent, compareData } = pair;
 
@@ -391,7 +391,7 @@ export default async function ComparePage({
 function RelatedComparisons({ current }: { current: ReturnType<typeof getComparePair> }) {
   if (!current) return null;
 
-  const allPairs = getAllComparePairs();
+  const allPairs = getAllComparePairsWithContent();
 
   const related = allPairs
     .filter(
