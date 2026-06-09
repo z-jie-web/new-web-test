@@ -12,6 +12,8 @@
 ## Common Rules (All Types)
 
 - **内链规则**：每篇文章至少 2 条内链。Review 链到相关 Compare，Compare 链回两个工具的 Review。
+- **外链规则（强制）**：每篇文章至少 3 条高质量外链。必须包含：① 工具官方网址 ② 官方定价页或文档 ③ 至少 1 条非工具官网的第三方权威源（Product Hunt / Hacker News / 行业报告 / 社区讨论）。链接文字必须有上下文描述，禁止裸 URL。Review 外链放在 Pricing 和 Our Take 段，Compare 外链散布在对比章节中，Blog 外链在工具名称和数据出处处。
+- **CTA 规则**：不手动标记。等 affiliate 接入后由组件统一注入。当前零 CTA 代码。（HTML 注释 `<!-- -->` 在 MDX v3 中会编译失败，切勿使用）
 - **CTA 规则**：不手动标记。等 affiliate 接入后由组件统一注入。当前零 CTA 代码。（HTML 注释 `<!-- -->` 在 MDX v3 中会编译失败，切勿使用）
 - **EEAT 标注**：文末统一加 `> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)` + `Last updated: YYYY-MM-DD`。
 - **Disclosure**：文末加 `Disclosure: Some links may contain affiliate partnerships at no extra cost to you.`
@@ -77,6 +79,10 @@ Disclosure: Some links may contain affiliate partnerships.
 
 **Word count**: ≥800 words (not counting tables)
 **Visual requirements**: Logo image embedded + Pros/Cons displayed as Markdown lists (no React components — use plain markdown only). At minimum 1 image inside article body.
+**External links (≥3)**:
+- [{ToolName} Official Site]({url}) — linked in "Visit {ToolName}" button
+- [{ToolName} Pricing]({url}/pricing) — linked in Pricing Breakdown section
+- 1 third-party source (Product Hunt / Hacker News / Reddit discussion) — linked in Our Take section
 
 ---
 
@@ -141,6 +147,10 @@ Disclosure: Some links may contain affiliate partnerships.
 **Visual requirements**: Dual logos embedded as Markdown images + "Winner: {Tool}" as bold text (no React components — `<WinnerBadge>` doesn't exist yet). At minimum 2 logo images.
 **Pricing table**: Must use actual tool names (never "Other Tool")
 **Internal links**: Link back to both tool review pages in body text
+**External links (≥3)**:
+- [{Tool A} Official Site]({urlA}) — linked in comparison body text
+- [{Tool B} Official Site]({urlB}) — linked in comparison body text
+- 1 third-party comparison/benchmark source — linked in verdict section
 
 ---
 
@@ -193,6 +203,9 @@ Disclosure: Some links may contain affiliate partnerships.
 
 **Word count**: ≥1000 words
 **Visual requirements**: Hero image + each tool logo as Markdown image. Star ratings (★★★★☆ 8/10) as text — no `<ScoreCard>` component, that's not implemented yet.
+**External links (≥3)**:
+- Official sites of top 3 tools mentioned — linked on first tool name mention in body
+- 1 industry stats source (Statista / Gartner / market report) — linked in intro
 
 ---
 
@@ -237,6 +250,9 @@ Disclosure: Some links may contain affiliate partnerships.
 ```
 
 **Word count**: ≥800 words
+**External links (≥2)**:
+- Original tool's official site — linked in "Why Look for Alternatives" section
+- Top 2 alternatives' official sites — linked on first mention in body
 
 ---
 
@@ -282,6 +298,9 @@ Disclosure: Some links may contain affiliate partnerships.
 ```
 
 **Word count**: ≥1000 words
+**External links (≥2)**:
+- Official sites of tools mentioned in "Best Tools" table — linked on tool names
+- 1 industry definition or research source — linked in intro
 
 ---
 

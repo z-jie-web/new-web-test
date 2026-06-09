@@ -37,6 +37,8 @@ Speaker diarization is where the Hugging Face token requirement kicks in. Pyanno
 
 The trade-off is simple: you trade setup time for zero ongoing costs and complete privacy. For journalists working with sensitive sources, therapists bound by HIPAA, or law firms with privileged client audio, the offline guarantee is not a convenience — it is a requirement that no cloud API can meet.
 
+
+The [open-source community](https://github.com/m-bain/whisperX) actively maintains and updates the project permissively under an open-source license.
 ## What WhisperX Actually Does
 
 WhisperX takes an audio file and returns text with three layers of information that vanilla OpenAI Whisper does not provide:
@@ -60,6 +62,7 @@ WhisperX takes an audio file and returns text with three layers of information t
 | Managed alternative (Deepgram) | ~$2.50-6.00/file | Users under 25 hours/month who value time over money |
 
 The break-even point: self-hosting WhisperX becomes cheaper than managed transcription services at roughly 25-65 hours of audio per month, depending on whether you buy a used or new GPU. Below that volume, pay for a managed API. Above it, buy the GPU.
+See the [project README](https://github.com/m-bain/whisperX#readme) for setup and hardware requirements.
 
 ## Who Should Use WhisperX
 

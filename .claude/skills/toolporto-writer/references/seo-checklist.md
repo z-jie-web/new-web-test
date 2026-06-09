@@ -146,3 +146,19 @@ Apply to every article before publishing.
 - [ ] Page loads in < 2s (Next.js SSG handles this)
 - [ ] Build output confirms static generation
 - [ ] `npm run build` passes without errors
+
+## 11. External Link Validation
+
+- [ ] **≥3 external links** (review/compare/blog), **≥2** (alternative/use-case/what-is)
+- [ ] **≥1 link to a non-tool-official-site** (third-party authoritative source)
+- [ ] All external links use descriptive anchor text (not "click here"):
+  - Good: `[ElevenLabs pricing page](https://elevenlabs.io/pricing)`
+  - Bad: `[click here](https://elevenlabs.io)`
+- [ ] No bare URLs in body text
+- [ ] Third-party sources are real pages (verified with WebFetch)
+- [ ] External links open in same tab (not `target="_blank"`)
+- [ ] 验证命令:
+  ```bash
+  grep -oP 'https?://[^\s\)]+' file.mdx | wc -l  # → ≥3 for review/compare/blog
+  grep -oP '\[.*?\]\(https?://[^\s\)]+\)' file.mdx  # check all link texts are meaningful
+  ```

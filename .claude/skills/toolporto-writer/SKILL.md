@@ -213,6 +213,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 - H2 含语义相关词
 - 首段 100 字内含目标关键词
 - 内链 ≥2 条
+- **外链 ≥3 条**（含 ≥1 条非工具官网的第三方权威源）
 - FAQ 用结构化 Q&A
 - 图片 alt 含关键词 + 文件名含关键词
 
@@ -236,7 +237,7 @@ bash scripts/article-check.sh <path-to-mdx-file>
 | 4 | FAQ ≥ 3 个问答 | 只有 1-2 个 |
 | 5 | 正文 ≥ 目标词数 | Review<800 / Compare<600 / Blog<800 |
 | 6 | 无损坏标题 | `## X ## Y` 合并标题 |
-| 7 | 内链 ≥2 + 图片 ≥1 + 无禁用组件 | 孤岛内容 / 无图 / 用了未实现组件 |
+| 7 | 内链 ≥2 + 图片 ≥1 + 外链 ≥3 + 无禁用组件 | 孤岛内容 / 无图 / 缺外链 / 用了未实现组件 |
 | 8 | SEO Frontmatter 合规 | 标题超长/描述超长/alt 太短 |
 | 9 | lastUpdated ISO 8601 | 缺失或格式错误 |
 
@@ -309,7 +310,7 @@ bash scripts/article-check.sh <path-to-mdx-file>
 
 📊 Phase 5 — SEO 校验证据：
   - 标题长度 / 描述长度
-  - 内链数 / alt 长度
+  - 内链数 / alt 长度 / 外链数（≥3）
 
 📊 Phase 6 — 质量门禁证据：
   - article-check.sh 完整输出（必须 9/9）
@@ -404,7 +405,7 @@ Phase 9 ◀──[G8]── Phase 8 ◀──[G7]── Phase 7 ◀──[G6]─
 | **G2** | Phase 2 → 3 | MDX 文件已写入磁盘 + `wc -w` ≥ 最低词数 | `ls` + `wc -w` 实际执行 |
 | **G3** | Phase 3 → 4 | Logo 文件存在于 `public/logos/` + 文章内图片引用 ≥1 | `ls public/logos/{slug}.*` + `grep -c` 实际执行 |
 | **G4** | Phase 4 → 5 | 已输出 ≥3 条删除的 AI 套话 + ≥2 条新增细节 | 检查聊天记录中是否包含具体文本 |
-| **G5** | Phase 5 → 6 | 已输出标题长度 + 描述长度 + 内链数 + alt 长度 | 检查聊天记录中是否包含数值 |
+| **G5** | Phase 5 → 6 | 已输出标题长度 + 描述长度 + 内链数 + 外链数（≥3） + alt 长度 | 检查聊天记录中是否包含数值 |
 | **G6** | Phase 6 → 7 | `article-check.sh` 输出 9/9 + `npm run build` 通过 | bash 输出截图 + build 最后一行是 success |
 | **G7** | Phase 7 → 8 | 三角色评语已输出（每条 ≥1 句） | 检查聊天记录 |
 | **G8** | Phase 8 → 9 | `find-link-ops.sh` 已跑 + ≥3 反向内链已写入 + 社媒文案已输出 | bash 输出 + `git diff` 确认修改 |
@@ -475,6 +476,7 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
 | 10.6 | **老文章已有工具名文字提及但未做 P0 编辑替换，反而新增一行** | 退回改用编辑替换 |
 | 11 | **Phase 1 未跑 `check-duplicate.sh` + `category-stats.sh` 并贴输出** | Phase 1 视为未执行，退回重做 |
 | 12 | **写文章不看 `category-stats.sh` 输出，盲写已饱和分类** | 退回该话题，从 Phase 1 重选 |
+| 13 | **外链 < 3 条或无第三方权威源外链** | 退回补外链 |
 
 ## Phase Completion Evidence (交付前必查)
 
@@ -510,6 +512,7 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
   - Meta描述长度: XX字符 (标准 110-160)
   - 图片alt文本列表 + 字符数（每个 ≥15）
   - 内链数量: X条（≥2）
+  - **外链数量: X条（≥3，含 ≥1 条第三方源）**
 
 📊 Phase 6 — 质量门禁证据（必跑脚本）：
   - **命令**: `bash scripts/article-check.sh <file.mdx>`
