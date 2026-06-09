@@ -1,6 +1,7 @@
 import { getAllSlugs } from '@/lib/content';
 import { getAllCompareSlugsWithContent } from '@/lib/compare';
 import { SITE } from '@/lib/constants';
+import { fileMtime } from '@/lib/article-meta';
 import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -18,30 +19,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const reviewPages = getAllSlugs('reviews').map((slug) => ({
     url: `${baseUrl}/reviews/${slug}`,
-    lastModified: new Date(),
+    lastModified: fileMtime('reviews', slug) ?? new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
   const categoryPages = getAllSlugs('categories').map((slug) => ({
     url: `${baseUrl}/categories/${slug}`,
-    lastModified: new Date(),
+    lastModified: fileMtime('categories', slug) ?? new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
-  const toolPages: MetadataRoute.Sitemap = [];
-
   const blogPages = getAllSlugs('blog').map((slug) => ({
     url: `${baseUrl}/blog/${slug}`,
-    lastModified: new Date(),
+    lastModified: fileMtime('blog', slug) ?? new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
   const comparePages = getAllCompareSlugsWithContent().map(({ a, b }) => ({
     url: `${baseUrl}/compare/${a}-vs-${b}`,
-    lastModified: new Date(),
+    lastModified: fileMtime('compare', `${a}-vs-${b}`) ?? new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -50,7 +49,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticPages,
     ...reviewPages,
     ...categoryPages,
-    ...toolPages,
     ...blogPages,
     ...comparePages,
   ];
