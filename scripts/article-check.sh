@@ -13,7 +13,7 @@ if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then
 fi
 
 PASS=0
-TOTAL=9
+TOTAL=10
 FAILS=()
 
 echo "========================================"
@@ -211,6 +211,64 @@ else
 fi
 echo ""
 
+# ===== Check 10: Schema-Ready Frontmatter =====
+echo "▶ Check 10: Schema-Ready Frontmatter"
+SCHEMA_OK=true
+
+case "$TYPE" in
+  review)
+    # pros 数组长度影响 ratingValue（≥3 → 4.6, <3 → 4.3，Google Schema 判定）——兼容 inline 和 multi-line YAML
+    PROS_LINE=$(grep -m1 '^pros:' "$FILE")
+    if echo "$PROS_LINE" | grep -q '\[.*\]'; then
+      # inline: pros: ["a", "b", "c"]
+      PROS_COUNT=$(echo "$PROS_LINE" | grep -o '"[^"]*"' | wc -l | tr -d ' ')
+    else
+      # multi-line:
+      # pros:
+      #   - a
+      #   - b
+      PROS_COUNT=$(awk '/^pros:/{found=1;next} found && /^  - /{count++} found && /^[a-z-]+:/{exit} END{print count+0}' "$FILE")
+    fi
+    echo "  pros count: $PROS_COUNT (need ≥3 for ratingValue 4.6)"
+    if [ "$PROS_COUNT" -lt 3 ]; then
+      echo "    ❌ pros < 3 → page component uses ratingValue 4.3 instead of 4.6"
+      SCHEMA_OK=false
+    fi
+    # pricing 必须是 Free / Freemium / Paid
+    PRICING_VAL=$(awk '/^pricing:/{sub(/^pricing: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+    echo "  pricing: $PRICING_VAL (must be Free/Freemium/Paid)"
+    if [[ ! "$PRICING_VAL" =~ ^(Free|Freemium|Paid)$ ]]; then
+      echo "    ❌ pricing value '$PRICING_VAL' not in (Free|Freemium|Paid)"
+      SCHEMA_OK=false
+    fi
+    # tags 数组非空 — 兼容 inline 和 multi-line YAML
+    TAGS_LINE=$(grep -m1 '^tags:' "$FILE")
+    if echo "$TAGS_LINE" | grep -q '\[.*\]'; then
+      TAG_COUNT=$(echo "$TAGS_LINE" | grep -o '"[^"]*"' | wc -l | tr -d ' ')
+    else
+      TAG_COUNT=$(awk '/^tags:/{found=1;next} found && /^  - /{count++} found && /^[a-z-]+:/{exit} END{print count+0}' "$FILE")
+    fi
+    echo "  tags count: $TAG_COUNT (need ≥1)"
+    if [ "$TAG_COUNT" -lt 1 ]; then
+      echo "    ❌ tags empty — needed for related reviews scoring"
+      SCHEMA_OK=false
+    fi
+    ;;
+  blog)
+    # author 一致性检查（只要不是明显混用就过）
+    AUTHOR_VAL=$(awk '/^author:/{sub(/^author: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+    echo "  author: $AUTHOR_VAL"
+    ;;
+esac
+
+if $SCHEMA_OK; then
+  echo "  ✅ PASS"
+  PASS=$((PASS+1))
+else
+  FAILS+=("10: Schema frontmatter")
+fi
+echo ""
+
 # ===== Summary =====
 echo "========================================"
 echo "FINAL SCORE: $PASS / $TOTAL"
@@ -218,7 +276,7 @@ echo "========================================"
 if [ "$PASS" -eq "$TOTAL" ]; then
   echo "✅ PASS — Ready to hand off"
   exit 0
-elif [ "$PASS" -ge 6 ]; then
+elif [ "$PASS" -ge 7 ]; then
   echo "⚠️  FIX — Address these and re-run:"
   printf '   - %s\n' "${FAILS[@]}"
   exit 1

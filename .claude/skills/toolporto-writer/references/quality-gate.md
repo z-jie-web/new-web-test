@@ -70,6 +70,14 @@ Expected: All three sub-checks pass.
 Format: `2026-06-04T12:53:58Z`
 Expected: Present and valid ISO 8601 format. **No lastUpdated = article won't sort correctly on listing pages. Auto-FAIL.**
 
+### Check 10: Schema-Ready Frontmatter
+> **防止 frontmatter 数据喂给 page.tsx 后生成无效 JSON-LD Schema（Google 会整页 reject）。**
+- Review: `pros` array ≥ 3 items (ensures `ratingValue: 4.6`, not 4.3)
+- Review: `pricing` is one of: `Free`, `Freemium`, `Paid` (determines `offers.price`)
+- Review: `tags` array is non-empty (ensures review category data completeness)
+- Blog: `author` field is consistent (not mixing "ToolHub Team" / "ToolPorto" / "ToolPorto Team" arbitrarily)
+- All: `date` / `lastUpdated` use ISO 8601 or `YYYY-MM-DD` (parsed by `new Date()` into valid ISO)
+
 ---
 
 ## 🚨 额外强制要求：Build 通过
@@ -89,9 +97,9 @@ Expected: "✓ Compiled successfully" or build exits 0 without errors.
 
 | Score | Status | Action |
 |-------|--------|--------|
-| 9/9 | ✅ PASS | Hand off to user |
-| 6-8/9 | ⚠️ FIX | Fix issues, recheck, hand off |
-| ≤5/9 | ❌ REWRITE | Major issues, rewrite the article |
+| 10/10 | ✅ PASS | Hand off to user |
+| 7-9/10 | ⚠️ FIX | Fix issues, recheck, hand off |
+| ≤6/10 | ❌ REWRITE | Major issues, rewrite the article |
 
 ---
 

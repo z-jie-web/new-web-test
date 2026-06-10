@@ -11,6 +11,7 @@ import {
 } from '@/lib/content';
 import { getAllComparePairsWithContent } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
+import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -83,11 +84,15 @@ export default async function CategoryPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `${frontmatter.name} Tools`,
-    about: frontmatter.name,
+    name: `Best ${frontmatter.name} Tools`,
+    url: `${SITE.url}/categories/${slug}`,
+    description: frontmatter.description,
+    about: { '@type': 'Thing', name: frontmatter.name },
     mainEntity: tools.map((t) => ({
       '@type': 'SoftwareApplication',
       name: t.frontmatter.name,
+      url: t.frontmatter.url,
+      description: t.frontmatter.description,
       applicationCategory: frontmatter.name,
     })),
   };

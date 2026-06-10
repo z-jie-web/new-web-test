@@ -1,7 +1,7 @@
 ---
 name: toolporto-writer
-version: 1.3.3
-description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.3: Phase 8 反向内链策略（编辑替换优先，防老文章膨胀）。"
+version: 1.3.4
+description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.4: 新增 Schema-Ready Frontmatter 检查（Check 10），防止 frontmatter 字段类型错误导致 Google 拒绝 JSON-LD。"
 author: toolporto
 license: MIT
 tags:
@@ -216,6 +216,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 - **外链 ≥3 条**（含 ≥1 条非工具官网的第三方权威源）
 - FAQ 用结构化 Q&A
 - 图片 alt 含关键词 + 文件名含关键词
+- **Schema 数据完整性**：frontmatter 字段类型正确（数值不写字符串、pros ≥3 条、pricing 为有效枚举值）— 参考 seo-checklist.md Section 12
 
 ### Phase 6: 质量门禁
 
@@ -227,7 +228,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 bash scripts/article-check.sh <path-to-mdx-file>
 ```
 
-**9 项硬检查**，一项不过即退回：
+**10 项硬检查**，一项不过即退回：
 
 | # | 检查项 | 不通过表现 |
 |---|-------|----------|
@@ -240,8 +241,9 @@ bash scripts/article-check.sh <path-to-mdx-file>
 | 7 | 内链 ≥2 + 图片 ≥1 + 外链 ≥3 + 无禁用组件 | 孤岛内容 / 无图 / 缺外链 / 用了未实现组件 |
 | 8 | SEO Frontmatter 合规 | 标题超长/描述超长/alt 太短 |
 | 9 | lastUpdated ISO 8601 | 缺失或格式错误 |
+| 10 | **Schema-Ready Frontmatter** | pros<3 / pricing 值无效 / tags 为空 |
 
-**评级**：9/9 → PASS | 6-8/9 → FIX | ≤5/9 → REWRITE
+**评级**：10/10 → PASS | 7-9/10 → FIX | ≤6/10 → REWRITE
 
 **额外强制要求**：`npm run build` 必须通过（脚本不检查 build 因为太慢，但交付前必须跑）。
 
@@ -405,8 +407,8 @@ Phase 9 ◀──[G8]── Phase 8 ◀──[G7]── Phase 7 ◀──[G6]─
 | **G2** | Phase 2 → 3 | MDX 文件已写入磁盘 + `wc -w` ≥ 最低词数 | `ls` + `wc -w` 实际执行 |
 | **G3** | Phase 3 → 4 | Logo 文件存在于 `public/logos/` + 文章内图片引用 ≥1 | `ls public/logos/{slug}.*` + `grep -c` 实际执行 |
 | **G4** | Phase 4 → 5 | 已输出 ≥3 条删除的 AI 套话 + ≥2 条新增细节 | 检查聊天记录中是否包含具体文本 |
-| **G5** | Phase 5 → 6 | 已输出标题长度 + 描述长度 + 内链数 + 外链数（≥3） + alt 长度 | 检查聊天记录中是否包含数值 |
-| **G6** | Phase 6 → 7 | `article-check.sh` 输出 9/9 + `npm run build` 通过 | bash 输出截图 + build 最后一行是 success |
+| **G5** | Phase 5 → 6 | 已输出标题长度 + 描述长度 + 内链数 + 外链数（≥3） + alt 长度 + **Schema frontmatter 合规（pros≥3 / pricing有效）** | 检查聊天记录中是否包含数值 |
+| **G6** | Phase 6 → 7 | `article-check.sh` 输出 **10/10** + `npm run build` 通过 | bash 输出截图 + build 最后一行是 success |
 | **G7** | Phase 7 → 8 | 三角色评语已输出（每条 ≥1 句） | 检查聊天记录 |
 | **G8** | Phase 8 → 9 | `find-link-ops.sh` 已跑 + ≥3 反向内链已写入 + 社媒文案已输出 | bash 输出 + `git diff` 确认修改 |
 | **G9** | 9 → 交付 | Phase Completion Evidence 完整报告已输出（8 段证据，缺一不可） | 检查聊天记录中包含全部 8 段 |
@@ -477,6 +479,7 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
 | 11 | **Phase 1 未跑 `check-duplicate.sh` + `category-stats.sh` 并贴输出** | Phase 1 视为未执行，退回重做 |
 | 12 | **写文章不看 `category-stats.sh` 输出，盲写已饱和分类** | 退回该话题，从 Phase 1 重选 |
 | 13 | **外链 < 3 条或无第三方权威源外链** | 退回补外链 |
+| 14 | **Review pros < 3 条 或 pricing 不在 {Free, Freemium, Paid} 内 或 tags 为空** | 退回补全 frontmatter — 这些字段直接决定 Schema ratingValue / offers.price / 相关推荐，缺一个 Google 都可能 reject |
 
 ## Phase Completion Evidence (交付前必查)
 
@@ -513,10 +516,11 @@ G1 ✅ G2 ✅ G3 ✅ G4 ✅ G5 ✅ G6 ✅ G7 ✅ G8 ✅ G9 ✅
   - 图片alt文本列表 + 字符数（每个 ≥15）
   - 内链数量: X条（≥2）
   - **外链数量: X条（≥3，含 ≥1 条第三方源）**
+  - **Schema frontmatter: pros数量 / pricing值 / tags数量 / author一致性**
 
 📊 Phase 6 — 质量门禁证据（必跑脚本）：
   - **命令**: `bash scripts/article-check.sh <file.mdx>`
-  - **输出**: 必须粘贴完整脚本输出（9 项 PASS/FAIL + FINAL SCORE）
+  - **输出**: 必须粘贴完整脚本输出（10 项 PASS/FAIL + FINAL SCORE）
   - 退出码 0 才算通过；1/2 必须修复后重跑
   - **额外**: `npm run build` 输出（末尾 5 行）
 

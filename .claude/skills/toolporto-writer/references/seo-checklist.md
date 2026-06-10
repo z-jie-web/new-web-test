@@ -162,3 +162,65 @@ Apply to every article before publishing.
   grep -oP 'https?://[^\s\)]+' file.mdx | wc -l  # → ≥3 for review/compare/blog
   grep -oP '\[.*?\]\(https?://[^\s\)]+\)' file.mdx  # check all link texts are meaningful
   ```
+
+## 12. Schema / Structured Data Validation
+
+> 页面 JSON-LD Schema 由 Next.js 组件生成，但数据源是 MDX frontmatter。frontmatter 字段的类型错误会导致整站 Schema 被 Google 判定无效。
+
+### 12.1 Numeric Fields — 必须为数字类型
+
+Schema 中的数值字段如果写成字符串，Google 结构化数据解析器直接 reject：
+
+| Frontmatter 字段 | Schema 中的使用 | 正确类型 | 错误示例 |
+|-----------------|---------------|---------|---------|
+| `pros` (array length) | `ratingValue` (number) | `pros.length >= 3` → `4.6` | ❌ `'4.6'` (string) |
+| — | `reviewCount` | `1` (number) | ❌ `'1'` (string) |
+| — | `bestRating` | `5` (number) | ❌ `'5'` (string) |
+| — | `worstRating` | `1` (number) | ❌ `'1'` (string) |
+| `pricing` | `price` (Offer) | `0` for Free, `undefined` otherwise | ❌ `'0'` (string) |
+
+- [ ] Review 类型：`pros` 数组长度影响 `ratingValue`（≥3 → 4.6, <3 → 4.3），确保 `pros` 至少 3 条
+- [ ] 任何 Schema 生成代码中，数值字面量不得加引号
+- [ ] 验证命令:
+  ```bash
+  # 检查页面组件中是否有字符串数值
+  grep -rn "ratingValue.*'" app/ || echo "✅ No string ratingValue"
+  grep -rn "reviewCount.*'" app/ || echo "✅ No string reviewCount"
+  ```
+
+### 12.2 Type Fields — 必须为 Schema Thing 类型
+
+- [ ] `about` 字段必须包裹为 `Thing` 类型：`{ '@type': 'Thing', name: '...' }`
+- [ ] ❌ `about: "AI Writing"` → ✅ `about: { '@type': 'Thing', name: 'AI Writing' }`
+
+### 12.3 Required Schema Fields Per Page Type
+
+- [ ] **Review page**: `Review` + `SoftwareApplication` + `BreadcrumbList` + `FAQPage`
+  - `Review.reviewRating.ratingValue` = number, `bestRating`/`worstRating` = number
+  - `AggregateRating.reviewCount` = number, `ratingValue` = number
+  - `Offer.price` = 0 (number) when Free, `undefined` otherwise
+- [ ] **Compare page**: `Article` + `BreadcrumbList` + `ItemList`
+  - `Article.datePublished`/`dateModified` = ISO 8601 string
+  - `ItemList.itemListElement[].position` = number
+- [ ] **Category page**: `CollectionPage`
+  - `about` = `{ '@type': 'Thing', name: '...' }` (not raw string)
+  - `mainEntity[].url` = tool homepage URL
+  - `mainEntity[].description` = tool description
+- [ ] **Blog page**: `BlogPosting` + `BreadcrumbList`
+  - `datePublished`/`dateModified` = ISO 8601 string
+  - `author.name` = consistent value (use SITE.name or frontmatter.author)
+- [ ] **Homepage**: `WebSite` + `SearchAction`（无需 MDX 数据源）
+
+### 12.4 Post-Build Schema Verification
+
+- [ ] `npm run build` 通过后，验证 Schema 渲染正确：
+  ```bash
+  # 抽检 review 页面 Schema
+  curl -s https://toolporto.com/reviews/{slug} | grep -o '"ratingValue":[0-9.]*' | head -3
+  # 预期输出: "ratingValue":4.6 (数字，无引号)
+  
+  # 抽检 category 页面 Schema
+  curl -s https://toolporto.com/categories/{slug} | grep -o '"@type":"Thing"'
+  # 预期输出: "@type":"Thing" (about 字段正确包裹)
+  ```
+- [ ] Google Rich Results Test 验证（可选，上线后）: `https://search.google.com/test/rich-results?url=...`

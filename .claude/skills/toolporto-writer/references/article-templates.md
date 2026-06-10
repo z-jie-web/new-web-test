@@ -14,9 +14,14 @@
 - **内链规则**：每篇文章至少 2 条内链。Review 链到相关 Compare，Compare 链回两个工具的 Review。
 - **外链规则（强制）**：每篇文章至少 3 条高质量外链。必须包含：① 工具官方网址 ② 官方定价页或文档 ③ 至少 1 条非工具官网的第三方权威源（Product Hunt / Hacker News / 行业报告 / 社区讨论）。链接文字必须有上下文描述，禁止裸 URL。Review 外链放在 Pricing 和 Our Take 段，Compare 外链散布在对比章节中，Blog 外链在工具名称和数据出处处。
 - **CTA 规则**：不手动标记。等 affiliate 接入后由组件统一注入。当前零 CTA 代码。（HTML 注释 `<!-- -->` 在 MDX v3 中会编译失败，切勿使用）
-- **CTA 规则**：不手动标记。等 affiliate 接入后由组件统一注入。当前零 CTA 代码。（HTML 注释 `<!-- -->` 在 MDX v3 中会编译失败，切勿使用）
 - **EEAT 标注**：文末统一加 `> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)` + `Last updated: YYYY-MM-DD`。
 - **Disclosure**：文末加 `Disclosure: Some links may contain affiliate partnerships at no extra cost to you.`
+- **Schema 规则（强制）**：frontmatter 字段是 JSON-LD Schema 的数据源。以下类型错误会直接导致 Google 拒绝整页结构化数据：
+  - **`pros` 数组必须 ≥3 条**：page.tsx 用 `pros.length >= 3 ? 4.6 : 4.3` 生成 `ratingValue`。只有 1-2 条 pros 会拉低评分。
+  - **`pricing` 必须为 `Free` / `Freemium` / `Paid` 之一**：决定 `offers.price` 取值（Free → 0，其他 → undefined）。
+  - **`tags` 数组不能为空**：影响相关推荐评分算法。
+  - **`author` 保持一致**：Blog 类型用 `frontmatter.author` 作为 Schema `author.name`，不要混用 "ToolHub Team" / "ToolPorto" / "ToolPorto Team"。
+  - **日期格式**：`date` 用 `YYYY-MM-DD`，`lastUpdated` 用 ISO 8601（`2026-06-05T12:00:00Z`）。错误的日期格式会导致 `new Date()` 返回 `Invalid Date`，Schema 中的 `datePublished` 变成 `null`。
 
 ---
 
