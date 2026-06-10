@@ -23,7 +23,7 @@ if [ -f "$INPUT" ]; then
   FILE="$INPUT"
 else
   # 尝试按 slug 找
-  for dir in reviews blog; do
+  for dir in reviews blog compare; do
     if [ -f "$CONTENT_ROOT/$dir/$INPUT.mdx" ]; then
       FILE="$CONTENT_ROOT/$dir/$INPUT.mdx"
       break
@@ -43,6 +43,27 @@ NEW_SLUG=$(awk '/^slug:/{sub(/^slug: */,""); gsub(/^"|"$/,""); print; exit}' "$F
 NEW_CATEGORY=$(awk '/^category:/{sub(/^category: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
 NEW_TYPE="review"
 if [[ "$FILE" == *"/blog/"* ]]; then NEW_TYPE="blog"; fi
+if [[ "$FILE" == *"/compare/"* ]]; then NEW_TYPE="compare"; fi
+
+# Compare 文件没有 category 字段，从 toolA 的 review 推导
+TOOL_A=""
+TOOL_B=""
+if [ "$NEW_TYPE" = "compare" ]; then
+  TOOL_A=$(awk '/^toolA:/{sub(/^toolA: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+  TOOL_B=$(awk '/^toolB:/{sub(/^toolB: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+  if [ -n "$TOOL_A" ] && [ -f "$CONTENT_ROOT/reviews/$TOOL_A.mdx" ]; then
+    NEW_CATEGORY=$(awk '/^category:/{sub(/^category: */,""); gsub(/^"|"$/,""); print; exit}' "$CONTENT_ROOT/reviews/$TOOL_A.mdx")
+  fi
+  if [ -z "$NEW_SLUG" ]; then
+    NEW_SLUG=$(basename "$FILE" .mdx)
+  fi
+  if [ -z "$NEW_NAME" ] && [ -n "$TOOL_A" ] && [ -n "$TOOL_B" ]; then
+    # 从 toolA/toolB 的 review 获取名字
+    NAME_A=$(awk '/^name:/{sub(/^name: */,""); gsub(/^"|"$/,""); print; exit}' "$CONTENT_ROOT/reviews/$TOOL_A.mdx" 2>/dev/null || echo "$TOOL_A")
+    NAME_B=$(awk '/^name:/{sub(/^name: */,""); gsub(/^"|"$/,""); print; exit}' "$CONTENT_ROOT/reviews/$TOOL_B.mdx" 2>/dev/null || echo "$TOOL_B")
+    NEW_NAME="$NAME_A vs $NAME_B"
+  fi
+fi
 
 if [ -z "$NEW_SLUG" ]; then
   NEW_SLUG=$(basename "$FILE" .mdx)
@@ -83,6 +104,19 @@ if [ -n "$NEW_CATEGORY" ]; then
       POTENTIAL_TARGETS+=("$f")
     fi
   done
+
+  # 同分类的 compare 文章（从 toolA review 推导 category）
+  for f in "$CONTENT_ROOT/compare"/*.mdx; do
+    [ ! -f "$f" ] && continue
+    [ "$f" = "$FILE" ] && continue  # 跳过自己
+    TA=$(awk '/^toolA:/{sub(/^toolA: */,""); gsub(/^"|"$/,""); print; exit}' "$f")
+    if [ -n "$TA" ] && [ -f "$CONTENT_ROOT/reviews/$TA.mdx" ]; then
+      CAT=$(awk '/^category:/{sub(/^category: */,""); gsub(/^"|"$/,""); print; exit}' "$CONTENT_ROOT/reviews/$TA.mdx")
+      if [ "$CAT" = "$NEW_CATEGORY" ]; then
+        POTENTIAL_TARGETS+=("$f")
+      fi
+    fi
+  done
 fi
 
 if [ ${#POTENTIAL_TARGETS[@]} -eq 0 ]; then
@@ -111,7 +145,7 @@ for target in "${POTENTIAL_TARGETS[@]}"; do
   # 检查 target 文件是否引用了 new article 的链接
   # 检查 /reviews/new-slug 或 /blog/new-slug 或 /compare/...-vs-new-slug
   LINKED=false
-  if grep -qE "/reviews/$NEW_SLUG|/blog/$NEW_SLUG|$NEW_SLUG-vs-|vs-$NEW_SLUG" "$target" 2>/dev/null; then
+  if grep -qE "/reviews/$NEW_SLUG|/blog/$NEW_SLUG|/compare/$NEW_SLUG|$NEW_SLUG-vs-|vs-$NEW_SLUG" "$target" 2>/dev/null; then
     LINKED=true
   fi
 
@@ -134,8 +168,11 @@ else
   echo "   In reviews:  \"## vs [Competitor]\" section"
   echo "   In blogs:    Related mentions or summary sections"
   echo ""
+  LINK_PREFIX="/reviews"
+  if [ "$NEW_TYPE" = "compare" ]; then LINK_PREFIX="/compare"; fi
+  if [ "$NEW_TYPE" = "blog" ]; then LINK_PREFIX="/blog"; fi
   echo "   Run:  code [file] and add:"
-  echo "   [Link to $NEW_NAME](/reviews/$NEW_SLUG)"
+  echo "   [Link to $NEW_NAME]($LINK_PREFIX/$NEW_SLUG)"
 fi
 
 echo ""
