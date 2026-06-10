@@ -97,7 +97,7 @@ export default async function ReviewPage({
   const reviewOgImageUrl = `${SITE.url}/reviews/${frontmatter.slug}/opengraph-image`;
   const logoPath = getLogoPath(frontmatter.slug);
   const logoUrl = logoPath ? `${SITE.url}${logoPath}` : null;
-  const ratingValue = frontmatter.pros.length >= 3 ? '4.6' : '4.3';
+  const ratingValue = frontmatter.pros.length >= 3 ? 4.6 : 4.3;
   const logoCaption = `${frontmatter.name} ${categoryName} tool logo`;
 
   const jsonLd = {
@@ -126,8 +126,8 @@ export default async function ReviewPage({
         reviewRating: {
           '@type': 'Rating',
           ratingValue,
-          bestRating: '5',
-          worstRating: '1',
+          bestRating: 5,
+          worstRating: 1,
         },
         itemReviewed: { '@id': `${reviewUrl}#tool` },
       },
@@ -143,13 +143,13 @@ export default async function ReviewPage({
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue,
-          reviewCount: '1',
-          bestRating: '5',
-          worstRating: '1',
+          reviewCount: 1,
+          bestRating: 5,
+          worstRating: 1,
         },
         offers: {
           '@type': 'Offer',
-          price: frontmatter.pricing === 'Free' ? '0' : undefined,
+          price: frontmatter.pricing === 'Free' ? 0 : undefined,
           priceCurrency: 'USD',
         },
       },
