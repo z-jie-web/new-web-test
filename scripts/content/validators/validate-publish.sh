@@ -159,6 +159,7 @@ echo "BACKLINK CHECK:"
 echo "$backlink_output"
 echo
 missing_backlinks="$(printf '%s\n' "$backlink_output" | sed -n 's/^MISSING BACKLINKS (\([0-9][0-9]*\)).*/\1/p' | head -n 1)"
+candidate_replace="$(printf '%s\n' "$backlink_output" | sed -n 's/^CANDIDATE_REPLACE (\([0-9][0-9]*\)).*/\1/p' | head -n 1)"
 
 article_link_path="/blog/${ARTICLE_ID}"
 if [ "$TYPE" = "review" ]; then
@@ -169,6 +170,7 @@ if [ "$TYPE" = "compare" ]; then
 fi
 
 applied_targets=()
+candidate_pool=()
 if [ -f "$CANDIDATE_BRIEF" ]; then
   while IFS= read -r target; do
     [ -n "$target" ] && applied_targets+=("$target")
@@ -184,14 +186,34 @@ if [ -f "$CANDIDATE_BRIEF" ]; then
   ' "$CANDIDATE_BRIEF")
 fi
 
+while IFS='|' read -r marker target _rest; do
+  case "$marker" in
+    "  REPLACE"|"  MISSING"|"  LINKED")
+      [ -n "$target" ] && candidate_pool+=("$target")
+      ;;
+  esac
+done < <(printf '%s\n' "$backlink_output")
+
 applied_count="${#applied_targets[@]}"
 verified_applied=0
 invalid_applied=0
+not_in_pool=0
 
 if [ "$applied_count" -gt 0 ]; then
   for target in "${applied_targets[@]}"; do
     if [ ! -f "$target" ]; then
       invalid_applied=$((invalid_applied + 1))
+      continue
+    fi
+    in_pool=0
+    for candidate in "${candidate_pool[@]-}"; do
+      if [ "$target" = "$candidate" ]; then
+        in_pool=1
+        break
+      fi
+    done
+    if [ "$in_pool" -eq 0 ]; then
+      not_in_pool=$((not_in_pool + 1))
       continue
     fi
     if grep -qF "](${article_link_path})" "$target"; then
@@ -202,13 +224,18 @@ if [ "$applied_count" -gt 0 ]; then
   done
 fi
 
-if [ "$applied_count" -ge 3 ] && [ "$applied_count" -le 5 ] && [ "$invalid_applied" -eq 0 ]; then
+if [ "$applied_count" -ge 3 ] && [ "$applied_count" -le 5 ] && [ "$invalid_applied" -eq 0 ] && [ "$not_in_pool" -eq 0 ]; then
   pass_item "backlink_targets_applied contains ${applied_count} verified target file(s)"
   if [ -n "$missing_backlinks" ]; then
     pass_item "backlink opportunity pool still reports ${missing_backlinks} remaining candidate(s), treated as advisory"
   fi
+  if [ -n "$candidate_replace" ]; then
+    pass_item "backlink candidate replace pool reports ${candidate_replace} replacement candidate(s)"
+  fi
 elif [ "$applied_count" -eq 0 ]; then
-  fail_fixable "backlink_targets_applied is missing; record 3-5 selected backlink targets in the publish brief"
+  fail_fixable "backlink_targets_applied is missing; record 3-5 selected backlink targets from MISSING/CANDIDATE_REPLACE in the publish brief"
+elif [ "$not_in_pool" -gt 0 ]; then
+  fail_fixable "backlink_targets_applied includes ${not_in_pool} file(s) outside the current MISSING/CANDIDATE_REPLACE candidate pool"
 else
   fail_fixable "backlink_targets_applied must contain 3-5 verified files; got ${applied_count} target(s) with ${invalid_applied} invalid"
 fi

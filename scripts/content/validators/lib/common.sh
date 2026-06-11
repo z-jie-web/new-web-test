@@ -130,6 +130,30 @@ count_yaml_list() {
   fi
 }
 
+# ── Extract list items from brief candidate YAML -----------------
+
+# Usage: extract_brief_list <section> <field> <file>
+# Example:
+#   extract_brief_list refresh stale_claims_removed brief.candidate.yaml
+extract_brief_list() {
+  local section="$1"
+  local field="$2"
+  local file="$3"
+  awk -v sec="$section" -v fld="$field" '
+    BEGIN { in_section = 0; in_field = 0 }
+    $0 == "  " sec ":" { in_section = 1; next }
+    in_section && /^  [a-zA-Z_][a-zA-Z0-9_]*:/ && $0 != "  " sec ":" { in_section = 0 }
+    in_section && $0 == "    " fld ":" { in_field = 1; next }
+    in_field && /^      - / {
+      sub(/^[[:space:]]{6}-[[:space:]]*/, "")
+      gsub(/^"|"$/, "")
+      print
+      next
+    }
+    in_field && /^[[:space:]]{4}[a-zA-Z_][a-zA-Z0-9_]*:/ { exit }
+  ' "$file"
+}
+
 # ── Header printer ──────────────────────────────────────────────
 
 print_header() {
@@ -231,6 +255,25 @@ check_common_prereqs() {
   if [ "$need_target" = "1" ] && [ ! -f "$TARGET_FILE" ]; then
     fail_prereq "target file does not exist"
   fi
+}
+
+# ── Git diff helpers ────────────────────────────────────────────
+
+resolve_repo_root() {
+  local start_dir="${1:-$(pwd)}"
+  git -C "$start_dir" rev-parse --show-toplevel 2>/dev/null
+}
+
+file_has_git_diff() {
+  local repo_root="$1"
+  local relpath="$2"
+  local unstaged staged
+  unstaged="$(git -C "$repo_root" diff --stat -- "$relpath" 2>/dev/null || true)"
+  staged="$(git -C "$repo_root" diff --cached --stat -- "$relpath" 2>/dev/null || true)"
+  if [ -n "$unstaged" ] || [ -n "$staged" ]; then
+    return 0
+  fi
+  return 1
 }
 
 # ── Exit code router ────────────────────────────────────────────

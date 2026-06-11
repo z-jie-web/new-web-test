@@ -313,7 +313,11 @@ AI_OK=true
 BODY_TEXT=$(awk '/^---$/{f++; next} f>=2' "$FILE" | grep -vE '^\|' | grep -vE '^!\[' | sed -E 's#https?://[^ )]+##g')
 
 # 11a: Vocabulary check — 45-word list, aligned with anti-ai-patterns-en.md
-	source "$(dirname "$0")/content/validators/lib/ai-patterns.sh" 2>/dev/null || true
+if ! source "$(dirname "$0")/content/validators/lib/ai-patterns.sh" 2>/dev/null; then
+  echo "  ❌ FAIL — missing shared AI pattern library"
+  FAILS+=("11: AI writing patterns config")
+  AI_OK=false
+fi
 AI_HITS=$(printf '%s\n' "$BODY_TEXT" | grep -ciE "$AI_PATTERNS" || true)
 echo "  [11a] Vocabulary: $AI_HITS AI-pattern word hits (0 = clean)"
 if [ "$AI_HITS" -gt 0 ]; then

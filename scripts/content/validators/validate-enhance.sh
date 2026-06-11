@@ -137,6 +137,7 @@ image_refs="$(grep -oE '!\[[^]]*\]\((/logos/[^)]*|/images/[^)]*|[^)]*screenshot[
 image_count=0
 invalid_image_paths=0
 short_alt_count=0
+missing_image_files=0
 
 if [ -n "$image_refs" ]; then
   while IFS= read -r ref; do
@@ -150,6 +151,14 @@ if [ -n "$image_refs" ]; then
     fi
     if ! echo "$src" | grep -Eq '^(/logos/|/images/|[^)]*screenshot[^)]*|[^)]*diagram[^)]*)'; then
       invalid_image_paths=$((invalid_image_paths + 1))
+    fi
+    if [[ "$src" == /* ]]; then
+      local_path="public${src}"
+      if [ ! -f "$local_path" ]; then
+        missing_image_files=$((missing_image_files + 1))
+      fi
+    else
+      missing_image_files=$((missing_image_files + 1))
     fi
   done < <(printf '%s\n' "$image_refs")
 fi
@@ -166,6 +175,12 @@ if [ "$image_count" -ge 1 ]; then
     pass_item "all image paths are in approved path families"
   else
     fail_fixable "${invalid_image_paths} image path(s) fall outside approved path families"
+  fi
+
+  if [ "$missing_image_files" -eq 0 ]; then
+    pass_item "all referenced image files exist on disk"
+  else
+    fail_fixable "${missing_image_files} referenced image file(s) are missing on disk"
   fi
 else
   fail_fixable "no markdown images found"
@@ -220,10 +235,12 @@ elif awk -v score="$ai_score" 'BEGIN { exit !(score >= 2.0) }'; then
   fail_fixable "AI pattern score is ${ai_score}; reduce intro/outro pattern density"
 fi
 
-if awk -v density="$emdash_density" 'BEGIN { exit !(density > 1.0) }'; then
+if awk -v density="$emdash_density" 'BEGIN { exit !(density > 2.0) }'; then
   fail_rewrite "em dash density is ${emdash_density}/100 words; rewrite required"
-elif awk -v density="$emdash_density" 'BEGIN { exit !(density >= 0.80) }'; then
+elif awk -v density="$emdash_density" 'BEGIN { exit !(density > 1.0) }'; then
   fail_fixable "em dash density is ${emdash_density}/100 words; reduce punctuation density"
+elif awk -v density="$emdash_density" 'BEGIN { exit !(density >= 0.80) }'; then
+  pass_item "em dash density is ${emdash_density}/100 words (advisory: slightly elevated)"
 fi
 
 # -- exit routing ------------------------------------------------

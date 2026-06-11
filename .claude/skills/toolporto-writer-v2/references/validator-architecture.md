@@ -430,7 +430,9 @@ Checks:
 
 - `refresh_reason` exists in brief
 - changed sections are identified
+- each `stale_claims_removed` entry is absent from the target file
 - stale information was replaced, not merely appended
+- each `files_touched` entry has real `git diff --stat` evidence
 - date fields were updated appropriately
 - refreshed file still passes draft/enhance/publish expectations for its type
 

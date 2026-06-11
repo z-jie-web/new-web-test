@@ -204,7 +204,9 @@ It should verify:
 
 - `refresh_reason` exists
 - `changed_sections` are named
+- each `stale_claims_removed` entry is no longer present in the target file
 - stale information was replaced, not merely appended
+- each `files_touched` entry has real `git diff --stat` evidence
 - freshness metadata was updated according to current policy
 - the article remains compatible with current project contract expectations
 
@@ -246,4 +248,3 @@ refresh complete:
 
 Only then may `brief.candidate.yaml` replace `brief.yaml` and advance to
 `enhance`.
-

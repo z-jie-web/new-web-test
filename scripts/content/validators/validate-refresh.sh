@@ -71,6 +71,60 @@ if [ -f "$CANDIDATE_BRIEF" ]; then
   fi
 fi
 
+# -- diff-aware refresh checks -----------------------------------
+repo_root="$(resolve_repo_root "$(pwd)")"
+if [ -z "$repo_root" ]; then
+  fail_prereq "git repository root could not be resolved"
+fi
+
+stale_claim_entries=()
+while IFS= read -r claim; do
+  [ -n "$claim" ] && stale_claim_entries+=("$claim")
+done < <(extract_brief_list refresh stale_claims_removed "$CANDIDATE_BRIEF")
+
+if [ "${#stale_claim_entries[@]}" -gt 0 ]; then
+  removed_count=0
+  still_present_count=0
+  for claim in "${stale_claim_entries[@]}"; do
+    if grep -qF "$claim" "$TARGET_FILE"; then
+      still_present_count=$((still_present_count + 1))
+      fail_fixable "stale claim still present in target file: ${claim}"
+    else
+      removed_count=$((removed_count + 1))
+    fi
+  done
+  if [ "$removed_count" -gt 0 ]; then
+    pass_item "stale_claims_removed entries are absent from target file (${removed_count}/${#stale_claim_entries[@]})"
+  fi
+  if [ "$removed_count" -eq 0 ] && [ "$still_present_count" -gt 0 ]; then
+    fail_rewrite "none of the claimed stale removals were actually removed from the target file"
+  fi
+fi
+
+files_touched_entries=()
+while IFS= read -r touched; do
+  [ -n "$touched" ] && files_touched_entries+=("$touched")
+done < <(extract_brief_list refresh files_touched "$CANDIDATE_BRIEF")
+
+if [ "${#files_touched_entries[@]}" -gt 0 ]; then
+  touched_with_diff=0
+  touched_without_diff=0
+  for touched in "${files_touched_entries[@]}"; do
+    if file_has_git_diff "$repo_root" "$touched"; then
+      touched_with_diff=$((touched_with_diff + 1))
+    else
+      touched_without_diff=$((touched_without_diff + 1))
+      fail_fixable "files_touched entry has no git diff: ${touched}"
+    fi
+  done
+  if [ "$touched_with_diff" -gt 0 ]; then
+    pass_item "files_touched entries have git diff evidence (${touched_with_diff}/${#files_touched_entries[@]})"
+  fi
+  if [ "$touched_with_diff" -eq 0 ] && [ "$touched_without_diff" -gt 0 ]; then
+    fail_rewrite "refresh claims touched files, but none show git diff evidence"
+  fi
+fi
+
 # -- freshness metadata ------------------------------------------
 case "$TYPE" in
   review|compare)
