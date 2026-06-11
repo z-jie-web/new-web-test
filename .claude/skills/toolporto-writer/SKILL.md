@@ -1,7 +1,7 @@
 ---
 name: toolporto-writer
-version: 1.3.4
-description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.4: 新增 Schema-Ready Frontmatter 检查（Check 10），防止 frontmatter 字段类型错误导致 Google 拒绝 JSON-LD。"
+version: 1.3.5
+description: "ToolPorto 英文 AI 工具文章写作系统 — 话题生成 → 写作 → 视觉增强 → 去 AI 味 → SEO 校验 → 质量门禁 → 三角色自检 → 发布后闭环 → 交付报告。9 Phase + 9 Gate 强制不可跳过。v1.3.5: 新增 AI Writing Patterns 检查（Check 11），30+ AI 味词汇自动拦截。"
 author: toolporto
 license: MIT
 tags:
@@ -228,7 +228,7 @@ curl -x http://127.0.0.1:${PROXY_PORT} -sL --max-time 10 -o public/logos/{slug}.
 bash scripts/article-check.sh <path-to-mdx-file>
 ```
 
-**10 项硬检查**，一项不过即退回：
+**11 项硬检查**，一项不过即退回：
 
 | # | 检查项 | 不通过表现 |
 |---|-------|----------|
@@ -242,8 +242,9 @@ bash scripts/article-check.sh <path-to-mdx-file>
 | 8 | SEO Frontmatter 合规 | 标题超长/描述超长/alt 太短 |
 | 9 | lastUpdated ISO 8601 | 缺失或格式错误 |
 | 10 | **Schema-Ready Frontmatter** | pros<3 / pricing 值无效 / tags 为空 |
+| 11 | **AI Writing Patterns** | 含 AI 味词汇（nuanced / fundamentally / significantly / comprehensive / leverage / seamless 等 30+ 个词） |
 
-**评级**：10/10 → PASS | 7-9/10 → FIX | ≤6/10 → REWRITE
+**评级**：11/11 → PASS | 8-10/11 → FIX | ≤7/11 → REWRITE
 
 **额外强制要求**：`npm run build` 必须通过（脚本不检查 build 因为太慢，但交付前必须跑）。
 
@@ -408,7 +409,7 @@ Phase 9 ◀──[G8]── Phase 8 ◀──[G7]── Phase 7 ◀──[G6]─
 | **G3** | Phase 3 → 4 | Logo 文件存在于 `public/logos/` + 文章内图片引用 ≥1 | `ls public/logos/{slug}.*` + `grep -c` 实际执行 |
 | **G4** | Phase 4 → 5 | 已输出 ≥3 条删除的 AI 套话 + ≥2 条新增细节 | 检查聊天记录中是否包含具体文本 |
 | **G5** | Phase 5 → 6 | 已输出标题长度 + 描述长度 + 内链数 + 外链数（≥3） + alt 长度 + **Schema frontmatter 合规（pros≥3 / pricing有效）** | 检查聊天记录中是否包含数值 |
-| **G6** | Phase 6 → 7 | `article-check.sh` 输出 **10/10** + `npm run build` 通过 | bash 输出截图 + build 最后一行是 success |
+| **G6** | Phase 6 → 7 | `article-check.sh` 输出 **11/11** + `npm run build` 通过 | bash 输出截图 + build 最后一行是 success |
 | **G7** | Phase 7 → 8 | 三角色评语已输出（每条 ≥1 句） | 检查聊天记录 |
 | **G8** | Phase 8 → 9 | `find-link-ops.sh` 已跑 + ≥3 反向内链已写入 + 社媒文案已输出 | bash 输出 + `git diff` 确认修改 |
 | **G9** | 9 → 交付 | Phase Completion Evidence 完整报告已输出（8 段证据，缺一不可） | 检查聊天记录中包含全部 8 段 |

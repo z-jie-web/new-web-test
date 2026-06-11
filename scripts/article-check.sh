@@ -13,7 +13,7 @@ if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then
 fi
 
 PASS=0
-TOTAL=10
+TOTAL=11
 FAILS=()
 
 echo "========================================"
@@ -269,6 +269,20 @@ else
 fi
 echo ""
 
+# ===== Check 11: AI Writing Patterns =====
+echo "▶ Check 11: AI Writing Patterns"
+AI_PATTERNS="nuanced|fundamentally|significantly|comprehensive|leverage|streamline|unlock|empower|seamless|multifaceted|paradigm|pivotal|intricate|testament|underscores|aforementioned|notably|effectively|essentially|arguably|undoubtedly|remarkably|noteworthy|tapestry|holistic|in today's|it's important to note|in conclusion|to summarize|in summary"
+AI_HITS=$(grep -ciE "$AI_PATTERNS" "$FILE" || true)
+if [ "$AI_HITS" -gt 0 ]; then
+  echo "  ❌ FAIL — found $AI_HITS AI-pattern words:"
+  grep -niE "$AI_PATTERNS" "$FILE" | head -10 | sed 's/^/    /'
+  FAILS+=("11: AI writing patterns")
+else
+  echo "  ✅ PASS"
+  PASS=$((PASS+1))
+fi
+echo ""
+
 # ===== Summary =====
 echo "========================================"
 echo "FINAL SCORE: $PASS / $TOTAL"
@@ -276,7 +290,7 @@ echo "========================================"
 if [ "$PASS" -eq "$TOTAL" ]; then
   echo "✅ PASS — Ready to hand off"
   exit 0
-elif [ "$PASS" -ge 7 ]; then
+elif [ "$PASS" -ge 8 ]; then
   echo "⚠️  FIX — Address these and re-run:"
   printf '   - %s\n' "${FAILS[@]}"
   exit 1
