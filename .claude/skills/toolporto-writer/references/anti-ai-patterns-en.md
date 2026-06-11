@@ -8,8 +8,8 @@ Based on `content-deai-engine` skill (29 patterns, Wikipedia WikiProject AI Clea
 
 ### High-Frequency AI Vocabulary (avoid these)
 
-**Overused words**:
-actually, additionally, align with, crucial, delve, emphasizing, enduring, enhance, fostering, garner, highlight (verb), interplay, intricate/intricacies, key (adjective), landscape (abstract noun), pivotal, showcase, tapestry (abstract noun), testament, underscore (verb), valuable, vibrant
+**Overused words** (30+ — article-check.sh Check 11 自动拦截):
+actually, additionally, align with, arguably, comprehensive, crucial, delve, effectively, emphasize, empower, enduring, enhance, essentially, essentially, fostering, fundamentally, garner, highlight (verb), holistic, in today's, in conclusion, interplay, intricate/intricacies, it's important to note, key (adjective), landscape (abstract noun), leverage, multifaceted, notably, nuanced, paradigm, pivotal, remarkably, seamless, showcase, significantly, streamline, tapestry (abstract noun), testament, to summarize, in summary, underscore (verb), undoubtedly, unlock, valuable, vibrant, noteworthy
 
 **What to use instead**:
 - "crucial" → don't say it's crucial, say *why* it matters
