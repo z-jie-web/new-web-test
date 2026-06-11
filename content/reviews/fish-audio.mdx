@@ -18,7 +18,7 @@ bestFor: ["Developers building voice into apps who want open-source flexibility"
 ## TL;DR
 
 - Fish Audio started as an open-source TTS project and grew into a top-3 global platform with 110,000+ community voice models.
-- The S2-Pro model (4B parameters, 10M+ training hours) ranks #1 on TTS-Arena — ahead of ElevenLabs, OpenAI, and Google on standardized quality benchmarks.
+- The S2-Pro model (4B parameters, 10M+ training hours) ranks #1 on TTS-Arena, ahead of ElevenLabs, OpenAI, and Google on standardized quality benchmarks.
 - Voice cloning from 10 seconds of audio is the fastest in the industry. Cross-lingual cloning (record in English, generate in Japanese) works better than any competitor we've tested.
 - Self-hosting is viable if you have a 24GB GPU. Otherwise, the Plus plan at $5.50-11/month is among the best deals in TTS.
 
@@ -26,33 +26,33 @@ Fish Audio is what happens when an open-source project gets serious. 26,000+ Git
 
 ## Key Features
 
-- **S2-Pro voice generation** — 4B parameter Dual-AR model trained on 10M+ hours across 80+ languages. Word error rate of 0.54% (Chinese) and 0.99% (English) — these are production-grade numbers, not research paper claims.
-- **10-second voice cloning** — record a single sentence, get a usable voice clone. The 30-second high-quality mode is better for production, but the instant mode is fast enough to test ideas. ElevenLabs requires 30 seconds minimum.
-- **Emotion control via natural language** — type `[whispering urgently]` or `[laughing nervously]` in your script. 15,000+ tags supported with 93.3% activation accuracy. This is not a gimmick — it changes how you write TTS scripts when you can direct voice performance inline.
-- **Multi-speaker dialogue generation** — generate a conversation between 3 characters in a single API call. No stitching required. For audiobook chapters with dialogue, this saves hours of manual editing.
-- **Full audio toolkit** — stem splitter (isolate vocals, drums, bass), AI sound effects generator, speech-to-text with 100+ languages, audio translation across 50+ language pairs. More than just TTS.
+- **S2-Pro voice generation** ,  4B parameter Dual-AR model trained on 10M+ hours across 80+ languages. Word error rate of 0.54% (Chinese) and 0.99% (English) ,  these are production-grade numbers, not research paper claims.
+- **10-second voice cloning** ,  record a single sentence, get a usable voice clone. The 30-second high-quality mode is better for production, but the instant mode is fast enough to test ideas. ElevenLabs requires 30 seconds minimum.
+- **Emotion control via natural language** ,  type `[whispering urgently]` or `[laughing nervously]` in your script. 15,000+ tags supported with 93.3% activation accuracy. This is not a gimmick, it changes how you write TTS scripts when you can direct voice performance inline.
+- **Multi-speaker dialogue generation** ,  generate a conversation between 3 characters in a single API call. No stitching required. For audiobook chapters with dialogue, this saves hours of manual editing.
+- **Full audio toolkit** ,  stem splitter (isolate vocals, drums, bass), AI sound effects generator, speech-to-text with 100+ languages, audio translation across 50+ language pairs. More than just TTS.
 
 ## Our Take
 
-Fish Audio's quality surprised us. The S2-Pro model genuinely competes with ElevenLabs on raw output quality — and wins on benchmarks. In our own A/B testing with 20 English passages, the difference was marginal: ElevenLabs sounded slightly more natural on conversational narration, Fish Audio handled technical terminology and multi-speaker scenes better.
+Fish Audio's quality surprised us. The S2-Pro model genuinely competes with ElevenLabs on raw output quality, and wins on benchmarks. In our own A/B testing with 20 English passages, the difference was marginal: ElevenLabs sounded slightly more natural on conversational narration, Fish Audio handled technical terminology and multi-speaker scenes better.
 
 The real differentiator is cost. At $0.05/min estimated vs ElevenLabs' $0.18/min, Fish Audio is 70% cheaper. For a team generating 100 hours of audio per month, that's roughly $300 vs $1,080. Over a year, the gap is nearly $10,000.
 
 The catch: the credit system is confusing. UTF-8 byte pricing means non-Latin scripts cost more. A Chinese text of the same word count as an English one costs 3-4x more because each character is 3 bytes. The pricing page doesn't make this clear upfront, and you won't know your actual costs until you run real workloads.
 
-If you have a GPU and technical skills, self-hosting the open-source models eliminates API costs entirely. The S2-Mini (400M params) runs on a 12GB RTX 3060. S2-Pro (4B params) needs 24GB. For developers building voice into production apps, this is the strongest argument for Fish Audio — no vendor lock-in, no per-request pricing, full privacy.
+If you have a GPU and technical skills, self-hosting the open-source models eliminates API costs entirely. The S2-Mini (400M params) runs on a 12GB RTX 3060. S2-Pro (4B params) needs 24GB. For developers building voice into production apps, this is the strongest argument for Fish Audio, no vendor lock-in, no per-request pricing, full privacy.
 
 
 See the [official Fish Audio documentation](https://fish.audio/docs) for the latest updates, features, and community discussions.
-## What Fish Audio Actually Does
+## What Fish Audio Really Does
 
 Fish Audio is a full-stack voice AI platform built around the S2 model family. The core TTS pipeline converts text to speech with sub-150ms latency on server hardware. Voice cloning extracts a speaker embedding from 10-15 seconds of reference audio and applies it to any language the model supports.
 
-The emotion control system is what sets it apart from ElevenLabs. Rather than fiddling with SSML tags or sliders, you write natural language directions directly in the script: `[whispering conspiratorially]`, `[shouting over crowd noise]`, `[sarcastic, eye-rolling tone]`. The model interprets these and adjusts delivery. It works about 93% of the time — the other 7%, the tag is ignored or misinterpreted.
+The emotion control system is what sets it apart from ElevenLabs. Rather than fiddling with SSML tags or sliders, you write natural language directions directly in the script: `[whispering conspiratorially]`, `[shouting over crowd noise]`, `[sarcastic, eye-rolling tone]`. The model interprets these and adjusts delivery. It works about 93% of the time, the other 7%, the tag is ignored or misinterpreted.
 
 The multi-speaker feature deserves attention. Upload 3 voice samples, write a script with speaker labels, and generate the full dialogue in one pass. Timing, turn-taking, and emotional context carry across speakers. For audiobook production, podcast intros, and game dialogue, this single feature replaces a workflow that previously required multiple tools and manual stitching.
 
-The companion tools fill out the platform: stem splitter for isolating audio elements, sound effect generator from text prompts, and speech-to-text that handles 100+ languages. These are solid but not category-leading — they're useful add-ons, not reasons to choose Fish Audio over alternatives.
+The companion tools fill out the platform: stem splitter for isolating audio elements, sound effect generator from text prompts, and speech-to-text that handles 100+ languages. These are solid but not category-leading, they're useful add-ons, not reasons to choose Fish Audio over alternatives.
 
 ## Pricing Breakdown
 
@@ -64,7 +64,7 @@ The companion tools fill out the platform: stem splitter for isolating audio ele
 | API Pay-as-You-Go | $15/1M UTF-8 bytes | Approx $0.05/min English, higher for non-Latin scripts |
 | Self-Hosted | Free (model weights) | Commercial use requires license; 12-24GB GPU needed |
 
-Promotional pricing is common — list prices ($20/mo Plus, $150/mo Pro) are rarely charged. All paid plans include commercial usage rights. If you know you'll use it regularly, the Pro plan at $37.50/month is the best value.
+Promotional pricing is common, list prices ($20/mo Plus, $150/mo Pro) are rarely charged. All paid plans include commercial usage rights. If you know you'll use it regularly, the Pro plan at $37.50/month is the best value.
 
 Check [official pricing details](https://fish.audio/pricing) for the latest plans and features.
 
@@ -72,29 +72,29 @@ Check [official pricing details](https://fish.audio/pricing) for the latest plan
 
 **Strong fit if you:**
 - Are a developer who wants open-source TTS with no vendor lock-in
-- Need voice cloning in 10+ languages — cross-lingual cloning is best-in-class
+- Need voice cloning in 10+ languages, cross-lingual cloning is best-in-class
 - Generate audiobooks or long-form narration with multi-speaker dialogue
 - Want fine-grained emotion control in generated speech
 - Have a GPU and prefer self-hosting over API dependency
 
 **Not the best if you:**
-- Need the absolute highest English voice expressiveness — ElevenLabs still has a slight edge
-- Want the simplest possible setup with no technical overhead — ElevenLabs Starter is more plug-and-play
-- Generate mostly non-Latin scripts — UTF-8 byte pricing makes it more expensive per word
+- Need the absolute highest English voice expressiveness, ElevenLabs still has a slight edge
+- Want the simplest possible setup with no technical overhead, ElevenLabs Starter is more plug-and-play
+- Generate mostly non-Latin scripts, UTF-8 byte pricing makes it more expensive per word
 - Need real-time voice agents under 100ms latency on consumer hardware
 
 ## vs ElevenLabs and Play.ht
 
-Fish Audio competes directly with ElevenLabs on quality and undercuts it on price. The tradeoff: ElevenLabs has a more polished product experience — better documentation, cleaner API, more predictable pricing. Fish Audio has better technology in specific areas (emotion control, multi-speaker, cross-lingual cloning) and the open-source escape hatch.
+Fish Audio competes directly with ElevenLabs on quality and undercuts it on price. The tradeoff: ElevenLabs has a more polished product experience, better documentation, cleaner API, more predictable pricing. Fish Audio has better technology in specific areas (emotion control, multi-speaker, cross-lingual cloning) and the open-source escape hatch.
 
 Against Play.ht, Fish Audio wins on raw voice quality and cloning speed. Play.ht counters with a larger voice library (800+ voices in 142 languages) and a simpler pricing model. For most developers and technical teams, Fish Audio is the better pick.
 
-Read our comparisons: [ElevenLabs vs Fish Audio →](/compare/elevenlabs-vs-fish-audio), [Fish Audio vs Speechify →](/compare/fish-audio-vs-speechify), [Fish Audio vs Murf AI →](/compare/fish-audio-vs-murf-ai), [ElevenLabs vs Play.ht →](/compare/elevenlabs-vs-play-ht), and [full ElevenLabs review →](/reviews/elevenlabs). For real-time voice agents where latency is critical, [Cartesia](/reviews/cartesia) offers 40ms TTS — faster than Fish Audio's ~150ms.
+Read our comparisons: [ElevenLabs vs Fish Audio →](/compare/elevenlabs-vs-fish-audio), [Fish Audio vs Speechify →](/compare/fish-audio-vs-speechify), [Fish Audio vs Murf AI →](/compare/fish-audio-vs-murf-ai), [ElevenLabs vs Play.ht →](/compare/elevenlabs-vs-play-ht), and [full ElevenLabs review →](/reviews/elevenlabs). For real-time voice agents where latency is critical, [Cartesia](/reviews/cartesia) offers 40ms TTS, faster than Fish Audio's ~150ms.
 
 ## FAQ
 
 **Is Fish Audio really better than ElevenLabs?**
-On standardized benchmarks (TTS-Arena), yes — S2-Pro ranks #1 overall. In real-world use, it depends on the voice and language. [ElevenLabs](/reviews/elevenlabs) still sounds slightly more natural for casual English narration. Fish Audio wins on technical content, multi-speaker scenes, and non-English languages.
+On standardized benchmarks (TTS-Arena), yes, S2-Pro ranks #1 overall. In real-world use, it depends on the voice and language. [ElevenLabs](/reviews/elevenlabs) still sounds slightly more natural for casual English narration. Fish Audio wins on technical content, multi-speaker scenes, and non-English languages.
 
 **How fast is the voice cloning?**
 10-15 seconds of reference audio for instant cloning, about 5 minutes for the high-quality mode. Instant clones are usable for testing and demos. Production use (audiobooks, voiceovers) benefits from the longer mode. Both are faster than ElevenLabs' 30-second minimum.
