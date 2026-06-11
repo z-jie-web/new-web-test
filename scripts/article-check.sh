@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# article-check.sh — Phase 6 硬门禁
+# article-check.sh — V2 publish sub-check (was V1 Phase 6 gate)
 # Usage: bash scripts/article-check.sh content/blog/xxx.mdx
-# 输出 8 项检查结果 + 总分。退出码: 0=PASS, 1=FIX, 2=REWRITE
+# Now invoked from validate-publish.sh. Not a standalone authority.
+# AI_PATTERNS sourced from scripts/content/validators/lib/ai-patterns.sh
+# 输出 11 项检查结果 + 总分。退出码: 0=PASS, 1=FIX, 2=REWRITE
 
 set -uo pipefail
 
@@ -37,7 +39,7 @@ case "$TYPE" in
     REQUIRED=("## Key Features" "## Pricing" "## FAQ")
     ;;
   compare)
-    REQUIRED=("## At a Glance" "## Pricing" "## Who Should Choose" "## FAQ")
+    REQUIRED=("## Pricing" "## Who Should Choose" "## FAQ")
     ;;
   blog)
     REQUIRED=("## " "## FAQ")
@@ -127,8 +129,8 @@ echo ""
 
 # ===== Check 7: Internal Links + Images =====
 echo "▶ Check 7: Internal Links ≥2 + Image ≥1 + No Forbidden Components"
-INTERNAL_LINKS=$(grep -cE "\]\((/reviews/|/compare/|/blog/|/categories/)" "$FILE" || true)
-IMAGES=$(grep -cE "!\[.*\]\(/logos/" "$FILE" || true)
+INTERNAL_LINKS=$(grep -oE "\]\((/reviews/[^)]*|/compare/[^)]*|/blog/[^)]*|/categories/[^)]*)\)" "$FILE" | wc -l | tr -d ' ')
+IMAGES=$(grep -oE "!\[[^]]*\]\((/logos/[^)]*|/images/[^)]*|[^)]*screenshot[^)]*|[^)]*diagram[^)]*)\)" "$FILE" | wc -l | tr -d ' ')
 FORBIDDEN=$(grep -nE "<(WinnerBadge|ProsCons|ScoreCard|CTABox)" "$FILE" || true)
 echo "  Internal links: $INTERNAL_LINKS (need ≥2)"
 echo "  Images embedded: $IMAGES (need ≥1)"
@@ -196,18 +198,33 @@ else
 fi
 echo ""
 
-# ===== Check 9: lastUpdated ISO 8601 =====
-echo "▶ Check 9: lastUpdated (ISO 8601 date)"
-LASTUPDATED=$(awk '/^lastUpdated:/{sub(/^lastUpdated: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
-if [ -z "$LASTUPDATED" ]; then
-  echo "  ❌ FAIL — missing lastUpdated field in frontmatter"
-  FAILS+=("9: lastUpdated")
-elif echo "$LASTUPDATED" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}'; then
-  echo "  ✅ PASS ($LASTUPDATED)"
-  PASS=$((PASS+1))
+# ===== Check 9: Freshness Date =====
+if [ "$TYPE" = "blog" ]; then
+  echo "▶ Check 9: date field"
+  DATE_VALUE=$(awk '/^date:/{sub(/^date: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+  if [ -z "$DATE_VALUE" ]; then
+    echo "  ❌ FAIL — missing date field in frontmatter"
+    FAILS+=("9: date")
+  elif echo "$DATE_VALUE" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$|^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?$'; then
+    echo "  ✅ PASS ($DATE_VALUE)"
+    PASS=$((PASS+1))
+  else
+    echo "  ❌ FAIL — invalid date format: '$DATE_VALUE'"
+    FAILS+=("9: date")
+  fi
 else
-  echo "  ❌ FAIL — invalid format: '$LASTUPDATED' (need ISO 8601, e.g. 2026-06-04T12:53:58Z)"
-  FAILS+=("9: lastUpdated")
+  echo "▶ Check 9: lastUpdated field"
+  LASTUPDATED=$(awk '/^lastUpdated:/{sub(/^lastUpdated: */,""); gsub(/^"|"$/,""); print; exit}' "$FILE")
+  if [ -z "$LASTUPDATED" ]; then
+    echo "  ❌ FAIL — missing lastUpdated field in frontmatter"
+    FAILS+=("9: lastUpdated")
+  elif echo "$LASTUPDATED" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+    echo "  ✅ PASS ($LASTUPDATED)"
+    PASS=$((PASS+1))
+  else
+    echo "  ❌ FAIL — invalid format: '$LASTUPDATED'"
+    FAILS+=("9: lastUpdated")
+  fi
 fi
 echo ""
 
@@ -269,17 +286,44 @@ else
 fi
 echo ""
 
-# ===== Check 11: AI Writing Patterns =====
+# ===== Check 11: AI Writing Patterns (vocabulary + em dash density) =====
 echo "▶ Check 11: AI Writing Patterns"
-AI_PATTERNS="nuanced|fundamentally|significantly|comprehensive|leverage|streamline|unlock|empower|seamless|multifaceted|paradigm|pivotal|intricate|testament|underscores|aforementioned|notably|effectively|essentially|arguably|undoubtedly|remarkably|noteworthy|tapestry|holistic|in today's|it's important to note|in conclusion|to summarize|in summary"
-AI_HITS=$(grep -ciE "$AI_PATTERNS" "$FILE" || true)
+AI_OK=true
+
+# Build body-only plain text for AI pattern checks
+BODY_TEXT=$(awk '/^---$/{f++; next} f>=2' "$FILE" | grep -vE '^\|' | grep -vE '^!\[' | sed -E 's#https?://[^ )]+##g')
+
+# 11a: Vocabulary check — 45-word list, aligned with anti-ai-patterns-en.md
+	source "$(dirname "$0")/content/validators/lib/ai-patterns.sh" 2>/dev/null || true
+AI_HITS=$(printf '%s\n' "$BODY_TEXT" | grep -ciE "$AI_PATTERNS" || true)
+echo "  [11a] Vocabulary: $AI_HITS AI-pattern word hits (0 = clean)"
 if [ "$AI_HITS" -gt 0 ]; then
-  echo "  ❌ FAIL — found $AI_HITS AI-pattern words:"
-  grep -niE "$AI_PATTERNS" "$FILE" | head -10 | sed 's/^/    /'
-  FAILS+=("11: AI writing patterns")
+  echo "  ⚠️  AI vocabulary found:"
+  printf '%s\n' "$BODY_TEXT" | grep -niE "$AI_PATTERNS" | head -10 | sed 's/^/    /'
+  AI_OK=false
+fi
+
+# 11b: Em dash density check (body text only, excluding frontmatter)
+# anti-ai-patterns-en.md Pattern 6: "AI overuses — like this — constantly"
+BODY_WORDS=$(printf '%s\n' "$BODY_TEXT" | wc -w | tr -d ' ')
+BODY_EMDASHES=$(printf '%s\n' "$BODY_TEXT" | grep -o '—' | wc -l | tr -d ' ')
+if [ "$BODY_WORDS" -gt 0 ]; then
+  # Use bc for floating-point; fallback to awk if bc unavailable
+  EMDASH_DENSITY=$(echo "scale=2; $BODY_EMDASHES * 100 / $BODY_WORDS" | bc 2>/dev/null || echo "0")
+  echo "  [11b] Em dash density: $BODY_EMDASHES em dashes / $BODY_WORDS body words = ${EMDASH_DENSITY}/100 words (limit: ≤1.0)"
+  if [ "$(echo "$EMDASH_DENSITY > 1.0" | bc 2>/dev/null || echo "0")" = "1" ]; then
+    echo "  ⚠️  Em dash density exceeds 1.0/100 words — rewrite using commas, periods, or restructure"
+    AI_OK=false
+  fi
 else
+  echo "  [11b] Em dash density: N/A (no body text)"
+fi
+
+if $AI_OK; then
   echo "  ✅ PASS"
   PASS=$((PASS+1))
+else
+  FAILS+=("11: AI writing patterns")
 fi
 echo ""
 

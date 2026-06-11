@@ -7,7 +7,7 @@ import { generateMetadata as seoMeta } from '@/lib/seo';
 export const metadata = seoMeta({
   title: 'Contact Us',
   description:
-    'Get in touch with ToolHub — list your tool, report issues, or ask questions.',
+    'Get in touch with ToolPorto — list your tool, report issues, or ask questions.',
   path: '/contact',
 });
 
@@ -20,7 +20,7 @@ export default function ContactPage() {
         <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
         <div className="prose prose-invert max-w-none mb-8">
           <p>
-            Have a tool you would like listed on ToolHub? Found incorrect
+            Have a tool you would like listed on ToolPorto? Found incorrect
             information? Want to advertise with us? Reach out and we will get
             back to you.
           </p>

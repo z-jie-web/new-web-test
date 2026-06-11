@@ -5,7 +5,7 @@ import { generateMetadata as seoMeta } from '@/lib/seo';
 
 export const metadata = seoMeta({
   title: 'Disclaimer',
-  description: 'Affiliate disclosure and content disclaimer for ToolHub.',
+  description: 'Affiliate disclosure and content disclaimer for ToolPorto.',
   path: '/disclaimer',
 });
 
@@ -19,7 +19,7 @@ export default function DisclaimerPage() {
         <div className="prose prose-invert max-w-none">
           <h2>Affiliate Disclosure</h2>
           <p>
-            Some links on ToolHub are affiliate links. This means we may earn a
+            Some links on ToolPorto are affiliate links. This means we may earn a
             commission at no additional cost to you if you click through and
             make a purchase or sign up for a service. We only recommend tools
             we believe provide genuine value.
@@ -32,7 +32,7 @@ export default function DisclaimerPage() {
           </p>
           <h2>No Endorsement</h2>
           <p>
-            Listing a tool on ToolHub does not constitute an endorsement. Our
+            Listing a tool on ToolPorto does not constitute an endorsement. Our
             reviews represent our opinions based on available information at the
             time of writing.
           </p>

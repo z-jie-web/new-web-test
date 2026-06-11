@@ -20,7 +20,7 @@
   - **`pros` 数组必须 ≥3 条**：page.tsx 用 `pros.length >= 3 ? 4.6 : 4.3` 生成 `ratingValue`。只有 1-2 条 pros 会拉低评分。
   - **`pricing` 必须为 `Free` / `Freemium` / `Paid` 之一**：决定 `offers.price` 取值（Free → 0，其他 → undefined）。
   - **`tags` 数组不能为空**：影响相关推荐评分算法。
-  - **`author` 保持一致**：Blog 类型用 `frontmatter.author` 作为 Schema `author.name`，不要混用 "ToolHub Team" / "ToolPorto" / "ToolPorto Team"。
+  - **`author` 保持一致**：Blog 类型用 `frontmatter.author` 作为 Schema `author.name`，统一使用 "ToolPorto Team"。
   - **日期格式**：`date` 用 `YYYY-MM-DD`，`lastUpdated` 用 ISO 8601（`2026-06-05T12:00:00Z`）。错误的日期格式会导致 `new Date()` 返回 `Invalid Date`，Schema 中的 `datePublished` 变成 `null`。
 
 ---
@@ -168,7 +168,7 @@ title: "Best AI Voice Generators in 2026 — Actually Tested"
 description: "SEO meta description — include year + main keyword"
 date: "YYYY-MM-DD"
 category: "ai-voice"
-author: "ToolHub Team"
+author: "ToolPorto Team"
 relatedReviews:
   - "elevenlabs"
   - "play-ht"
@@ -223,7 +223,7 @@ title: "X Best Midjourney Alternatives in 2026"
 description: "SEO meta description"
 date: "YYYY-MM-DD"
 category: "ai-image"
-author: "ToolHub Team"
+author: "ToolPorto Team"
 relatedReviews:
   - "..."
 ```
@@ -270,7 +270,7 @@ title: "{N} AI Tools Every YouTuber Needs in 2026"
 description: "SEO meta description"
 date: "YYYY-MM-DD"
 category: "ai-video"
-author: "ToolHub Team"
+author: "ToolPorto Team"
 ```
 
 **Required Sections** (in order):
@@ -318,7 +318,7 @@ title: "What Is AI Face Swapping? (And Which Tool to Use)"
 description: "SEO meta description"
 date: "YYYY-MM-DD"
 category: "face-swap"
-author: "ToolHub Team"
+author: "ToolPorto Team"
 ```
 
 **Required Sections** (in order):

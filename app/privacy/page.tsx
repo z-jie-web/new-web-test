@@ -5,7 +5,7 @@ import { generateMetadata as seoMeta } from '@/lib/seo';
 
 export const metadata = seoMeta({
   title: 'Privacy Policy',
-  description: 'Privacy Policy for ToolHub — how we handle your data.',
+  description: 'Privacy Policy for ToolPorto — how we handle your data.',
   path: '/privacy',
 });
 
@@ -20,13 +20,13 @@ export default function PrivacyPage() {
           <p><strong>Last updated:</strong> May 28, 2026</p>
           <h2>1. Information We Collect</h2>
           <p>
-            ToolHub does not require user accounts or collect personal information.
+            ToolPorto does not require user accounts or collect personal information.
             We use Umami analytics (self-hosted) to understand site usage. Umami
             is privacy-focused and does not use cookies or collect personal data.
           </p>
           <h2>2. Cookies</h2>
           <p>
-            ToolHub does not set any cookies for tracking purposes. Third-party
+            ToolPorto does not set any cookies for tracking purposes. Third-party
             services (embedded tools, affiliate links) may set their own cookies
             — please refer to their respective privacy policies.
           </p>

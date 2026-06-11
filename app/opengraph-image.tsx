@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'ToolHub';
+export const alt = 'ToolPorto';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -31,7 +31,7 @@ export default function Image() {
             color: '#10b981',
           }}
         >
-          ToolHub
+          ToolPorto
         </div>
         <div style={{ fontSize: 32, color: '#94a3b8' }}>
           Discover the best online tools & AI products

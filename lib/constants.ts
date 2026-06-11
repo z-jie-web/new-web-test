@@ -1,5 +1,5 @@
 export const SITE = {
-  name: 'ToolHub',
+  name: 'ToolPorto',
   tagline: 'Discover the best online tools and AI products',
   description:
     'Curated directory of the best online tools, AI products, and free utilities. Compare, review, and find the right tool for your workflow.',

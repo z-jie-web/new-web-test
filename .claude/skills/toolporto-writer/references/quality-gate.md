@@ -1,6 +1,6 @@
 # Quality Gate
 
-Every article must pass ALL 9 checks before handoff to user. No exceptions.
+Every article must pass ALL 11 checks before handoff to user. No exceptions.
 
 ---
 
@@ -18,11 +18,11 @@ bash scripts/article-check.sh <path-to-mdx-file>
 
 **没贴脚本输出 = 违反红线 6.5，文章直接退回。** 不接受任何理由（"我看过了"/"应该没问题"/"显然通过"全部无效）。
 
-脚本会自动校验下面 9 项：
+脚本会自动校验下面 11 项：
 
 ---
 
-## 9 Hard Checks（脚本会自动跑这些）
+## 11 Hard Checks（脚本会自动跑这些）
 
 Run the script and show the output. Never claim "done" without evidence.
 
@@ -75,8 +75,19 @@ Expected: Present and valid ISO 8601 format. **No lastUpdated = article won't so
 - Review: `pros` array ≥ 3 items (ensures `ratingValue: 4.6`, not 4.3)
 - Review: `pricing` is one of: `Free`, `Freemium`, `Paid` (determines `offers.price`)
 - Review: `tags` array is non-empty (ensures review category data completeness)
-- Blog: `author` field is consistent (not mixing "ToolHub Team" / "ToolPorto" / "ToolPorto Team" arbitrarily)
+- Blog: `author` field is consistent (unified as "ToolPorto Team")
 - All: `date` / `lastUpdated` use ISO 8601 or `YYYY-MM-DD` (parsed by `new Date()` into valid ISO)
+
+### Check 11: AI Writing Patterns
+Two sub-checks, both must pass:
+
+**11a: Vocabulary** — 45-word AI pattern list (aligned with anti-ai-patterns-en.md).
+Scans for: `actually`, `additionally`, `align with`, `arguably`, `comprehensive`, `crucial`, `delve`, `effectively`, `emphasize`, `empower`, `enduring`, `enhance`, `essentially`, `fostering`, `fundamentally`, `garner`, `highlight`, `holistic`, `in today's`, `in conclusion`, `interplay`, `intricate`, `intricacies`, `it's important to note`, `leverage`, `multifaceted`, `notably`, `nuanced`, `paradigm`, `pivotal`, `remarkably`, `seamless`, `showcase`, `significantly`, `streamline`, `tapestry`, `testament`, `to summarize`, `in summary`, `underscore`, `undoubtedly`, `unlock`, `valuable`, `vibrant`, `noteworthy`.
+Expected: 0 hits. Any match = flagged for rewrite.
+
+**11b: Em dash density** — Body text (excluding frontmatter) em dash count per 100 words.
+anti-ai-patterns-en.md Pattern 6: "AI overuses — like this — constantly."
+Expected: ≤1.0 em dashes per 100 body words. Exceeding = rewrite with commas, periods, or restructure.
 
 ---
 
@@ -97,15 +108,15 @@ Expected: "✓ Compiled successfully" or build exits 0 without errors.
 
 | Score | Status | Action |
 |-------|--------|--------|
-| 10/10 | ✅ PASS | Hand off to user |
-| 7-9/10 | ⚠️ FIX | Fix issues, recheck, hand off |
-| ≤6/10 | ❌ REWRITE | Major issues, rewrite the article |
+| 11/11 | ✅ PASS | Hand off to user |
+| 8-10/11 | ⚠️ FIX | Fix issues, recheck, hand off |
+| ≤7/11 | ❌ REWRITE | Major issues, rewrite the article |
 
 ---
 
 ## 3-Role Self Review
 
-After passing all 9 checks + build, run this mental review:
+After passing all 11 checks + build, run this mental review:
 
 ### Role 1: SEO Expert
 - Does the title match a real search query someone would type?
@@ -129,7 +140,7 @@ After passing all 9 checks + build, run this mental review:
 ## Fix-Then-Recheck Workflow
 
 ```
-Check fails → fix the specific issue → recheck THAT check → rerun full script → confirm 9/9 → hand off
+Check fails → fix the specific issue → recheck THAT check → rerun full script → confirm 11/11 → hand off
 ```
 
 Never fix a failing check and hand off without rechecking.
