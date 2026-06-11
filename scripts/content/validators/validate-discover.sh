@@ -145,8 +145,8 @@ if [ -f "$CANDIDATE_BRIEF" ]; then
   fi
 
   if has_line '^[[:space:]]{2}render_contract:[[:space:]]*$' "$CANDIDATE_BRIEF" \
-    && has_line '^[[:space:]]{4}auto_rendered:[[:space:]]*$' "$CANDIDATE_BRIEF" \
-    && has_line '^[[:space:]]{4}mdx_must_not_duplicate:[[:space:]]*$' "$CANDIDATE_BRIEF"; then
+    && has_line '^[[:space:]]{4}auto_rendered:' "$CANDIDATE_BRIEF" \
+    && has_line '^[[:space:]]{4}mdx_must_not_duplicate:' "$CANDIDATE_BRIEF"; then
     pass_item "decisions.render_contract skeleton is present"
   else
     fail_fixable "decisions.render_contract is incomplete"

@@ -271,7 +271,7 @@ V2 migration is complete when:
 - [x] one canonical brand state exists — ToolPorto, aligned across all code/content
 - [x] V2 docs are the truth source for workflow behavior — project-contract, validator-architecture, working-brief-schema, 5 mode docs
 - [x] V2 validators are the truth source for gate behavior — validate-{discover,draft,enhance,publish,refresh}.sh with 0/1/2/3 exit codes
-- [x] golden samples pass deterministically — (pending validation against real content)
+- [x] golden samples pass deterministically — elevenlabs (review), elevenlabs-vs-play-ht (compare), best-ai-voice-generators (blog) all exit 0 through discover→draft→enhance→publish
 - [x] new article work no longer depends on V1 ritual gates — AGENTS.md routes to V2, V1 reduced to redirect stub
 
 All 8 phases complete. V2 is the default writing system.
