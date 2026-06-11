@@ -28,7 +28,7 @@ Cursor is the AI coding tool that made developers stop debating whether AI can r
 
 Cursor is the best general-purpose AI coding tool in 2026. Not because it has the most features, but because it made AI feel like a natural part of coding rather than a bolt-on. The Tab completion is fast enough that you stop noticing it, it just becomes part of your workflow. The codebase-aware context means you spend less time explaining context to the AI and more time getting useful output.
 
-We tested Cursor against GitHub Copilot, Windsurf, and Codeium on 10 real development tasks: bug fixes, feature additions, refactoring, test writing, and documentation. Cursor completed tasks 40% faster than Copilot on average, primarily because of codebase context, Copilot sees the current file, Cursor sees the project.
+We tested Cursor against GitHub Copilot, [Windsurf](/reviews/windsurf), and Codeium on 10 real development tasks: bug fixes, feature additions, refactoring, test writing, and documentation. Cursor completed tasks 40% faster than Copilot on average, primarily because of codebase context, Copilot sees the current file, Cursor sees the project.
 
 The honest caveat: Agent mode is impressive but not reliable enough to run unsupervised. On 3 out of 20 test tasks, Agent mode introduced subtle bugs (wrong import paths, missing error handling, inconsistent types). Always review Agent output before committing.
 
@@ -61,7 +61,7 @@ The free tier with 2,000 completions is enough to evaluate Cursor for 1-2 weeks 
 
 ## vs GitHub Copilot, Windsurf, and Codeium
 
-[GitHub Copilot](https://github.com/features/copilot) is the incumbent, $10/month, tight GitHub integration, decent autocomplete. But Copilot works file-by-file. It doesn't understand your project structure, can't execute multi-file tasks, and lacks Agent mode. For simple autocomplete, Copilot is fine. For project-aware AI coding, Cursor is a generation ahead. For a detailed breakdown across every category, see our [Cursor vs GitHub Copilot](/compare/cursor-vs-github-copilot) comparison.
+[GitHub Copilot](https://github.com/features/copilot) is the incumbent, $10/month, tight GitHub integration, decent autocomplete. But Copilot works file-by-file. It doesn't understand your project structure, can't execute multi-file tasks, and lacks Agent mode. For simple autocomplete, Copilot is fine. For project-aware AI coding, Cursor is a generation ahead. For a detailed breakdown across every category, see our [Cursor vs GitHub Copilot](/compare/cursor-vs-github-copilot) comparison. For how Cursor stacks up against its closest JetBrains-capable competitor, see our [Cursor vs Windsurf comparison](/compare/cursor-vs-windsurf).
 
 Windsurf (formerly Codeium) is Cursor's closest competitor, similar features, similar pricing, JetBrains support. Windsurf's Tab completion is slightly faster on large files. Cursor's codebase context is deeper and more accurate. The choice often comes down to IDE preference: VS Code → Cursor, JetBrains → Windsurf. For AI-powered research alongside coding, [Perplexity](/reviews/perplexity) complements Cursor well, search in Perplexity, code in Cursor.
 

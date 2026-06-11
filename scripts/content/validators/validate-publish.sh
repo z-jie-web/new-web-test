@@ -179,6 +179,7 @@ if [ -f "$CANDIDATE_BRIEF" ]; then
     found && /^[[:space:]]{6}-[[:space:]]*/ {
       sub(/^[[:space:]]{6}-[[:space:]]*/, "")
       gsub(/^"|"$/, "")
+      gsub(/^'\''|'\''$/, "")
       print
       next
     }

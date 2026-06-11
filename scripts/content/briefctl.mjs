@@ -142,6 +142,10 @@ function resolvePathSpec(keyPath) {
   if (head === 'history') return { path: ['history'], kind: 'list' };
   if (head === 'validation') return { path: ['validation', ...rest], kind: 'auto' };
   if (head === 'backlink_targets_applied') return { path: ['backlink_targets_applied'], kind: 'list' };
+  if (head === 'publish' && rest[0] === 'backlink_targets_applied') {
+    return { path: ['mode_outputs', 'publish', 'backlink_targets_applied'], kind: 'list' };
+  }
+  if (head === 'status') return { path: ['status'], kind: 'scalar' };
   die(`unknown key path: ${keyPath}`);
 }
 
@@ -377,7 +381,8 @@ function usage() {
   console.log('  discover.<field>            duplicate_check_status, serp_decision, hub_spoke_role');
   console.log('  draft.<field>               target_file, word_count, known_gaps');
   console.log('  enhance.<field>             ai_pattern_score, images_present, internal_links_count');
-  console.log('  publish.<field>             article_check_status, build_status, delivery_ready');
+  console.log('  publish.<field>             article_check_status, build_status, delivery_ready, backlink_targets_applied (list)');
+  console.log('  status                      in_progress, complete');
   console.log('  refresh.<field>             refresh_reason, files_touched (use list for arrays)');
   process.exit(1);
 }

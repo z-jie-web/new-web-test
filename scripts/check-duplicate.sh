@@ -108,6 +108,13 @@ if [ ${#FUZZY_MATCHES[@]} -gt 0 ]; then
   echo ""
 fi
 
+# For compare articles (toolA-vs-toolB), individual reviews are prerequisites, not conflicts.
+# Only flag as similar if there are blog/compare matches, not just review name matches.
+IS_COMPARE_QUERY=false
+if echo "$QUERY_SLUG" | grep -qE '(^|-)vs(-|$)'; then
+  IS_COMPARE_QUERY=true
+fi
+
 if [ ${#EXACT_MATCHES[@]} -eq 0 ] && [ ${#FUZZY_MATCHES[@]} -eq 0 ]; then
   echo "========================================"
   echo "✅ NO MATCHES — \"$QUERY\" is free to write."
@@ -124,6 +131,24 @@ elif [ ${#EXACT_MATCHES[@]} -gt 0 ]; then
   echo "========================================"
   exit 2
 else
+  # Check if all fuzzy matches are just individual reviews for a compare query
+  if $IS_COMPARE_QUERY; then
+    NON_REVIEW_FUZZY=()
+    for match in "${FUZZY_MATCHES[@]}"; do
+      if ! echo "$match" | grep -q 'Review (name match)'; then
+        NON_REVIEW_FUZZY+=("$match")
+      fi
+    done
+    if [ ${#NON_REVIEW_FUZZY[@]} -eq 0 ]; then
+      echo "========================================"
+      echo "✅ PROCEED — individual reviews exist (expected for compare articles)"
+      echo "========================================"
+      printf '  %s\n' "${FUZZY_MATCHES[@]}"
+      echo ""
+      exit 0
+    fi
+  fi
+
   echo "========================================"
   echo "⚠️  DECISION REQUIRED:"
   echo "   Similar content found — may overlap."
