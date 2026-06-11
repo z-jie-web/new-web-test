@@ -128,17 +128,36 @@ fi
 echo ""
 
 # ===== Check 7: Internal Links + Images =====
-echo "▶ Check 7: Internal Links ≥2 + Image ≥1 + No Forbidden Components"
+echo "▶ Check 7: Internal Links ≥2 + Image ≥1 + Image Files Exist + No Forbidden Components"
 INTERNAL_LINKS=$(grep -oE "\]\((/reviews/[^)]*|/compare/[^)]*|/blog/[^)]*|/categories/[^)]*)\)" "$FILE" | wc -l | tr -d ' ')
 IMAGES=$(grep -oE "!\[[^]]*\]\((/logos/[^)]*|/images/[^)]*|[^)]*screenshot[^)]*|[^)]*diagram[^)]*)\)" "$FILE" | wc -l | tr -d ' ')
 FORBIDDEN=$(grep -nE "<(WinnerBadge|ProsCons|ScoreCard|CTABox)" "$FILE" || true)
 echo "  Internal links: $INTERNAL_LINKS (need ≥2)"
 echo "  Images embedded: $IMAGES (need ≥1)"
+
+# 7a: Verify all referenced image files exist on disk
+ALL_IMG_OK=true
+while IFS= read -r img_path; do
+  IMG_REL=$(echo "$img_path" | grep -oE '\((.*)\)' | sed 's/[()]//g')
+  [ -z "$IMG_REL" ] && continue
+  DISK_PATH="public${IMG_REL}"
+  if [ ! -f "$DISK_PATH" ]; then
+    echo "  ❌ Image not found: $IMG_REL (expected at $DISK_PATH)"
+    ALL_IMG_OK=false
+  fi
+done < <(grep -oE '!\[[^]]*\]\(/[^)]+\)' "$FILE")
+
+if $ALL_IMG_OK; then
+  echo "  ✅ All referenced images exist on disk"
+else
+  echo "  ❌ Some referenced images are missing — run: ls public/logos/{slug}.svg"
+fi
+
 if [ -n "$FORBIDDEN" ]; then
   echo "  ❌ Found forbidden React components:"
   echo "$FORBIDDEN" | sed 's/^/    /'
 fi
-if [ "$INTERNAL_LINKS" -ge 2 ] && [ "$IMAGES" -ge 1 ] && [ -z "$FORBIDDEN" ]; then
+if [ "$INTERNAL_LINKS" -ge 2 ] && [ "$IMAGES" -ge 1 ] && [ -z "$FORBIDDEN" ] && $ALL_IMG_OK; then
   echo "  ✅ PASS"
   PASS=$((PASS+1))
 else
