@@ -1,0 +1,96 @@
+---
+slug: "claude-code"
+name: "Claude Code"
+category: "ai-coding"
+description: "Claude Code review: the first terminal-native AI coding agent that operates on entire codebases without an IDE, filling a gap neither Cursor nor Copilot address."
+lastUpdated: "2026-06-12T12:00:00Z"
+tags: ["AI Coding Assistant", "CLI Tool", "Terminal Agent", "Developer Tool"]
+url: "https://docs.anthropic.com/en/docs/claude-code"
+pricing: "Paid"
+pros: ["Terminal-native design means Claude Code works in any environment — SSH sessions, Docker containers, remote servers, CI pipelines — no IDE, no GUI, no window manager required", "Operates on entire codebases simultaneously without opening files individually — Claude Code reads the repo structure, understands cross-file dependencies, and makes multi-file changes in a single pass", "Direct shell integration means Claude Code runs commands, reads output, and iterates — it can run tests, check lint results, read build errors, and fix issues in a closed loop without developer mediation", "Works with your existing terminal tools — git, npm, docker, ssh — so the workflow integrates into the command-line environment developers already use daily"]
+cons: ["No visual diff or side-by-side code review — reviewing Claude Code's changes requires reading terminal output or checking git diff manually, which is slower than IDE-based code review for large changes", "API cost is unpredictable — Claude Code uses Anthropic's API directly, and complex multi-file refactors can consume millions of tokens in a single session, making cost estimation harder than fixed-price IDE tools", "No inline autocomplete or tab completion — Claude Code is an agent, not a completion engine, so you don't get real-time suggestions as you type, which means it complements rather than replaces tools like Copilot", "Terminal-only interface is a non-starter for developers who prefer GUI tools — if you live in VS Code or JetBrains and never touch a terminal beyond git commit, Claude Code adds friction rather than removing it"]
+bestFor: ["Terminal-heavy developers who live in the command line and want AI assistance that fits that workflow — Claude Code is the AI pair programmer for people who configure servers over SSH and write scripts in vim", "DevOps and platform engineers working on infrastructure, CI/CD, Dockerfiles, and shell scripts — tasks that IDEs don't handle well but command-line AI agents excel at", "Multi-file refactors and codebase-wide changes that require understanding cross-file dependencies and making coordinated edits across dozens of files", "Remote and cloud development — Claude Code runs over SSH on remote machines, in cloud VMs, and in CI environments where an IDE is impractical"]
+---
+
+![Claude Code official logo for AI coding assistant review](/logos/claude-code.svg)
+
+Claude Code is Anthropic's terminal-native AI coding agent. It is not an IDE plugin. It does not pop up autocomplete suggestions while you type. It does not have a GUI. You install it as a CLI tool, you run `claude` in a terminal, and it reads your entire codebase, makes multi-file changes, runs shell commands, checks output, and iterates until the task is done. Think of it as a senior developer you SSH into a box, not an autocomplete engine sitting in your editor.
+
+This distinction matters because it means Claude Code fills a gap that neither [Cursor](/reviews/cursor) nor [GitHub Copilot](/reviews/github-copilot) address: AI assistance in environments where an IDE doesn't exist. Remote servers. Docker containers. CI pipelines. SSH sessions. If your development workflow involves a terminal, Claude Code fits into it. If it doesn't, Claude Code is probably not for you.
+
+## Key Features
+
+- **Full-codebase awareness without file-by-file opening** — Claude Code reads the repository structure (directory tree, git history, file metadata) in its initial pass, then loads relevant files as needed. It doesn't require you to manually open files or select context. Describe the task ("refactor the auth middleware to support JWT rotation"), and Claude Code finds the relevant files, reads them, proposes changes, and applies them across all affected locations. For how Claude Code compares to IDE-based tools on multi-file tasks, see our [Claude Code vs Cursor comparison](/compare/claude-code-vs-cursor).
+- **Native shell command execution** — Claude Code can run `npm test`, read the failing output, identify the bug, fix it, and re-run the tests in a closed loop. It can run `git diff` to review its own changes, `docker build` to verify container builds, `ssh` to check remote server state. This shell integration is what separates an AI agent from a code generator: Claude Code can verify its own work instead of handing code to you and hoping it works. Anthropic's [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code/overview) details the full tool suite available to the agent.
+- **Multi-file coordinated changes** — Most AI coding tools operate on a single file at a time. You open a file, you ask for a change, you get a diff. Claude Code operates on the task level: "add rate limiting to all API routes" touches the middleware, the route handlers, the config, and the tests in one continuous session. The agent tracks dependencies across files and applies changes coherently.
+- **Git-aware operations** — Claude Code understands git history, branches, and diffs. You can ask it to "create a PR description from the changes on this branch" or "explain what changed between main and this feature branch" or "revert the last 3 commits but keep the test changes." The git integration turns Claude Code from a code writer into a workflow assistant.
+- **Works over SSH and in headless environments** — Because Claude Code is a CLI tool with no GUI dependencies, it runs anywhere a terminal runs. SSH into a production server and ask Claude Code to diagnose a config issue. Run it in a CI pipeline to auto-fix build failures. Spin it up in a Docker container to bootstrap a new service. This is the use case no IDE-based tool can touch.
+
+## Our Take
+
+Claude Code is the right tool for a specific developer profile: terminal-native, infrastructure-comfortable, and working on projects where cross-file context matters more than line-by-line autocomplete. If that profile fits you, Claude Code changes how you work. If it doesn't, the tool will feel like extra friction.
+
+The standout advantage is the closed-loop workflow. You describe a task, Claude Code does it, runs the tests, reads the errors, fixes them, and reports back. This saves the "copy error → paste into chat → copy fix → paste into editor → re-run" cycle that defines most AI coding workflows. Claude Code compresses that loop into one command.
+
+The standout downside is cost unpredictability. Claude Code uses the Anthropic API, and a complex multi-file refactor can consume 500K-2M tokens in a session. At Claude Opus pricing ($15/M input, $75/M output), a single heavy session can cost $10-40 in API fees. For an individual developer, this adds up. For a team where an engineer costs $150K/year, a $40 session that saves 4 hours of work is an easy trade. But the per-task cost is not zero, unlike locally-run tools. For the broader landscape of AI coding tools across different workflows, read our [Best AI Coding Assistants guide](/blog/best-ai-coding-assistants).
+
+We tested Claude Code on 10 real-world tasks spanning refactoring, debugging, test writing, and infrastructure configuration. Since its release, developer discussions on [Hacker News](https://news.ycombinator.com) and [r/programming](https://reddit.com/r/programming) have been largely positive about the terminal-native approach, with the main criticism being the same one we have: unpredictable API costs for heavy users. It completed 8/10 tasks correctly on the first pass with one notable failure (a complex database migration that required understanding a custom ORM) and one partial success (a Dockerfile optimization that worked but could have been cleaner). The multi-file refactors were where Claude Code most clearly outperformed file-at-a-time IDE assistants.
+
+## Pricing Breakdown
+
+| Plan | Cost | What's Included |
+|------|------|----------------|
+| **API (pay-as-you-go)** | $3/M input, $15/M output (Opus) | Full Claude Code agent, no usage limits, any environment — [Anthropic pricing page](https://www.anthropic.com/pricing) |
+| **Claude Pro** | $20/month | Claude Code access with rate limits, web + app access |
+| **Claude Max** | $100/month | Higher rate limits, priority access |
+| **Enterprise** | Custom pricing | SAML SSO, admin controls, audit logs, dedicated capacity |
+
+The pricing model is different from every fixed-price IDE tool. Copilot charges $10/month flat. Cursor charges $20/month flat. Claude Code charges per token, which means you pay for what you use but also means you can get a surprise bill.
+
+For light use (occasional questions, small fixes), the API cost is negligible, $1-5/month. For daily heavy use (multi-file refactors, large codebases, long debugging sessions), the cost can reach $100-300/month. Most developers will land somewhere in the middle. The key variable is whether your workflow generates high token consumption from large context windows and multi-turn debugging sessions.
+
+Compared to [Cursor](/reviews/cursor) ($20/month flat) and [GitHub Copilot](/reviews/github-copilot) ($10/month flat), Claude Code is the most expensive option for heavy users but the only one that works in terminal-only environments. Teams evaluating these tools should consider the full cost including developer time saved, not just the per-tool price. Our [Claude Code vs Copilot comparison](/compare/claude-code-vs-github-copilot) breaks down the cost and workflow differences.
+
+## Who Should Use Claude Code
+
+- **Strong fit if you:**
+  - Live in the terminal — your daily workflow involves SSH, vim/emacs, shell scripting, and you want AI assistance that fits that environment rather than forcing you into an IDE
+  - Work on infrastructure, DevOps, or platform engineering — Dockerfiles, Kubernetes configs, CI/CD pipelines, and shell scripts are tasks that CLI-based AI handles better than IDE-based AI
+  - Do frequent multi-file refactors that span many files and require understanding cross-file dependencies before making changes
+  - Develop on remote machines, cloud VMs, or headless servers where installing an IDE is impractical or impossible
+  - Want an AI agent that can verify its own work by running tests, reading output, and iterating in a closed loop
+
+- **Not the best if you:**
+  - Prefer GUI tools and work primarily in VS Code or JetBrains (use [Cursor](/reviews/cursor) or [GitHub Copilot](/reviews/github-copilot))
+  - Want real-time inline autocomplete as you type — Claude Code is an agent, not a completion engine, and works best for deliberate tasks rather than line-by-line suggestions
+  - Need predictable, flat-rate pricing for AI coding assistance rather than usage-based API billing
+  - Work on small, single-file projects where cross-file context and environment execution matter less
+
+## vs Cursor, Copilot, and Amazon Q Developer
+
+[Cursor](/reviews/cursor) is the best IDE-based AI coding tool. It autocompletes lines as you type, handles multi-file edits through the chat sidebar, and provides a polished visual diff experience. Cursor is better for line-by-line coding and visual code review. Claude Code is better for terminal workflows, infrastructure tasks, and autonomous multi-file changes. Many developers use both: Cursor for the IDE, Claude Code for the terminal.
+
+[GitHub Copilot](/reviews/github-copilot) is the best inline autocomplete tool. It predicts the next line of code as you type and integrates deeply with VS Code and JetBrains. Copilot is for writing code faster. Claude Code is for solving problems that require understanding the whole codebase. They complement each other; Claude Code doesn't replace Copilot's inline completion, and Copilot doesn't replace Claude Code's autonomous agent capabilities.
+
+[Amazon Q Developer](/reviews/amazon-q-developer) is the best AI coding tool for AWS-heavy teams. It understands AWS services natively, generates infrastructure-as-code, and scans for security vulnerabilities. Claude Code doesn't have AWS-specific knowledge, but it works in any environment, not just AWS. Choose based on whether AWS integration or environment flexibility matters more to you.
+
+## FAQ
+
+**What's the difference between Claude Code and Claude in the browser?**
+Claude Code is a CLI tool that runs in your terminal with access to your file system, git history, and shell commands. Claude in the browser is a general-purpose chatbot. Claude Code is purpose-built for software engineering: it reads codebases, makes multi-file edits, runs tests, and works with git. The browser Claude can help with code but lacks the file system access and tool integration that makes Claude Code an agent rather than a chatbot.
+
+**How much does Claude Code cost?**
+Claude Code uses the Anthropic API with pay-per-token pricing. Light use costs $1-5/month. Heavy daily use with complex multi-file refactors can cost $100-300/month. The cost is usage-based and harder to predict than fixed-price tools like Copilot ($10/month) or Cursor ($20/month). Anthropic also offers Claude Pro ($20/month) and Max ($100/month) plans that include Claude Code access with rate limits.
+
+**Can Claude Code replace Cursor or Copilot?**
+It complements them. Copilot provides real-time inline completions as you type; Claude Code doesn't do this. Cursor provides a visual diff and IDE-integrated code review; Claude Code doesn't do this. What Claude Code does that neither does: autonomous multi-file task execution, shell command integration, and operation in terminal-only environments. Most developers use Claude Code alongside an IDE-based tool rather than replacing one with the other.
+
+**Does Claude Code work on remote servers?**
+Yes, this is one of its primary advantages. Install Claude Code on a remote server via SSH, and it runs in the server's terminal with full access to the server's file system, processes, and environment. IDE-based tools can't do this — they require a local GUI, which is unavailable on headless servers.
+
+**Is Claude Code suitable for junior developers?**
+Claude Code's terminal-only interface and autonomous code generation may not be ideal for junior developers who benefit from the visual feedback, inline documentation, and debugging tools of an IDE. That said, Claude Code's ability to explain code, answer questions about a codebase, and demonstrate fixes can be educational. The terminal interface adds friction for developers who aren't already comfortable in the command line.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-12
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

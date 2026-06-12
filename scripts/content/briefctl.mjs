@@ -218,6 +218,15 @@ function normalizeBrief(data) {
 function resolvePathSpec(keyPath) {
   const parts = keyPath.split('.');
   const [head, ...rest] = parts;
+
+  // Known list fields under mode_outputs — check BEFORE the generic MODES handler
+  if (head === 'publish' && rest[0] === 'backlink_targets_applied') {
+    return { path: ['mode_outputs', 'publish', 'backlink_targets_applied'], kind: 'list' };
+  }
+  if (head === 'refresh' && rest[0] === 'files_touched') {
+    return { path: ['mode_outputs', 'refresh', 'files_touched'], kind: 'list' };
+  }
+
   if (MODES.has(head)) {
     return { path: ['mode_outputs', head, ...rest], kind: 'auto' };
   }
@@ -230,9 +239,6 @@ function resolvePathSpec(keyPath) {
   if (head === 'history') return { path: ['history'], kind: 'list' };
   if (head === 'validation') return { path: ['validation', ...rest], kind: 'auto' };
   if (head === 'backlink_targets_applied') return { path: ['backlink_targets_applied'], kind: 'list' };
-  if (head === 'publish' && rest[0] === 'backlink_targets_applied') {
-    return { path: ['mode_outputs', 'publish', 'backlink_targets_applied'], kind: 'list' };
-  }
   if (head === 'status') return { path: ['status'], kind: 'scalar' };
   die(`unknown key path: ${keyPath}`);
 }
@@ -259,6 +265,30 @@ function appendNested(root, pathSpec, value) {
   const leaf = pathSpec[pathSpec.length - 1];
   if (!Array.isArray(cursor[leaf])) cursor[leaf] = [];
   cursor[leaf].push(value);
+}
+
+function cmdUnlist(articleId, keyPath) {
+  if (!keyPath) die('usage: briefctl unlist <article-id> <key.path>');
+  const dir = resolveStateDir(articleId);
+  const brief = path.join(dir, 'brief.candidate.yaml');
+  const data = normalizeBrief(loadBriefOrDie(brief));
+  const spec = resolvePathSpec(keyPath);
+  if (spec.kind !== 'list') die(`key path '${keyPath}' is not a list field (kind=${spec.kind})`);
+  setNested(data, spec.path, []);
+  saveBrief(brief, data);
+  console.log(`✅ ${articleId}: cleared ${keyPath}`);
+}
+
+function cmdSetList(articleId, keyPath, ...values) {
+  if (!keyPath || values.length === 0) die('usage: briefctl set-list <article-id> <key.path> <value...>');
+  const dir = resolveStateDir(articleId);
+  const brief = path.join(dir, 'brief.candidate.yaml');
+  const data = normalizeBrief(loadBriefOrDie(brief));
+  const spec = resolvePathSpec(keyPath);
+  if (spec.kind !== 'list') die(`key path '${keyPath}' is not a list field (kind=${spec.kind})`);
+  setNested(data, spec.path, values);
+  saveBrief(brief, data);
+  console.log(`✅ ${articleId}: ${keyPath} ← ${values.length} value(s)`);
 }
 
 function briefValidationIssues(data) {
@@ -507,6 +537,8 @@ function usage() {
   console.log('  mode      <id> <mode>                  Switch current_mode');
   console.log('  set       <id> <key.path> <value>      Set a scalar field');
   console.log('  list      <id> <key.path> <value>      Append to a list field');
+  console.log('  unlist    <id> <key.path>              Clear a list field (set to empty)');
+  console.log('  set-list  <id> <key.path> <val...>     Replace a list field entirely');
   console.log('  commit    <id>                         Candidate → canonical (after validation)');
   console.log('  show      <id>                         Print brief to stdout');
   console.log('  validate  <id|--all>                  Validate existing brief files');
@@ -544,6 +576,12 @@ switch (command) {
     break;
   case 'list':
     cmdList(articleId, arg3, arg4 ?? '');
+    break;
+  case 'unlist':
+    cmdUnlist(articleId, arg3);
+    break;
+  case 'set-list':
+    cmdSetList(articleId, arg3, ...process.argv.slice(5));
     break;
   case 'commit':
     cmdCommit(articleId);

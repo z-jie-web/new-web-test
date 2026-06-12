@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <rect width="120" height="120" rx="24" fill="#d97757"/>
+  <text x="60" y="58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#ffffff">Claude</text>
+  <text x="60" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#ffffff">Code</text>
+</svg>

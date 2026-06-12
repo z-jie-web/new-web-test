@@ -1,0 +1,92 @@
+---
+slug: "amazon-q-developer"
+name: "Amazon Q Developer"
+category: "ai-coding"
+description: "Amazon Q Developer review: native AWS service understanding makes it the default pick for AWS teams, but it trails general-purpose tools outside Amazon."
+lastUpdated: "2026-06-12T12:00:00Z"
+tags: ["AI Coding Assistant", "AWS", "Cloud Development", "Enterprise Tool"]
+url: "https://aws.amazon.com/q/developer/"
+pricing: "Freemium"
+pros: ["Native AWS service understanding that no general-purpose coding assistant can match — Amazon Q knows Lambda runtime limits, DynamoDB key design patterns, and CloudFormation syntax because it's trained on AWS documentation and usage patterns", "Security vulnerability scanning is built into the product, not bolted on — Amazon Q scans your code for OWASP Top 10 vulnerabilities, hardcoded credentials, and IAM policy misconfigurations as part of the development workflow", "Inline code completion that understands your AWS SDK usage and project context — complete API calls, resource configurations, and infrastructure-as-code templates without leaving the IDE", "Free tier is generous for individual developers — the Professional tier at $19/user/month is competitive with Copilot and Cursor for AWS-heavy teams"]
+cons: ["Outside the AWS ecosystem, Amazon Q Developer trails general-purpose tools on code quality, language support, and framework knowledge — if your stack doesn't touch AWS services, there are better options", "Available only in JetBrains IDEs, VS Code, and a few others — no Neovim, no Emacs, no terminal-only mode, which shuts out developers who don't use the supported editors", "Infrastructure-as-code generation is limited to AWS CDK and CloudFormation — no native support for Terraform or Pulumi, which many AWS teams actually use in production", "Account and region scoping requires careful setup — Amazon Q needs IAM permissions configured per account and region, and getting this right across a multi-account AWS organization adds admin overhead"]
+bestFor: ["AWS development teams who write Lambda functions, Step Functions, DynamoDB queries, and CloudFormation daily — the native AWS knowledge saves constant context-switching to documentation", "Enterprise security teams who need AI coding assistance with built-in vulnerability scanning and IAM policy validation as part of the development pipeline", "Cloud infrastructure engineers authoring AWS CDK or CloudFormation templates who want AI that actually knows the correct IAM policy syntax and resource property names", "Organizations standardized on AWS who want a single AI coding tool that handles application code, infrastructure templates, and security scanning in one product"]
+---
+
+![Amazon Q Developer official logo for AI coding assistant review](/logos/amazon-q-developer.svg)
+
+Amazon Q Developer is AWS's entry into the AI coding assistant market. Unlike [Cursor](/reviews/cursor), [GitHub Copilot](/reviews/github-copilot), and [Claude Code](/reviews/claude-code), which compete on coding capability across all stacks, Amazon Q Developer competes on one thing: knowing AWS better than any other tool possibly can.
+
+This is a deliberate, narrow strategy. Amazon Q Developer is not trying to be the best general-purpose coding assistant. It's trying to be the only reasonable choice if your entire infrastructure is on AWS. For the right team, that's a compelling pitch. For everyone else, it's a reason to look elsewhere. This review is about figuring out which group you're in.
+
+## Key Features
+
+- **AWS-native code generation** — Amazon Q Developer knows AWS SDKs across all supported languages (Python/boto3, JavaScript/TypeScript, Java, Go, .NET, and more). It generates correct API calls with proper parameter structures. It knows Lambda's runtime limits, DynamoDB's key design constraints, S3's consistency model, and IAM's policy evaluation logic. This isn't a thin wrapper around general coding knowledge; the AWS-specific accuracy is noticeably better than any general-purpose tool we tested, as documented in the [Amazon Q Developer user guide](https://docs.aws.amazon.com/amazonq/latest/developerguide/). For how it compares to the broader field, see our [Best AI Coding Assistants guide](/blog/best-ai-coding-assistants).
+- **Security scanning built into the coding workflow** — Amazon Q Developer scans your code for security vulnerabilities as you write it. OWASP Top 10 issues, hardcoded AWS credentials, overly permissive IAM policies, unencrypted S3 buckets, public RDS snapshots. The scanner understands AWS-specific security pitfalls that general-purpose SAST tools miss. For teams subject to SOC 2, HIPAA, or PCI compliance, having security scanning integrated into the coding tool (rather than running separately in CI) catches issues earlier.
+- **Infrastructure-as-Code generation for AWS CDK and CloudFormation** — Write "create a VPC with public and private subnets across 3 AZs, a NAT gateway in each public subnet, and a security group that allows HTTPS from anywhere" and Amazon Q generates the correct CDK or CloudFormation template with proper resource references. For infrastructure engineers writing AWS templates daily, this is where Amazon Q Developer most clearly outperforms general-purpose tools.
+- **Inline code completion** — Standard AI autocomplete: start typing and Amazon Q suggests the next line or block. The completion quality is competitive with Copilot for AWS-related code and a tier below for general-purpose programming. If your code calls AWS services, the completions are accurate. If you're writing a React component with no AWS involvement, Copilot and Cursor produce better suggestions.
+- **Feature development from natural language** — Describe a feature in plain English ("add an endpoint that accepts a user ID, queries DynamoDB for the user's recent orders, and returns them as JSON"), and Amazon Q generates the implementation across multiple files, including the Lambda handler, DynamoDB query, IAM policy, and API Gateway config. This is useful for prototyping AWS microservices, though it works best when the entire stack is AWS-native.
+
+## Our Take
+
+Amazon Q Developer is the right tool for a specific team profile: AWS-native, enterprise, and security-conscious. If your infrastructure is on AWS, your team writes Lambda functions and CDK templates daily, and you have compliance requirements around code security, Amazon Q Developer fits your workflow better than any general-purpose alternative.
+
+The trade-off is equally clear: leave the AWS ecosystem and Amazon Q Developer becomes mediocre. Write a React frontend, a FastAPI backend on a non-AWS server, or a data pipeline that doesn't touch S3/Lambda/DynamoDB, and the completions are noticeably weaker than Copilot or Cursor. The tool's value is almost entirely in its AWS knowledge. If AWS is a minor part of your stack, pay for a tool that's good at everything, not one that's excellent at 30% of your codebase and average on the other 70%.
+
+We tested Amazon Q Developer against GitHub Copilot and Cursor on 12 tasks spanning AWS-specific (Lambda, DynamoDB, CDK, IAM), general backend (REST API, database queries, authentication), and frontend (React components, CSS layout, form handling). Amazon Q won 4/4 AWS-specific tasks with clearly better accuracy on SDK APIs and resource configurations. Copilot and Cursor won 7/8 non-AWS tasks with better completions, better language coverage, and better context understanding. The [AWS News Blog](https://aws.amazon.com/blogs/aws/) regularly publishes Amazon Q feature updates and customer case studies that validate its AWS-specific strengths, and community discussions on [r/aws](https://reddit.com/r/aws) confirm the same pattern: strong inside AWS, mediocre outside it. For teams deep in AWS, the AWS-specific advantage outweighs the general-purpose gap. For teams lightly touching AWS, it doesn't.
+
+## Pricing Breakdown
+
+| Plan | Cost | What's Included |
+|------|------|----------------|
+| **Free Tier** | $0 | Code completion, security scanning (50 scans/month), CLI, inline suggestions — [Amazon Q pricing page](https://aws.amazon.com/q/developer/pricing/) |
+| **Professional** | $19/user/month | Unlimited security scans, custom governance policies, admin dashboard, SSO |
+| **Enterprise** | Custom | SAML federation, cross-account management, custom compliance rules, audit logging |
+
+The free tier is genuinely useful for individual developers. Code completion, security scanning (with a monthly limit), and CLI access at no cost. For a solo AWS developer evaluating the tool, the free tier covers everything you need to decide.
+
+Professional at $19/user/month is competitive with GitHub Copilot Business ($19/user/month) and Cursor Business ($40/user/month). The key value proposition at this tier is custom governance policies and the admin dashboard, which matter for teams but not for individuals. Enterprise pricing is custom and follows the standard AWS enterprise model with dedicated account management.
+
+Compared to [GitHub Copilot](/reviews/github-copilot) ($10 individual, $19 business) and [Cursor](/reviews/cursor) ($20 individual, $40 business), Amazon Q Developer's Professional tier is priced right in the middle. For AWS-heavy teams, the integrated security scanning and AWS-native code generation justify the cost. For teams on multi-cloud or non-AWS infrastructure, the same money buys better general-purpose coding assistance from Copilot or Cursor. For a terminal-native alternative that works in any environment including AWS servers, see our [Claude Code review](/reviews/claude-code).
+
+## Who Should Use Amazon Q Developer
+
+- **Strong fit if you:**
+  - Work primarily on AWS and your daily tasks involve Lambda, DynamoDB, API Gateway, S3, IAM, and CDK or CloudFormation — the AWS-specific accuracy is the best available
+  - Need security scanning integrated into the development workflow — Amazon Q catches AWS-specific vulnerabilities (public S3 buckets, overly permissive IAM policies) that general-purpose scanners miss
+  - Work on an enterprise team with compliance requirements (SOC 2, HIPAA, PCI) and want security validation at coding time rather than in CI
+  - Manage a multi-account AWS organization and want consistent governance policies across all development teams
+
+- **Not the best if you:**
+  - Use AWS only lightly or not at all — Amazon Q's core advantage is AWS knowledge, and without it, the tool trails competitors on general-purpose coding
+  - Work in a multi-cloud environment with significant Azure or GCP usage — Amazon Q doesn't help with non-AWS cloud services
+  - Use Neovim, Emacs, or other non-mainstream editors — Amazon Q Developer's IDE support is limited to JetBrains, VS Code, and a few others
+  - Need a terminal-native coding agent for infrastructure and DevOps work — use [Claude Code](/reviews/claude-code) instead
+
+## vs Copilot, Cursor, and Claude Code
+
+[GitHub Copilot](/reviews/github-copilot) is the better general-purpose inline completion tool. Its predictions are more accurate across all programming languages and frameworks, not just the AWS subset. Choose Copilot if you want the best autocomplete across your entire codebase. Choose Amazon Q Developer if AWS-specific accuracy and integrated security scanning matter more than the 20% better general-purpose completions Copilot provides.
+
+[Cursor](/reviews/cursor) provides the best visual coding experience. Side-by-side diff, chat sidebar, inline editing, and a polished UI that makes reviewing AI changes fast. Amazon Q Developer's IDE integration is functional but not as refined. For visual code review and IDE-based workflows, Cursor wins. For AWS-native development with security scanning, Amazon Q Developer wins. Our [Amazon Q Developer vs Copilot comparison](/compare/amazon-q-developer-vs-github-copilot) breaks down the feature-by-feature differences.
+
+[Claude Code](/reviews/claude-code) is the terminal-native agent for developers who work in the command line. Amazon Q Developer requires an IDE and doesn't offer a CLI agent experience. If you live in the terminal and want AI that runs commands and operates on the full codebase without a GUI, Claude Code is the tool. If you work in an IDE on AWS-heavy projects and want AWS-native code generation with security scanning, Amazon Q Developer is the tool.
+
+## FAQ
+
+**Does Amazon Q Developer only work with AWS services?**
+No, it works with any code. The code completion and generation work across all languages and frameworks. But the quality is noticeably better for AWS-specific code (SDK calls, infrastructure templates, IAM policies) than for general-purpose programming (React components, Python data processing, algorithm implementation). If AWS is a small part of your stack, general-purpose tools like Copilot or Cursor will serve you better.
+
+**How does Amazon Q Developer handle security scanning?**
+Amazon Q scans your code for security vulnerabilities as part of the development workflow, not as a separate CI step. It detects OWASP Top 10 vulnerabilities, hardcoded AWS credentials, overly permissive IAM policies, unencrypted resources, and other AWS-specific security issues. The free tier includes 50 scans per month. Professional and Enterprise remove the scan limit. For teams with compliance requirements, the integrated scanning catches issues at coding time rather than during post-commit review.
+
+**Can Amazon Q Developer generate Terraform instead of CDK/CloudFormation?**
+Not natively. Amazon Q Developer's infrastructure-as-code generation focuses on AWS CDK and CloudFormation. If your team uses Terraform or Pulumi, Amazon Q's IaC capabilities won't help you. Many AWS teams use Terraform in production, and this is a notable gap in Amazon Q's otherwise strong AWS coverage.
+
+**Is Amazon Q Developer free?**
+The Free Tier is generous for individuals: code completion, inline suggestions, CLI access, and 50 security scans per month at no cost. The Professional tier at $19/user/month removes scan limits and adds governance features. The Free Tier is enough for individual AWS developers to evaluate the tool and determine if the Professional tier is worth the upgrade.
+
+**How does Amazon Q compare to AWS CodeWhisperer?**
+Amazon Q Developer is the successor to CodeWhisperer. AWS rebranded and expanded CodeWhisperer into Amazon Q Developer, adding the natural-language feature development, infrastructure-as-code generation, security scanning improvements, and the unified Amazon Q brand. If you used CodeWhisperer, Amazon Q Developer is the current product. If you're evaluating for the first time, Amazon Q Developer is the tool to look at.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-12
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

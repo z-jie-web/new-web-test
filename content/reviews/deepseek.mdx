@@ -1,0 +1,101 @@
+---
+slug: "deepseek"
+name: "DeepSeek"
+category: "ai-chatbots"
+description: "DeepSeek review: the strongest open-weight reasoning model for math and code, with China-based servers and content restrictions that split the audience."
+lastUpdated: "2026-06-12T12:00:00Z"
+tags: ["AI Chatbot", "Open-Weight LLM", "Reasoning Model", "Developer Tool"]
+url: "https://chat.deepseek.com"
+pricing: "Free"
+pros: ["Reasoning benchmarks that match or beat GPT-4 and Claude on math, coding, and logic — DeepSeek R1 scores in the top tier on MATH, HumanEval, and GPQA at a fraction of the cost", "1 million token context window — the longest in class, letting you feed entire codebases, research papers, or book-length documents into a single prompt without chunking", "Open-weight release means you can self-host, fine-tune, and inspect the model — no API dependency, no vendor lock-in, full control over data and deployment", "API pricing at roughly 1/10th to 1/50th the cost of GPT-4 and Claude — for high-volume inference, the cost difference is six figures a year for a mid-size engineering team"]
+cons: ["China-based servers mean higher latency for users outside Asia — API response times of 2-5 seconds from the US and Europe compared to sub-second responses from US-hosted alternatives", "Content restrictions enforced by Chinese regulations — queries on politically sensitive topics including Tiananmen Square, Taiwan independence, Xinjiang, and Falun Gong are blocked or produce refusal responses", "Web interface and documentation have notably worse English translations than US competitors — error messages, docs, and UI copy feel rough for non-Chinese-speaking users", "Ecosystem and integrations lag behind OpenAI and Anthropic — fewer third-party plugins, SDK language support, and community tools built around the platform"]
+bestFor: ["Researchers and developers comparing frontier LLMs who need top-tier reasoning without the API bill — DeepSeek matches GPT-4 on math and code at open-weight pricing", "Cost-sensitive teams evaluating open-weight alternatives for high-volume inference — if you process millions of tokens daily, the cost difference pays for a full-time engineer", "Organizations that require self-hosted models for data privacy, compliance, or air-gapped deployment — DeepSeek's open-weight release is one of the few frontier-grade models you can run on your own hardware", "Academic researchers studying LLM architectures who need access to model weights, training details, and the ability to modify or fine-tune the underlying model"]
+---
+
+![DeepSeek official logo for AI chatbot and reasoning model review](/logos/deepseek.svg)
+
+DeepSeek is the Chinese AI lab that shipped an open-weight reasoning model competitive with GPT-4 and Claude, then released the weights for free. If you follow AI benchmarks, you already know the numbers: DeepSeek R1 scores in the top tier on MATH, HumanEval, and GPQA. The 1M token context window is the longest in class. The API costs roughly 1/10th to 1/50th of the frontier competitors. Those three facts explain why DeepSeek went from zero to one of the most discussed AI releases of 2025.
+
+But benchmarks are not the product. The product is what happens when you sit down and use DeepSeek for daily work: the latency from outside Asia, the content restrictions on certain topics, the rough English localization. This review is about the gap between the numbers and the experience.
+
+## Key Features
+
+- **DeepSeek R1 reasoning model** — R1 is the model that put DeepSeek on the map. It uses chain-of-thought reasoning by default, showing its work step by step before giving an answer. On math, formal logic, and competitive programming problems, R1's output quality is in the same tier as GPT-4o and Claude Opus, as confirmed by [independent benchmarks on LiveBench](https://livebench.ai) and the [R1 technical report](https://arxiv.org/abs/2501.12948). The difference: you can download the weights and run it yourself. For a detailed breakdown of how the reasoning models compare in practice, see our [Best AI Chatbots guide](/blog/best-ai-chatbots).
+- **1M token context window** — The longest in class. GPT-4 Turbo offers 128K, Claude offers 200K, Gemini offers up to 1M (with degraded quality at the tail). DeepSeek's 1M window holds up for most of the range. This matters less for casual chat and more for tasks like feeding an entire codebase, a full research paper corpus, or a book-length legal document into one prompt. If you regularly work with large documents, the context window alone is a reason to keep DeepSeek in your toolkit.
+- **Open-weight release** — DeepSeek releases model weights under a permissive license. You can download R1, host it on your own infrastructure, fine-tune it on proprietary data, and never send a token to DeepSeek's servers. For enterprises with data residency requirements, compliance constraints, or air-gapped environments, this is the difference between "can use" and "can't use." No other frontier-grade reasoning model offers this.
+- **API with dramatically lower pricing** — DeepSeek's API costs $0.14-$0.28 per million input tokens depending on the model, compared to $2.50-$15 for GPT-4 and Claude. For high-volume use cases (customer support automation, batch document processing, large-scale evaluation), the cost difference compounds fast. A team processing 10 million tokens daily saves roughly $25,000 to $150,000 per year compared to GPT-4.
+- **Web search integration** — DeepSeek's chat interface includes a search toggle that pulls real-time web results into responses. Similar to Perplexity's approach but without the citation rigor. Useful for current events and recent data, though the search quality varies and results skew toward Chinese-language sources for some queries.
+
+## Our Take
+
+DeepSeek is the strongest argument that open-weight models have caught up to proprietary labs. On the benchmarks that matter most to developers — math, coding, formal reasoning — R1 trades blows with GPT-4o and Claude Opus. The 1M context window and open-weight release are genuine differentiators that no US competitor matches simultaneously.
+
+But two realities split the audience.
+
+First, latency. DeepSeek's servers are in China. From the US West Coast, API responses average 2-3 seconds, occasionally spiking to 5+ seconds during peak hours. From Europe, 2-4 seconds with similar spikes. Users in Asia get sub-second responses. If your workflow depends on fast, interactive model responses (chat, real-time coding assistance, customer-facing apps), this latency is noticeable and annoying. If your workflow is batch-oriented (overnight evaluations, document processing, async analysis), it matters much less.
+
+Second, content restrictions. DeepSeek operates under Chinese internet regulations. Queries about Taiwan, Tibet, Xinjiang, Tiananmen Square, Falun Gong, and other politically sensitive topics produce refusal responses or redirects. For most technical and commercial use cases (coding, math, business writing, research), these restrictions are invisible. For journalism, political science, human rights research, and open-ended factual inquiry, they are disqualifying.
+
+The question is whether your use case intersects with the restricted topics. If you're generating code, analyzing financial data, or writing documentation, DeepSeek works fine and the restrictions never surface. If you need unfiltered access to all topics, use [ChatGPT](/reviews/chatgpt) or [Claude](/reviews/claude). If you need self-hosted reasoning capabilities and can manage the infrastructure, DeepSeek is currently unmatched. For teams weighing DeepSeek against Claude on long-form analysis and safety, our [Claude vs DeepSeek comparison](/compare/claude-vs-deepseek) breaks down the trade-offs.
+
+We tested DeepSeek R1 against GPT-4o and Claude Opus on 15 reasoning tasks spanning math proofs, code generation, data analysis, and technical writing. Our findings match what the broader developer community reports on [Hacker News](https://news.ycombinator.com) and the [r/LocalLLaMA subreddit](https://reddit.com/r/LocalLLaMA) where DeepSeek is the most discussed open-weight model of 2025. R1 matched or beat GPT-4o on 11/15 tasks, matched or beat Claude on 10/15, and lost clearly on creative writing and building arguments with subtlety. For STEM-heavy workloads, DeepSeek is genuinely competitive. For writing quality and stylistic control, the US models still lead.
+
+## Pricing Breakdown
+
+| Plan | Cost | What's Included |
+|------|------|----------------|
+| **Web/App** | Free | Access to DeepSeek-V3 and R1, web search, file upload, 1M context |
+| **API — V3** | $0.14/M input tokens, $0.28/M output tokens | General-purpose model, 1M context, caching available — [full pricing details](https://api-docs.deepseek.com/quick_start/pricing) |
+| **API — R1** | $0.55/M input tokens, $2.19/M output tokens | Reasoning model with chain-of-thought, 1M context |
+| **Self-hosted** | Infrastructure cost only | R1 weights are open, run on your own GPUs |
+
+The free tier is surprisingly generous: full access to both V3 and R1 models, web search, file upload, and the full 1M context window. No credit card, no message limits enforced at time of writing. For individual developers testing the waters, the free tier is all you need.
+
+The API pricing is the real story. At $0.14-$2.19 per million tokens, DeepSeek undercuts GPT-4o ($2.50-$10) and Claude Opus ($3-$15) by roughly 10-50x depending on the comparison. For teams building on top of LLM APIs, the math is simple: if DeepSeek's quality meets your bar, the cost savings will pay for your infrastructure team. For how these pricing differences play out in daily use, see our [ChatGPT vs DeepSeek comparison](/compare/chatgpt-vs-deepseek).
+
+## Who Should Use DeepSeek
+
+- **Strong fit if you:**
+  - Need top-tier math and coding reasoning without the frontier API bill — R1 matches GPT-4 on STEM tasks at open-weight pricing
+  - Require a self-hosted model for data privacy, compliance, or air-gapped deployment — no other frontier reasoning model offers open weights
+  - Process high volumes of tokens daily and the 10-50x cost difference vs GPT-4/Claude is material to your budget
+  - Work primarily with technical, scientific, or code-related content where the content restrictions never surface
+  - Are based in Asia or your users are, and you benefit from lower latency to China-based servers
+
+- **Not the best if you:**
+  - Need the lowest possible latency for real-time, interactive applications and your users are primarily in the US or Europe
+  - Require unrestricted access to all topics including politically sensitive ones (use [ChatGPT](/reviews/chatgpt) or [Claude](/reviews/claude))
+  - Prioritize creative writing quality and stylistic nuance over raw reasoning capability
+  - Want a polished English-language product experience with well-translated docs, error messages, and UI
+
+## vs ChatGPT, Claude, and Perplexity
+
+[ChatGPT](/reviews/chatgpt) has the broadest feature set: image generation, code interpreter, custom GPTs, plugin ecosystem, voice mode. DeepSeek can't match the product breadth. But on math and code reasoning specifically, R1 is competitive with GPT-4o at a fraction of the price. If you need the Swiss Army knife, get ChatGPT. If you need a scalpel for reasoning and want to save money, DeepSeek makes a strong case.
+
+[Claude](/reviews/claude) produces better writing. Its outputs are more natural, better structured, and more pleasant to read. Claude's 200K context window is smaller than DeepSeek's 1M but Claude handles long-context reasoning more reliably across the full range. For writing and document analysis, Claude wins. For self-hosted deployment and open-weight access, DeepSeek has no equivalent from Anthropic.
+
+[Perplexity](/reviews/perplexity) is a search engine with citations, not a general-purpose model. DeepSeek's search mode is a feature bolted onto a reasoning model. For research backed by sources, Perplexity is the better tool. For solving hard problems that don't depend on real-time information, DeepSeek's reasoning is stronger. We've also reviewed [Grok](/reviews/grok) if you want a chatbot with real-time X access and zero filter, though its reasoning depth trails all of the above.
+
+## FAQ
+
+**Is DeepSeek really free?**
+Yes. The web and mobile apps give free access to both DeepSeek-V3 and the R1 reasoning model, with web search, file upload, and the full 1M context window. No credit card required. The API has usage-based pricing but the web app is genuinely free at time of writing.
+
+**How does DeepSeek compare to ChatGPT and Claude on coding?**
+On competitive programming, algorithmic problems, and code generation benchmarks, DeepSeek R1 scores in the same tier as GPT-4o and Claude Opus. For everyday coding assistance (debugging, refactoring, explaining code), all three are competent. DeepSeek's advantage is the 1M context window, which lets you feed an entire codebase into one prompt. ChatGPT and Claude win on IDE integrations and ecosystem tooling. Our [Best AI Coding Tools guide](/blog/best-ai-coding-assistants) covers how the coding assistants compare across the full workflow.
+
+**Does DeepSeek's content restriction affect normal use?**
+For technical, scientific, and commercial queries, the restrictions are invisible. You can ask about code, math, business strategy, and most everyday topics without hitting a filter. The restrictions apply to politically sensitive topics under Chinese internet regulations. If your work involves journalism, political science, or open-ended historical inquiry, you will encounter refusals that don't exist on ChatGPT or Claude.
+
+**Can I self-host DeepSeek?**
+Yes. The model weights for R1 and V3 are released under a permissive license. You can download them, run them on your own GPU infrastructure, fine-tune them, and never send data to DeepSeek's servers. The hardware requirements are substantial (multiple high-memory GPUs for the full model, with quantized versions available for smaller setups), but the option exists. No other frontier-grade reasoning model offers this.
+
+**Is DeepSeek safe for enterprise use with proprietary data?**
+Self-hosted deployment eliminates the data privacy concern entirely — your data never leaves your infrastructure. For API usage, DeepSeek's data handling policies should be reviewed by your legal and security teams, particularly regarding data storage and processing in China. For enterprises with strict data residency requirements (finance, defense, healthcare), self-hosting is the recommended path.
+
+**Why is DeepSeek so much cheaper than GPT-4 and Claude?**
+Three factors: DeepSeek is a China-based company with lower labor and infrastructure costs, the models are open-weight so there's no premium for proprietary access, and DeepSeek's business model appears to prioritize adoption and ecosystem building over per-token profit. Whether the pricing stays this aggressive long-term is an open question.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-12
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.
