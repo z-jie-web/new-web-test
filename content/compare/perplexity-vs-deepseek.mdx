@@ -1,0 +1,104 @@
+---
+toolA: "perplexity"
+toolB: "deepseek"
+verdict: "Perplexity wins on research — real-time web search with numbered citations, Pro Search multi-query synthesis, and verifiable sources. DeepSeek wins on reasoning depth — top-tier math and code performance with open-weight self-hosting at zero cost. The choice depends on whether your work needs current information or deep analysis. For researchers, pick Perplexity. For developers and budget-constrained teams, pick DeepSeek."
+winner: "depends"
+lastUpdated: "2026-06-12T12:00:00Z"
+---
+
+![Perplexity official logo for AI chatbot comparison](/logos/perplexity.svg)
+
+![DeepSeek official logo for AI chatbot comparison](/logos/deepseek.svg)
+
+Perplexity and DeepSeek are an unusual comparison because they solve completely different problems. Perplexity is an AI search engine — it finds, verifies, and synthesizes current information from the web. DeepSeek is a reasoning engine — it thinks through hard problems, writes code, and lets you self-host the model. They are more complementary than competitive. But if you are choosing one AI tool and your work is either research-heavy or reasoning-heavy, this comparison tells you which one fits.
+
+Our full reviews: [Perplexity review](/reviews/perplexity) · [DeepSeek review](/reviews/deepseek). For a broader comparison across all major chatbots, see our [Best AI Chatbots guide](/blog/best-ai-chatbots).
+
+## Research and Current Information: Perplexity's Domain
+
+[Perplexity](https://perplexity.ai) answers with numbered citations to real sources. Pro Search runs multiple queries in parallel, reads the top results, and synthesizes a thorough response — all with links you can click to verify. Ask about current events, pricing changes, product launches, or technical documentation, and Perplexity gives you sourced, current, verifiable answers.
+
+[DeepSeek](https://chat.deepseek.com) has a search toggle, but it is a secondary feature, not the core product. Search results skew toward Chinese-language sources for some queries. Citations, when present, are less consistent and less thorough than Perplexity's. For research where accuracy and verifiability matter, Perplexity is the clearly better tool.
+
+The practical test: ask both "what changed in the latest Python 3.13 release?" Perplexity returns a detailed answer with citations to the Python docs, PEP documents, and community discussions. DeepSeek returns a competent answer that might be correct but lacks the verification trail. For research where being wrong matters, Perplexity wins.
+
+**Winner: Perplexity** for research and current information.
+
+## Reasoning and Problem-Solving: DeepSeek's Strength
+
+DeepSeek R1 is a top-tier reasoning model. On MATH, HumanEval, and GPQA benchmarks, it scores in the same tier as GPT-4o and Claude Opus, as confirmed by [LiveBench](https://livebench.ai) and the [R1 technical report](https://arxiv.org/abs/2501.12948). Chain-of-thought reasoning is on by default — you see the model work through problems step by step before giving an answer.
+
+Perplexity's reasoning is adequate for everyday questions but shallower for hard problems. It summarizes information well but does not excel at multi-step logic, complex debugging, or deep analytical thinking. Perplexity finds what others have written about a problem. DeepSeek solves the problem itself.
+
+For math, formal logic, competitive programming, and technical analysis, DeepSeek is the stronger tool. For questions where the answer exists online and just needs to be found and synthesized, Perplexity is perfectly adequate.
+
+**Winner: DeepSeek** for reasoning and problem-solving.
+
+## Coding: DeepSeek for Writing, Perplexity for Research
+
+DeepSeek writes code well — functions, algorithms, data structures, SQL queries. The chain-of-thought reasoning helps with debugging and explaining why a particular approach works. For actual coding tasks, DeepSeek is comparable to ChatGPT on most problems and slightly ahead on algorithmic challenges.
+
+Perplexity is better for coding research — "what's the best library for X?", "how do I implement Y in Rust?", "what does this error mean?" The citations link to official docs, Stack Overflow threads, and GitHub examples. You get the answer plus the context to understand it.
+
+The ideal split: use Perplexity to research the approach, then use DeepSeek (or [Cursor](/reviews/cursor)) to write the code.
+
+**Winner: DeepSeek** for writing code. **Perplexity** for researching coding questions.
+
+## Pricing: Both Free, DeepSeek Cheaper at Scale
+
+|  | Perplexity | DeepSeek |
+|--|-----------|---------|
+| **Free tier** | Unlimited Quick Search, 5 Pro Searches/day | Full R1 model access |
+| **Paid plan** | $20/month Pro | None (API only) |
+| **API input (per 1M tokens)** | $1.00 | $0.14–$0.28 |
+| **API output (per 1M tokens)** | $1.00 | $0.28–$1.10 |
+| **Self-hosting** | No | Yes (open weights) |
+
+DeepSeek is free to use with full model access. Perplexity's free tier is generous (unlimited Quick Search, 5 Pro Searches/day) but caps the deep research capability. For individual use, both are basically free for their core features.
+
+At scale, DeepSeek's API is much cheaper — 1/4th to 1/10th the cost of Perplexity's API. For high-volume applications, DeepSeek wins on cost. But Perplexity's API provides search + citations that DeepSeek's API does not — you are paying for completely different capabilities.
+
+**Winner: DeepSeek** on raw price. **Tie** on free tier value for individual use.
+
+## Privacy and Self-Hosting: DeepSeek's Unique Advantage
+
+DeepSeek's open-weight release means you can download R1 and run it on your own hardware. No data leaves your infrastructure. No API calls. No third-party servers. This is the strongest privacy guarantee possible.
+
+Perplexity processes all queries through its cloud infrastructure. [Perplexity's privacy policy](https://www.perplexity.ai/privacy) covers data handling, but your searches go through their servers. For general research, this is fine. For sensitive queries or proprietary data, self-hosting DeepSeek provides stronger guarantees.
+
+The trade-off: self-hosting DeepSeek requires GPUs and ML ops expertise. Perplexity requires zero infrastructure — it just works. Self-hosting is powerful for teams that have the capability. For everyone else, Perplexity's zero-ops simplicity wins.
+
+**Winner: DeepSeek** for organizations that need self-hosting. **Perplexity** for zero-ops simplicity.
+
+## Who Should Choose
+
+**Choose Perplexity if you:**
+- Do research where accuracy, currency, and source verification matter
+- Need cited answers you can verify rather than trusting AI output
+- Primarily consume and synthesize information rather than create original analysis
+- Search frequently and value Pro Search's multi-query synthesis
+
+**Choose DeepSeek if you:**
+- Need top-tier reasoning for math, coding, and technical problem-solving
+- Want a free AI tool with no usage caps on the full model
+- Require self-hosted AI for data privacy, compliance, or air-gapped deployment
+- Process high volumes of tokens and the 10x API cost difference is material
+- Work primarily in technical domains where deep analysis matters more than current information
+
+## FAQ
+
+**Can Perplexity replace DeepSeek for coding?**
+Not entirely. Perplexity is excellent at researching coding questions with citations to official docs and community answers. But it does not write or execute code as well as DeepSeek. Use Perplexity to research the approach, DeepSeek (or Cursor/Copilot) to implement it.
+
+**Is DeepSeek good for research?**
+Adequate for casual research, but not competitive with Perplexity. DeepSeek's search feature is a secondary add-on with less consistent citations and a bias toward Chinese-language sources. For research where accuracy matters, Perplexity is the better tool.
+
+**Which is better for students?**
+Perplexity for research-heavy subjects (history, social sciences, literature) where cited sources matter. DeepSeek for technical subjects (math, computer science, engineering) where problem-solving matters more than current information. Both are free, so using both costs nothing.
+
+**Can I self-host Perplexity?**
+No. Perplexity is a cloud service with no open-weight release. DeepSeek is the only major AI tool in this comparison that supports self-hosting through its open-weight R1 model.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-12
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

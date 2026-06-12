@@ -1,0 +1,109 @@
+---
+toolA: "deepseek"
+toolB: "chatgpt"
+verdict: "DeepSeek is the strongest open-weight reasoning model and it's free — matching ChatGPT on math, coding, and logic benchmarks at zero cost. But ChatGPT's ecosystem (web browsing, image generation, GPT Store, voice mode) and US-server reliability make it the safer daily driver for most users. If cost and self-hosting matter, get DeepSeek. If versatility and polish matter, get ChatGPT."
+winner: "depends"
+lastUpdated: "2026-06-12T12:00:00Z"
+---
+
+![DeepSeek official logo for AI chatbot comparison](/logos/deepseek.svg)
+
+![ChatGPT official logo for AI chatbot comparison](/logos/chatgpt.svg)
+
+DeepSeek and ChatGPT represent two entirely different bets on AI. DeepSeek bets on open-weight models, benchmark performance, and zero-cost access. ChatGPT bets on ecosystem breadth, polished UX, and doing everything in one interface. The question is not which model is smarter. On reasoning benchmarks, they're in the same tier. The question is what kind of AI user you are.
+
+Our full reviews: [DeepSeek review](/reviews/deepseek) · [ChatGPT review](/reviews/chatgpt). For a broader comparison across all major chatbots, see our [Best AI Chatbots guide](/blog/best-ai-chatbots). If you're deciding between open-weight models and premium writing AI, see our [DeepSeek vs Claude comparison](/compare/deepseek-vs-claude).
+
+## Reasoning and Intelligence: Surprisingly Close
+
+On math, coding, and formal logic benchmarks, [DeepSeek R1](https://chat.deepseek.com) matches or beats [ChatGPT](https://chatgpt.com)'s GPT-4o. The [R1 technical report](https://arxiv.org/abs/2501.12948) and independent [LiveBench evaluations](https://livebench.ai) both place R1 in the same tier as GPT-4o and Claude Opus on MATH, HumanEval, and GPQA. For daily use: both solve complex debugging problems, both write correct SQL queries, both reason through multi-step logic puzzles.
+
+The difference is in chain-of-thought visibility. DeepSeek R1 shows its reasoning process by default — you see exactly how it reached a conclusion, step by step. ChatGPT can show reasoning when asked, but its default mode is direct answers. If you value transparency in how the AI thinks, DeepSeek's approach is a genuine advantage. If you prefer concise answers without the internal monologue, ChatGPT's default is more efficient.
+
+Where DeepSeek pulls ahead: specialized math and competitive programming. On MATH-500 and Codeforces-style problems, R1's chain-of-thought reasoning gives it an edge — it's more likely to catch its own errors mid-solution. For everyday coding tasks (CRUD endpoints, React components, data pipelines), they're comparable.
+
+**Edge: DeepSeek** for specialized reasoning and transparency. **Comparable** for everyday tasks.
+
+## Features and Ecosystem: ChatGPT Is a Generation Ahead
+
+ChatGPT does things DeepSeek simply cannot. Web browsing with source citations pulls current information in real time. DALL-E 3 generates images from natural language directly in the chat. Code interpreter runs Python, analyzes spreadsheets, and creates charts. The GPT Store has over 3 million custom GPTs for specialized tasks. Voice mode supports real-time spoken conversation.
+
+DeepSeek offers web search, but it's less consistent and skews toward Chinese-language sources for some queries. There is no image generation, no code interpreter, no plugin ecosystem, no voice mode. The feature gap is not small; it is categorical.
+
+For a typical workday: ChatGPT handles research ("what changed in React 19?"), image generation ("make a diagram of the auth flow"), data analysis ("summarize this CSV"), and voice brainstorming. DeepSeek handles reasoning-heavy tasks and code generation. If you can only have one tool for a varied workload, ChatGPT covers more ground. If your work is primarily reasoning and code, DeepSeek covers the essentials at zero cost.
+
+**Winner: ChatGPT** by a large margin. DeepSeek's feature set is narrow by design. It's a reasoning engine, not a platform.
+
+## Pricing: DeepSeek Wins by an Order of Magnitude
+
+|  | DeepSeek | ChatGPT |
+|--|---------|---------|
+| **Free tier** | Full model access (web) | GPT-4o mini only, rate-limited |
+| **API input (per 1M tokens)** | $0.14–$0.28 | $2.50–$5.00 |
+| **API output (per 1M tokens)** | $0.28–$1.10 | $10.00–$15.00 |
+| **Self-hosting** | Yes (open weights) | No |
+
+DeepSeek's [API pricing](https://platform.deepseek.com/api-docs/pricing) is roughly 1/10th to 1/50th of ChatGPT's. For a team processing 10 million tokens daily, the annual cost difference is $25,000 to $150,000. For startups and research labs operating on tight budgets, this is not a small difference. It determines whether an AI feature is viable at all.
+
+The free tier comparison is even starker. DeepSeek's free web interface gives you access to the full R1 model. ChatGPT's free tier gives you GPT-4o mini — a smaller, less capable model — with significant rate limits during peak hours. For individual developers and students, DeepSeek is the better free option purely on model quality.
+
+The hidden cost: latency. DeepSeek's China-based servers add 2–5 seconds of response time for users outside Asia. ChatGPT's US-based infrastructure returns responses in under a second. For interactive chat, this is noticeable. For batch API processing, it matters less.
+
+**Winner: DeepSeek** on price. The cost advantage is not incremental — it is transformative for high-volume use cases and budget-constrained teams.
+
+## Privacy and Self-Hosting: DeepSeek's Unique Advantage
+
+DeepSeek releases model weights under a permissive license. You can download R1, host it on your own infrastructure, fine-tune it on proprietary data, and never send a token to DeepSeek's servers. For enterprises with data residency requirements, compliance constraints, or air-gapped environments, self-hosting is the difference between "can use AI" and "can't use AI."
+
+ChatGPT processes everything through OpenAI's cloud. OpenAI's [privacy policy](https://openai.com/policies/privacy-policy) states that Plus and Team users' data is not used for model training, but the data still goes through OpenAI's servers. For proprietary codebases, sensitive business documents, and regulated industries, this requires trust in a third party.
+
+The trade-off: self-hosting DeepSeek requires infrastructure and ML ops expertise. You need GPUs, you need to manage model updates, you need to handle scaling. ChatGPT requires none of that — it just works. Self-hosting is a superpower for teams that have the capability. For everyone else, it's a feature they'll never use.
+
+**Winner: DeepSeek** for organizations that need self-hosting. **ChatGPT** for organizations that value zero-ops simplicity.
+
+## Content Restrictions: The Elephant in the Room
+
+DeepSeek enforces content restrictions under Chinese regulations. Queries on politically sensitive topics — Tiananmen Square, Taiwan independence, Xinjiang, Falun Gong — are blocked or produce refusal responses. For users researching Chinese history, politics, or human rights, these restrictions are a hard blocker.
+
+ChatGPT has its own content policies that restrict harmful content, but the scope is narrower and framed around safety rather than political compliance. For most Western users, ChatGPT's content filters are less intrusive — they block fewer topics and provide more thoughtful refusals when they do block.
+
+This is not a minor difference. If your work touches on topics restricted by Chinese regulations, DeepSeek is not a viable tool. If your work stays within technical, creative, and non-political domains, the content restrictions may never affect you.
+
+**Winner: ChatGPT** for unrestricted access to information.
+
+## Who Should Choose
+
+**Choose DeepSeek if you:**
+- Need top-tier reasoning at the lowest possible cost (free to use, 1/50th API cost)
+- Want to self-host a frontier model for data privacy or compliance
+- Work primarily in math, coding, and logic where DeepSeek matches or leads
+- Are budget-constrained and the $20/month for ChatGPT Plus matters
+- Research LLM architectures and need access to model weights
+
+**Choose ChatGPT if you:**
+- Want one AI tool that covers writing, research, images, code, and analysis
+- Need web browsing, image generation, and plugin extensibility in one interface
+- Value US-based server reliability and sub-second response times
+- Work on topics that may be restricted by Chinese content regulations
+- Want the broadest ecosystem of third-party integrations and community tools
+
+## FAQ
+
+**Is DeepSeek better than ChatGPT for coding?**
+On algorithmic problems and competitive programming, DeepSeek R1 has a slight edge due to its chain-of-thought reasoning. For everyday development tasks (CRUD endpoints, React components, API integration), they're comparable. For codebase-aware editing, neither is the right tool — use [Cursor](/reviews/cursor) or [GitHub Copilot](https://github.com/features/copilot) instead.
+
+**Is DeepSeek really free?**
+Yes. The web interface at chat.deepseek.com gives free access to the full R1 model. The API is paid but costs roughly 1/10th to 1/50th of ChatGPT's API. There is no $20/month subscription tier equivalent to ChatGPT Plus — DeepSeek's business model is API volume, not consumer subscriptions.
+
+**Can DeepSeek generate images like ChatGPT?**
+No. DeepSeek has no image generation capability. ChatGPT integrates DALL-E 3 for image generation directly in the chat. If image generation matters, ChatGPT is the clear choice.
+
+**Is DeepSeek safe to use for sensitive data?**
+For the web interface, assume data is processed on Chinese servers under Chinese data regulations. For sensitive use cases, self-host DeepSeek on your own infrastructure — the open-weight license makes this possible, and it's the only way to ensure data stays under your control.
+
+**Why is DeepSeek so much cheaper than ChatGPT?**
+DeepSeek's cost advantage comes from several factors: efficient model architecture (Mixture of Experts), lower infrastructure costs in China, and a business strategy focused on API volume over consumer subscriptions. Whether this pricing is sustainable long-term is an open question — enjoy it while it lasts.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-12
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

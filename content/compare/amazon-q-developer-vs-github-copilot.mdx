@@ -1,0 +1,88 @@
+---
+toolA: "amazon-q-developer"
+toolB: "github-copilot"
+verdict: "Amazon Q Developer is the obvious pick for AWS teams — it knows Lambda, DynamoDB, IAM, and CloudFormation better than any general-purpose tool. But GitHub Copilot is the better general-purpose coding assistant with broader IDE support, stronger non-AWS code quality, and a lower price ($10 vs $19). If your codebase runs on AWS, Amazon Q adds unique value. For everything else, Copilot is better."
+winner: "depends"
+lastUpdated: "2026-06-12T12:00:00Z"
+---
+
+![Amazon Q Developer official logo for AI coding comparison](/logos/amazon-q-developer.svg)
+
+![GitHub Copilot official logo for AI coding comparison](/logos/github-copilot.svg)
+
+Amazon Q Developer and GitHub Copilot are the two AI coding tools backed by the largest cloud platforms: AWS and GitHub/Microsoft. Copilot is the generalist: autocomplete and chat across every major IDE, $10/month, the most popular AI coding tool. Amazon Q Developer is the specialist: deep AWS integration, cloud-aware security scanning, and infrastructure-as-code support that no general-purpose tool matches. The right choice depends on whether "AWS depth" matters more to you than "general-purpose capability."
+
+Our full reviews: [Amazon Q Developer review](/reviews/amazon-q-developer) · [GitHub Copilot review](/reviews/github-copilot). For a broader overview, see our [Best AI Coding Tools guide](/blog/best-ai-coding-tools).
+
+## AWS Integration: Amazon Q's Unique Advantage
+
+[Amazon Q Developer](https://aws.amazon.com/q/developer/) is built by AWS, for AWS. It knows Lambda cold start behavior, DynamoDB query patterns, IAM least-privilege policies, and CloudFormation/CDK best practices. Ask it to "create a Lambda function that reads from DynamoDB and publishes to SNS" and it writes the code, the IAM policy, and the infrastructure-as-code template — with AWS Well-Architected best practices baked in.
+
+[GitHub Copilot](https://github.com/features/copilot) handles AWS code competently — it knows the SDK, writes correct API calls, and can generate basic infrastructure templates. But it lacks the deep AWS-specific knowledge that Amazon Q has. For AWS-heavy workflows, Amazon Q is genuinely better: it catches security misconfigurations that Copilot misses (overly permissive IAM roles, unencrypted S3 buckets), suggests cost optimizations (right-sizing instances, Reserved Instance recommendations), and understands the full AWS service ecosystem.
+
+If your codebase is primarily AWS, Amazon Q's cloud integration adds value that no general-purpose tool can replicate. If AWS is a small part of your stack, the advantage shrinks.
+
+**Winner: Amazon Q Developer** for AWS-heavy projects.
+
+## General Code Quality: Copilot Is Better Outside AWS
+
+Outside the AWS ecosystem, Copilot's code quality is stronger. For general-purpose coding — React components, Python scripts, Go services, Rust libraries — Copilot's suggestions are more accurate, more idiomatically correct, and better adapted to language-specific conventions. This is likely a function of Copilot's training on GitHub's vast open-source corpus versus Amazon Q's optimization for the AWS ecosystem.
+
+The gap is most visible in non-AWS frameworks and libraries. Write a Next.js API route or a Rust CLI tool, and Copilot produces cleaner, more idiomatic code. Amazon Q's suggestions sometimes feel like they were written by someone who knows AWS deeply but learned the framework yesterday.
+
+**Winner: GitHub Copilot** for general-purpose code quality outside AWS.
+
+## Security Scanning: Amazon Q Finds What Copilot Misses
+
+Amazon Q Developer includes built-in security scanning that flags AWS-specific vulnerabilities: overly permissive IAM policies, unencrypted S3 buckets, hardcoded credentials, missing CloudTrail logging. These are real security issues that general-purpose code reviewers miss because they do not have AWS-specific threat modeling.
+
+Copilot's security awareness is general-purpose — it catches obvious issues (SQL injection, hardcoded secrets) but lacks AWS-specific security context. For teams deploying to AWS, Amazon Q's security scanning is a meaningful advantage that Copilot does not match.
+
+**Winner: Amazon Q Developer** for AWS-specific security scanning.
+
+## Pricing
+
+|  | Amazon Q Developer | GitHub Copilot |
+|--|-------------------|---------------|
+| **IDE support** | VS Code, JetBrains, AWS Console | VS Code, JetBrains, Neovim, GitHub.com |
+| **Individual price** | Free tier available | $10/month |
+| **Team price** | $19/user/month (Pro) | $19/user/month (Business) |
+| **Free tier** | Yes — code completion, limited chat | Students, teachers, open-source |
+| **AWS integration** | Deep — Lambda, DynamoDB, IAM, CDK | Basic — SDK autocomplete only |
+
+Amazon Q's free tier with code completion is genuinely useful for individual AWS developers. Copilot's $10/month Individual plan is the better value for general-purpose coding. At the team level, both cost $19/user/month — the choice comes down to AWS integration vs general-purpose capability.
+
+**Winner: Amazon Q Developer** for free tier value for AWS developers. **Tie** at the team level.
+
+## Who Should Choose
+
+**Choose Amazon Q Developer if you:**
+- Build primarily on AWS and want AI that understands your cloud stack deeply
+- Need AWS-specific security scanning for IAM, S3, and infrastructure misconfigurations
+- Write infrastructure-as-code (CDK, CloudFormation) and want AI that generates correct templates
+- Are an individual AWS developer who wants capable code completion at no cost
+
+**Choose GitHub Copilot if you:**
+- Want the best general-purpose AI autocomplete at the lowest price ($10/month)
+- Use multiple cloud providers or are cloud-agnostic
+- Need broad IDE support including Neovim
+- Value GitHub PR integration and code review suggestions
+- Work primarily with non-AWS frameworks and libraries
+
+## FAQ
+
+**Is Amazon Q Developer free?**
+Yes — the free tier includes code completion, basic chat, and security scanning. The Pro tier at $19/user/month adds full-featured chat, deeper security scanning, and advanced customization.
+
+**Can GitHub Copilot handle AWS code?**
+Yes, competently. Copilot knows the AWS SDK, writes correct API calls, and generates basic infrastructure templates. It just lacks the deep, AWS-specific optimizations and security awareness that Amazon Q provides.
+
+**Which is better for a full-stack developer?**
+Copilot, unless your stack is primarily AWS. Copilot is more versatile across frameworks and languages, cheaper ($10 vs $19), and supports more editors. Amazon Q is the better choice only when AWS depth outweighs general-purpose versatility.
+
+**Do I need both?**
+If your team deploys to AWS and uses a mix of AWS-specific and general-purpose code, having both can work — Amazon Q for AWS infrastructure and security, Copilot for general application code. For most developers, picking one based on your primary platform is simpler.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-12
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.
