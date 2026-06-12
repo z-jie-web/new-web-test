@@ -16,6 +16,11 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/lib/common.sh"
 
+if [ "${1:-}" = "--json" ]; then
+  VALIDATOR_OUTPUT="json"
+  shift
+fi
+
 SKIP_BUILD="${SKIP_BUILD:-0}"
 
 PASS_ITEMS=()
@@ -135,9 +140,11 @@ esac
 # -- article-check.sh sub-check ----------------------------------
 article_check_output="$(bash scripts/article-check.sh "$TARGET_FILE" 2>&1)"
 article_check_code=$?
-echo "ARTICLE CHECK:"
-echo "$article_check_output"
-echo
+if ! json_enabled; then
+  echo "ARTICLE CHECK:"
+  echo "$article_check_output"
+  echo
+fi
 case "$article_check_code" in
   0)
     pass_item "article-check.sh passed"
@@ -155,9 +162,11 @@ esac
 
 # -- backlink check ----------------------------------------------
 backlink_output="$(bash scripts/find-link-ops.sh "$TARGET_FILE" 2>&1)"
-echo "BACKLINK CHECK:"
-echo "$backlink_output"
-echo
+if ! json_enabled; then
+  echo "BACKLINK CHECK:"
+  echo "$backlink_output"
+  echo
+fi
 missing_backlinks="$(printf '%s\n' "$backlink_output" | sed -n 's/^MISSING BACKLINKS (\([0-9][0-9]*\)).*/\1/p' | head -n 1)"
 candidate_replace="$(printf '%s\n' "$backlink_output" | sed -n 's/^CANDIDATE_REPLACE (\([0-9][0-9]*\)).*/\1/p' | head -n 1)"
 
@@ -247,9 +256,11 @@ if [ "$SKIP_BUILD" = "1" ]; then
 else
   build_output="$(npm run build 2>&1)"
   build_code=$?
-  echo "BUILD CHECK:"
-  printf '%s\n' "$build_output" | tail -n 40
-  echo
+  if ! json_enabled; then
+    echo "BUILD CHECK:"
+    printf '%s\n' "$build_output" | tail -n 40
+    echo
+  fi
   if [ "$build_code" -eq 0 ]; then
     pass_item "npm run build passed"
   else

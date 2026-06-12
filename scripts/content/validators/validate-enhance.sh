@@ -16,6 +16,11 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/lib/common.sh"
 
+if [ "${1:-}" = "--json" ]; then
+  VALIDATOR_OUTPUT="json"
+  shift
+fi
+
 PASS_ITEMS=()
 FIXABLE_ITEMS=()
 PREREQ_ITEMS=()

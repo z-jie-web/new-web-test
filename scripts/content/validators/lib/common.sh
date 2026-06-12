@@ -10,6 +10,7 @@
 # ── Constants ───────────────────────────────────────────────────
 
 STATE_ROOT_DEFAULT="${HOME}/.claude/state/toolporto-writer"
+VALIDATOR_OUTPUT="${VALIDATOR_OUTPUT:-human}"
 
 # ── Array tracking ──────────────────────────────────────────────
 
@@ -43,6 +44,55 @@ print_list() {
     echo "- ${item}"
   done
   echo
+}
+
+json_enabled() {
+  [ "${VALIDATOR_OUTPUT:-human}" = "json" ]
+}
+
+json_escape() {
+  local s="$1"
+  s=${s//\\/\\\\}
+  s=${s//\"/\\\"}
+  s=${s//$'\n'/\\n}
+  s=${s//$'\r'/\\r}
+  s=${s//$'\t'/\\t}
+  printf '%s' "$s"
+}
+
+json_array_from_name() {
+  local name="$1"
+  local count i item
+  count="$(safe_array_count "$name")"
+  printf '['
+  i=0
+  while [ "$i" -lt "$count" ]; do
+    eval "item=\${${name}[$i]}"
+    printf '"%s"' "$(json_escape "$item")"
+    if [ "$i" -lt $((count - 1)) ]; then
+      printf ','
+    fi
+    i=$((i + 1))
+  done
+  printf ']'
+}
+
+emit_json_result() {
+  local exit_code="$1"
+  local recommended_action="$2"
+  printf '{'
+  printf '"validator":"%s",' "$(json_escape "${SCRIPT_NAME:-}")"
+  printf '"mode":"%s",' "$(json_escape "${MODE_NAME:-}")"
+  printf '"target_file":"%s",' "$(json_escape "${TARGET_FILE:-}")"
+  printf '"article_id":"%s",' "$(json_escape "${ARTICLE_ID:-}")"
+  printf '"state_dir":"%s",' "$(json_escape "${STATE_DIR:-}")"
+  printf '"pass":'; json_array_from_name PASS_ITEMS; printf ','
+  printf '"fail":'; json_array_from_name FIXABLE_ITEMS; printf ','
+  printf '"blocked":'; json_array_from_name PREREQ_ITEMS; printf ','
+  printf '"rewrite":'; json_array_from_name REWRITE_ITEMS; printf ','
+  printf '"recommended_action":"%s",' "$(json_escape "$recommended_action")"
+  printf '"exit_code":%s' "$exit_code"
+  printf '}\n'
 }
 
 # ── Pattern matching ────────────────────────────────────────────
@@ -159,10 +209,47 @@ extract_brief_list() {
 print_header() {
   local name="${1:-}"
   local mode="${2:-}"
+  if json_enabled; then
+    return
+  fi
   echo "========================================"
   echo "Validator: ${name}"
   echo "Mode: ${mode}"
   echo "========================================"
+}
+
+emit_early_exit() {
+  local validator="$1"
+  local mode="$2"
+  local message="$3"
+  local action="$4"
+  local exit_code="$5"
+  SCRIPT_NAME="$validator"
+  MODE_NAME="$mode"
+  FIXABLE_ITEMS=()
+  PREREQ_ITEMS=()
+  REWRITE_ITEMS=()
+  PASS_ITEMS=()
+  case "$exit_code" in
+    1) FIXABLE_ITEMS=("$message") ;;
+    2) PREREQ_ITEMS=("$message") ;;
+    3) REWRITE_ITEMS=("$message") ;;
+  esac
+  if json_enabled; then
+    emit_json_result "$exit_code" "$action"
+  else
+    print_header "$validator" "$mode"
+    case "$exit_code" in
+      1) print_list "FAIL" "${FIXABLE_ITEMS[@]}" ;;
+      2) print_list "BLOCKED" "${PREREQ_ITEMS[@]}" ;;
+      3) print_list "REWRITE" "${REWRITE_ITEMS[@]}" ;;
+    esac
+    echo "RECOMMENDED ACTION:"
+    echo "- ${action}"
+    echo
+    echo "EXIT CODE: ${exit_code}"
+  fi
+  exit "$exit_code"
 }
 
 # ── Validator initialisation ────────────────────────────────────
@@ -177,25 +264,19 @@ print_header() {
 init_validator() {
   SCRIPT_NAME="$1"
   local mode="$2"
+  MODE_NAME="$mode"
 
   # Ensure TARGET_FILE / ARTICLE_ID at least one is set (set -u safe)
   local _tf="${TARGET_FILE:-}"
   local _aid="${ARTICLE_ID:-}"
 
   if [ -z "$_tf" ] && [ -z "$_aid" ]; then
-    echo "========================================"
-    echo "Validator: ${SCRIPT_NAME}"
-    echo "Mode: ${mode}"
-    echo "========================================"
-    echo "FAIL:"
-    echo "- missing target file or article id"
-    echo
-    echo "RECOMMENDED ACTION:"
-    echo "- pass <target-file> or <article-id> as the first argument,"
-    echo "  or set TARGET_FILE / ARTICLE_ID"
-    echo
-    echo "EXIT CODE: 2"
-    exit 2
+    emit_early_exit \
+      "${SCRIPT_NAME}" \
+      "${mode}" \
+      "missing target file or article id" \
+      "pass <target-file> or <article-id> as the first argument, or set TARGET_FILE / ARTICLE_ID" \
+      2
   fi
 
   local _sd="${STATE_DIR:-}"
@@ -229,17 +310,19 @@ init_validator() {
     TYPE=""
   fi
 
-  echo "========================================"
-  echo "Validator: ${SCRIPT_NAME}"
-  echo "Mode: ${mode}"
-  echo "========================================"
-  if [ -n "$_tf" ]; then
-    echo "Target file: ${_tf}"
+  if ! json_enabled; then
+    echo "========================================"
+    echo "Validator: ${SCRIPT_NAME}"
+    echo "Mode: ${mode}"
+    echo "========================================"
+    if [ -n "$_tf" ]; then
+      echo "Target file: ${_tf}"
+    fi
+    echo "Article ID: ${ARTICLE_ID}"
+    echo "State dir: ${STATE_DIR}"
+    echo "Candidate brief: ${CANDIDATE_BRIEF}"
+    echo
   fi
-  echo "Article ID: ${ARTICLE_ID}"
-  echo "State dir: ${STATE_DIR}"
-  echo "Candidate brief: ${CANDIDATE_BRIEF}"
-  echo
 }
 
 # ── Common prerequisite checks ──────────────────────────────────
@@ -291,6 +374,26 @@ route_exit() {
   prereq_count="$(safe_array_count PREREQ_ITEMS)"
   fixable_count="$(safe_array_count FIXABLE_ITEMS)"
   pass_count="$(safe_array_count PASS_ITEMS)"
+
+  local exit_code action
+  if [ "$rewrite_count" -gt 0 ]; then
+    exit_code=3
+    action="$rewrite_action"
+  elif [ "$prereq_count" -gt 0 ]; then
+    exit_code=2
+    action="$prereq_action"
+  elif [ "$fixable_count" -gt 0 ]; then
+    exit_code=1
+    action="$fixable_action"
+  else
+    exit_code=0
+    action="$pass_action"
+  fi
+
+  if json_enabled; then
+    emit_json_result "$exit_code" "$action"
+    exit "$exit_code"
+  fi
 
   if [ "$pass_count" -gt 0 ]; then
     print_list "PASS" "${PASS_ITEMS[@]}"

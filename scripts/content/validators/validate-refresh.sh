@@ -16,6 +16,11 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/lib/common.sh"
 
+if [ "${1:-}" = "--json" ]; then
+  VALIDATOR_OUTPUT="json"
+  shift
+fi
+
 PASS_ITEMS=()
 FIXABLE_ITEMS=()
 PREREQ_ITEMS=()
@@ -46,7 +51,7 @@ if [ -f "$CANDIDATE_BRIEF" ]; then
     fail_prereq "mode_outputs.refresh is missing"
   fi
 
-  if has_line '^[[:space:]]{4}refresh_reason:[[:space:]]*$' "$CANDIDATE_BRIEF" || has_line '^[[:space:]]{6}-[[:space:]]*(pricing_changed|feature_launch|comparison_outdated|tool_shutdown|content_stale|schema_or_contract_alignment)[[:space:]]*$' "$CANDIDATE_BRIEF"; then
+  if has_line '^[[:space:]]{4}refresh_reason:[[:space:]]*$' "$CANDIDATE_BRIEF" || has_line '^[[:space:]]{6}-[[:space:]]*(pricing_changed|feature_launch|comparison_outdated|tool_shutdown|content_stale|schema_or_contract_alignment|state_recovery)[[:space:]]*$' "$CANDIDATE_BRIEF"; then
     pass_item "refresh_reason block exists"
   else
     fail_prereq "refresh_reason is missing"

@@ -81,6 +81,7 @@ Allowed examples:
 - `tool_shutdown`
 - `content_stale`
 - `schema_or_contract_alignment`
+- `state_recovery`
 
 Bad examples:
 
@@ -89,6 +90,9 @@ Bad examples:
 - `Claude rewrote it a bit`
 
 `refresh_reason` must be concrete enough to review after the fact.
+
+`state_recovery` is reserved for brief recovery paths where the article exists
+but the refresh state must be reconstructed before normal refresh work can continue.
 
 ## Responsibilities
 

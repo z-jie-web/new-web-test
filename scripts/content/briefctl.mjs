@@ -22,6 +22,16 @@ function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+function resolveContentInput(target) {
+  if (!target) die('missing target file');
+  if (fs.existsSync(target) && fs.statSync(target).isFile()) return target;
+  for (const dir of ['reviews', 'blog', 'compare']) {
+    const candidate = path.join(process.cwd(), 'content', dir, `${target}.mdx`);
+    if (fs.existsSync(candidate)) return candidate;
+  }
+  die(`content file not found: ${target}`);
+}
+
 function wrapYaml(raw) {
   return `---\n${raw}\n---\n`;
 }
@@ -94,6 +104,84 @@ function makeInitialBrief(articleId, articleType) {
     },
     history: [],
   };
+}
+
+function detectArticleTypeFromFile(file) {
+  if (file.includes(`${path.sep}content${path.sep}reviews${path.sep}`) || file.includes('content/reviews/')) return 'review';
+  if (file.includes(`${path.sep}content${path.sep}compare${path.sep}`) || file.includes('content/compare/')) return 'compare';
+  return 'blog';
+}
+
+function defaultSearchIntent(articleType) {
+  return articleType === 'blog' ? 'informational' : 'commercial investigation';
+}
+
+function inferPrimaryKeyword(frontmatter, articleType, articleId, fallbackSlug = '') {
+  if (frontmatter.title) return String(frontmatter.title).toLowerCase();
+  if (frontmatter.name) return `${String(frontmatter.name).toLowerCase()} ${articleType}`;
+  if (fallbackSlug) return fallbackSlug.replace(/-/g, ' ');
+  return articleId.replace(/-/g, ' ');
+}
+
+function inferAudience(frontmatter, articleType) {
+  if (articleType === 'review') return `buyers evaluating ${frontmatter.name || 'this tool'} for real use`;
+  if (articleType === 'compare') return 'buyers choosing between two tools for a real workflow';
+  return 'readers researching tools in this category';
+}
+
+function inferAngle(frontmatter, articleType, articleId) {
+  if (articleType === 'review') return `${frontmatter.name || articleId} review and buying decision`;
+  if (articleType === 'compare') return frontmatter.verdict || `${articleId.replace(/-/g, ' ')} comparison`;
+  return frontmatter.title || articleId.replace(/-/g, ' ');
+}
+
+function defaultRenderContract(articleType) {
+  if (articleType === 'review') {
+    return {
+      auto_rendered: [
+        { name: 'review_tldr' },
+        { name: 'review_pros_cons_cards' },
+        { name: 'review_primary_cta' },
+      ],
+      mdx_must_not_duplicate: ['review auto TLDR', 'manual CTA placeholders'],
+    };
+  }
+  if (articleType === 'compare') {
+    return {
+      auto_rendered: [
+        { name: 'compare_quick_table' },
+        { name: 'compare_review_links' },
+        { name: 'compare_cta_buttons' },
+      ],
+      mdx_must_not_duplicate: ['compare top summary table', 'manual CTA placeholders'],
+    };
+  }
+  return {
+    auto_rendered: [{ name: 'blog_related_review_cards' }],
+    mdx_must_not_duplicate: ['related review card grid'],
+  };
+}
+
+function inferCategory(frontmatter, articleType, repoRoot) {
+  if (frontmatter.category) return String(frontmatter.category);
+  if (articleType === 'compare' && frontmatter.toolA) {
+    const reviewPath = path.join(repoRoot, 'content', 'reviews', `${frontmatter.toolA}.mdx`);
+    if (fs.existsSync(reviewPath)) {
+      const review = matter(fs.readFileSync(reviewPath, 'utf8')).data;
+      return String(review.category || '');
+    }
+  }
+  return '';
+}
+
+function loadExistingCanonical(dir) {
+  const canonical = path.join(dir, 'brief.yaml');
+  if (!fs.existsSync(canonical)) return null;
+  try {
+    return normalizeBrief(parseYamlFile(canonical));
+  } catch {
+    return null;
+  }
 }
 
 function ensureObject(value, fallback = {}) {
@@ -320,6 +408,55 @@ function cmdShow(articleId) {
   process.stdout.write(fs.readFileSync(file, 'utf8'));
 }
 
+function cmdInitFromFile(articleId, targetFile, requestedMode = 'draft') {
+  const mode = requestedMode || 'draft';
+  if (!MODES.has(mode)) die(`invalid mode: ${mode}`);
+  const file = resolveContentInput(targetFile);
+  const repoRoot = process.cwd();
+  const raw = fs.readFileSync(file, 'utf8');
+  const parsed = matter(raw);
+  const articleType = detectArticleTypeFromFile(file);
+  const relTarget = path.relative(repoRoot, file).replace(/\\/g, '/');
+  const fallbackSlug = path.basename(file, '.mdx');
+  const dir = resolveStateDir(articleId);
+  ensureDir(dir);
+  const existing = loadExistingCanonical(dir);
+  const parentBriefId =
+    mode === 'refresh'
+      ? (existing?.run_id || existing?.article_id || `recovered-from-file:${articleId}`)
+      : null;
+  const brief = makeInitialBrief(articleId, articleType);
+  brief.parent_brief_id = parentBriefId;
+  brief.current_mode = mode;
+  brief.intent.category = inferCategory(parsed.data, articleType, repoRoot);
+  brief.intent.primary_keyword = inferPrimaryKeyword(parsed.data, articleType, articleId, fallbackSlug);
+  brief.intent.search_intent = defaultSearchIntent(articleType);
+  brief.intent.audience = inferAudience(parsed.data, articleType);
+  brief.artifacts.target_files = [relTarget];
+  brief.decisions.angle = inferAngle(parsed.data, articleType, articleId);
+  brief.decisions.render_contract = defaultRenderContract(articleType);
+
+  if (mode === 'refresh') {
+    brief.mode_outputs.refresh = {
+      refresh_reason: ['state_recovery'],
+      changed_sections: [],
+      stale_claims_removed: [],
+      files_touched: [relTarget],
+    };
+  } else if (mode === 'draft') {
+    brief.mode_outputs.draft = {
+      target_file: relTarget,
+      frontmatter_complete: true,
+      structure_complete: true,
+      known_gaps: [],
+    };
+  }
+
+  const out = path.join(dir, 'brief.candidate.yaml');
+  saveBrief(out, brief);
+  console.log(`✅ Recovered ${out} from ${relTarget} (mode=${mode})`);
+}
+
 function cmdValidate(target) {
   const dirs = [];
   if (!target || target === '--all') {
@@ -373,6 +510,8 @@ function usage() {
   console.log('  commit    <id>                         Candidate → canonical (after validation)');
   console.log('  show      <id>                         Print brief to stdout');
   console.log('  validate  <id|--all>                  Validate existing brief files');
+  console.log('  init-from-file <id> <target-file> [mode]  Seed brief from existing content');
+  console.log('  recover   <id> <target-file>          Recover refresh brief from existing content');
   console.log('');
   console.log('Key paths:');
   console.log('  intent.<field>              article_type, category, primary_keyword, etc.');
@@ -391,6 +530,7 @@ const command = process.argv[2];
 const articleId = process.argv[3];
 const arg3 = process.argv[4];
 const arg4 = process.argv[5];
+const arg5 = process.argv[6];
 
 switch (command) {
   case 'init':
@@ -413,6 +553,12 @@ switch (command) {
     break;
   case 'validate':
     cmdValidate(articleId);
+    break;
+  case 'init-from-file':
+    cmdInitFromFile(articleId, arg3, arg4 || 'draft');
+    break;
+  case 'recover':
+    cmdInitFromFile(articleId, arg3, arg4 || 'refresh');
     break;
   default:
     usage();

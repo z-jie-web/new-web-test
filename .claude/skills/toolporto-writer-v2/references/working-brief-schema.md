@@ -42,6 +42,13 @@ Discover artifact file:
 ~/.claude/state/toolporto-writer/<article-id>/discover-artifacts.txt
 ```
 
+Operational helpers:
+
+- `bash scripts/content/briefctl.sh validate <article-id>`
+- `bash scripts/content/briefctl.sh validate --all`
+- `bash scripts/content/briefctl.sh init-from-file <article-id> <target-file> [mode]`
+- `bash scripts/content/briefctl.sh recover <article-id> <target-file>`
+
 ## Lifecycle
 
 ### New article cycle

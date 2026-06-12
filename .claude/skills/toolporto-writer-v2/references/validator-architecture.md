@@ -268,6 +268,38 @@ Avoid:
 - vague "quality not sufficient"
 - hidden logic not reflected in output
 
+### JSON mode
+
+Validators should support:
+
+```bash
+validate-<mode>.sh --json ...
+```
+
+Expected JSON envelope:
+
+```json
+{
+  "validator": "validate-draft",
+  "mode": "draft",
+  "target_file": "content/reviews/elevenlabs.mdx",
+  "article_id": "elevenlabs",
+  "state_dir": "~/.claude/state/toolporto-writer/elevenlabs",
+  "pass": [],
+  "fail": [],
+  "blocked": [],
+  "rewrite": [],
+  "recommended_action": "advance to enhance mode",
+  "exit_code": 0
+}
+```
+
+Rules:
+
+- `--json` must not change validation logic
+- it only changes serialization format
+- human-readable mode remains the default
+
 ## Validator Ownership by Mode
 
 ### `validate-discover.sh`

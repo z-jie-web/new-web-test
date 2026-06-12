@@ -17,6 +17,12 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/lib/common.sh"
 
+if [ "${1:-}" = "--json" ]; then
+  VALIDATOR_OUTPUT="json"
+  shift
+fi
+MODE_NAME="discover"
+
 PASS_ITEMS=()
 FIXABLE_ITEMS=()
 PREREQ_ITEMS=()
@@ -37,26 +43,25 @@ if [ -z "$STATE_DIR" ]; then
 fi
 
 if [ -z "$STATE_DIR" ]; then
-  print_header "validate-discover" "discover"
-  echo "FAIL:"
-  echo "- missing ARTICLE_ID or STATE_DIR"
-  echo
-  echo "RECOMMENDED ACTION:"
-  echo "- pass <article-id> as the first argument, or set ARTICLE_ID / STATE_DIR"
-  echo
-  echo "EXIT CODE: 2"
-  exit 2
+  emit_early_exit \
+    "validate-discover" \
+    "discover" \
+    "missing ARTICLE_ID or STATE_DIR" \
+    "pass <article-id> as the first argument, or set ARTICLE_ID / STATE_DIR" \
+    2
 fi
 
 CANDIDATE_BRIEF="${STATE_DIR}/brief.candidate.yaml"
 DISCOVER_ARTIFACTS="${STATE_DIR}/discover-artifacts.txt"
 
-print_header "validate-discover" "discover"
-echo "Article ID: ${ARTICLE_ID}"
-echo "State dir: ${STATE_DIR}"
-echo "Candidate brief: ${CANDIDATE_BRIEF}"
-echo "Discover artifacts: ${DISCOVER_ARTIFACTS}"
-echo
+if ! json_enabled; then
+  print_header "validate-discover" "discover"
+  echo "Article ID: ${ARTICLE_ID}"
+  echo "State dir: ${STATE_DIR}"
+  echo "Candidate brief: ${CANDIDATE_BRIEF}"
+  echo "Discover artifacts: ${DISCOVER_ARTIFACTS}"
+  echo
+fi
 
 # -- prerequisite checks ----------------------------------------
 if [ ! -d "$STATE_DIR" ]; then
