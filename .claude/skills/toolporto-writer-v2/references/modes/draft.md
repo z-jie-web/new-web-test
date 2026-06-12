@@ -43,7 +43,10 @@ If any of these are missing, the draft validator should return exit code `2`.
 
 - `brief.yaml`
 - `project-contract.md`
-- article-type templates and examples
+- article-type templates and examples (see `.claude/skills/toolporto-writer/references/article-templates.md`)
+  - 🚨 The template's "Required Sections" skeleton is authoritative — copy its
+    format literally (e.g. `![Logo A] VS ![Logo B]` for compare, not separate lines).
+    When in doubt, read an existing article of the same type for reference.
 
 Minimum required brief fields before writing:
 
