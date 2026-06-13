@@ -31,6 +31,11 @@ TARGET_FILE="${TARGET_FILE:-${1:-}}"
 init_validator "validate-enhance" "enhance"
 check_common_prereqs
 
+# -- target file existence ---------------------------------------
+if [ ! -f "$TARGET_FILE" ]; then
+  fail_prereq "target file does not exist on disk: $TARGET_FILE (brief target_files path may be wrong)"
+fi
+
 # -- brief checks ------------------------------------------------
 if [ -f "$CANDIDATE_BRIEF" ]; then
   if has_line '^current_mode:[[:space:]]*enhance[[:space:]]*$' "$CANDIDATE_BRIEF"; then

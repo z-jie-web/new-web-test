@@ -22,9 +22,25 @@ function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+function isValidTargetPath(p) {
+  return /^content\/(reviews|blog|compare)\/[^/]+\.mdx$/.test(p);
+}
+
+function normalizeTargetFile(file) {
+  const repoRoot = process.cwd();
+  const abs = path.resolve(repoRoot, file);
+  const rel = path.relative(repoRoot, abs).replace(/\\/g, '/');
+  if (!isValidTargetPath(rel)) {
+    die(`target file must be content/<type>/<slug>.mdx, got: ${rel}`);
+  }
+  return { absPath: abs, relPath: rel };
+}
+
 function resolveContentInput(target) {
   if (!target) die('missing target file');
-  if (fs.existsSync(target) && fs.statSync(target).isFile()) return target;
+  if (fs.existsSync(target) && fs.statSync(target).isFile()) {
+    return normalizeTargetFile(target).absPath;
+  }
   for (const dir of ['reviews', 'blog', 'compare']) {
     const candidate = path.join(process.cwd(), 'content', dir, `${target}.mdx`);
     if (fs.existsSync(candidate)) return candidate;
@@ -310,6 +326,14 @@ function briefValidationIssues(data) {
     issues.push('artifacts must be an object');
   } else if (!Array.isArray(data.artifacts.target_files)) {
     issues.push('artifacts.target_files must be an array');
+  } else {
+    for (const tf of data.artifacts.target_files) {
+      if (typeof tf !== 'string' || !isValidTargetPath(tf)) {
+        issues.push(`artifacts.target_files contains invalid path: ${tf} (must be content/<type>/<slug>.mdx)`);
+      } else if (!fs.existsSync(path.join(process.cwd(), tf))) {
+        issues.push(`artifacts.target_files references missing file: ${tf}`);
+      }
+    }
   }
   if (!data.decisions || typeof data.decisions !== 'object' || Array.isArray(data.decisions)) {
     issues.push('decisions must be an object');
@@ -405,6 +429,9 @@ function cmdSet(articleId, keyPath, value) {
 
 function cmdList(articleId, keyPath, value) {
   if (!value) die('usage: briefctl list <article-id> <key.path> <value>');
+  if (keyPath === 'artifacts.target_file' && !isValidTargetPath(value)) {
+    die(`target_file must be content/<type>/<slug>.mdx, got: ${value}`);
+  }
   const dir = resolveStateDir(articleId);
   const brief = path.join(dir, 'brief.candidate.yaml');
   const data = normalizeBrief(loadBriefOrDie(brief));
@@ -441,12 +468,13 @@ function cmdShow(articleId) {
 function cmdInitFromFile(articleId, targetFile, requestedMode = 'draft') {
   const mode = requestedMode || 'draft';
   if (!MODES.has(mode)) die(`invalid mode: ${mode}`);
-  const file = resolveContentInput(targetFile);
   const repoRoot = process.cwd();
+  const normalized = normalizeTargetFile(resolveContentInput(targetFile));
+  const file = normalized.absPath;
+  const relTarget = normalized.relPath;
   const raw = fs.readFileSync(file, 'utf8');
   const parsed = matter(raw);
   const articleType = detectArticleTypeFromFile(file);
-  const relTarget = path.relative(repoRoot, file).replace(/\\/g, '/');
   const fallbackSlug = path.basename(file, '.mdx');
   const dir = resolveStateDir(articleId);
   ensureDir(dir);
