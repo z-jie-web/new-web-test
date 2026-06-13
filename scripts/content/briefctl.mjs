@@ -242,6 +242,15 @@ function resolvePathSpec(keyPath) {
   if (head === 'refresh' && rest[0] === 'files_touched') {
     return { path: ['mode_outputs', 'refresh', 'files_touched'], kind: 'list' };
   }
+  const MODE_LIST_FIELDS = new Set([
+    'supporting_evidence', 'required_sections_confirmed',
+    'known_gaps', 'topic_source_summary', 'changed_sections',
+    'stale_claims_removed', 'image_paths_checked',
+    'render_contract_conflicts',
+  ]);
+  if (MODES.has(head) && rest.length === 1 && MODE_LIST_FIELDS.has(rest[0])) {
+    return { path: ['mode_outputs', head, rest[0]], kind: 'list' };
+  }
 
   if (MODES.has(head)) {
     return { path: ['mode_outputs', head, ...rest], kind: 'auto' };
@@ -330,7 +339,7 @@ function briefValidationIssues(data) {
     for (const tf of data.artifacts.target_files) {
       if (typeof tf !== 'string' || !isValidTargetPath(tf)) {
         issues.push(`artifacts.target_files contains invalid path: ${tf} (must be content/<type>/<slug>.mdx)`);
-      } else if (!fs.existsSync(path.join(process.cwd(), tf))) {
+      } else if (data.current_mode !== 'discover' && !fs.existsSync(path.join(process.cwd(), tf))) {
         issues.push(`artifacts.target_files references missing file: ${tf}`);
       }
     }

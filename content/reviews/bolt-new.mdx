@@ -1,0 +1,113 @@
+---
+slug: "bolt-new"
+name: "Bolt.new"
+category: "ai-coding"
+description: "Bolt.new by StackBlitz review: in-browser full-stack app generation, instant deployment, WebContainer technology. Best for rapid prototyping and MVPs."
+lastUpdated: "2026-06-13T12:00:00Z"
+tags: ["Full-Stack Generation", "Rapid Prototyping", "WebContainer", "In-Browser IDE"]
+url: "https://bolt.new/"
+pricing: "Freemium"
+pros: ["Generates complete full-stack applications with frontend and backend", "In-browser WebContainer eliminates local setup entirely", "Instant preview and one-click deployment to production", "Supports multiple frameworks including Next.js, Node.js, and databases", "Conversational iteration with real-time preview updates"]
+cons: ["Complex multi-page apps can exceed context limits", "Generated backend logic may need manual security review", "Free tier has tight limits for serious evaluation", "Not designed for integrating with existing large codebases"]
+bestFor: ["Solo founders validating ideas with working prototypes", "Full-stack developers who want instant environments", "Teams rapid-prototyping before committing to architecture", "Hackathon participants who need complete apps in hours"]
+---
+
+![Bolt.new official logo for full-stack AI app generation platform](/logos/bolt-new.svg)
+
+Bolt.new by StackBlitz is an AI-powered app generator that runs entirely in the browser. You describe what you want to build — a SaaS dashboard, an e-commerce store, a real-time chat app — and Bolt.new generates a complete, runnable application with frontend, backend, database, and deployment. There is no local setup, no build tool configuration, and no deployment pipeline to configure. It is the closest thing to "speak an app into existence" that exists in 2026. See our comparison with [v0 by Vercel](/reviews/v0) and [Cursor](/reviews/cursor) for different AI development approaches.
+
+## Key Features
+
+- **Full-Stack Generation**
+- **In-Browser WebContainer**
+- **Instant Deployment**
+
+## Our Take
+
+Bolt.new is the most ambitious in-browser AI development tool on the market. The core insight is simple: if you can eliminate the environment setup entirely, AI code generation becomes dramatically more useful. You do not just get code. You get a running application at a shareable URL.
+
+The WebContainer technology is the secret. StackBlitz spent years building a Node.js runtime that executes inside the browser tab using WebAssembly. Bolt.new layers AI code generation on top of this runtime, so the generated code runs instantly in the same tab. No waiting for npm install. No Docker configuration. Just code, preview, and deploy.
+
+The limitations are real. Complex applications with many pages, authentication flows, and external API integrations can exceed the AI's context window. The generated backend code works but should be reviewed before production use — Bolt.new optimizes for speed, not security hardening. It is best understood as a prototyping and MVP tool, not a replacement for a development team building production infrastructure.
+
+## How Bolt.new Works
+
+Bolt.new combines three technologies: a large language model trained on full-stack codebases, the StackBlitz WebContainer for in-browser execution, and an integrated deployment pipeline via Netlify or similar providers.
+
+You start by describing your app idea. The AI generates the project structure — package.json, framework configuration, components, API routes, database schema, and styling. The WebContainer boots in the browser tab, installs dependencies, and runs the application. You see a live preview immediately.
+
+Iteration happens through conversation. You can ask Bolt.new to add features, change the styling, fix bugs, or add new pages. Each iteration produces updated code and a refreshed preview. When you are ready, one click deploys the app to a public URL.
+
+The AI understands common full-stack patterns: Next.js with Prisma and PostgreSQL, Express with React frontend, real-time features with WebSockets, authentication with NextAuth or Clerk, and file storage with cloud providers. It generates working configuration, not just component shells.
+
+## Environment and Runtime
+
+The WebContainer is the most technically impressive part of Bolt.new. It is a full Node.js runtime compiled to WebAssembly and running inside a browser tab. This means:
+
+- No server required for development — everything runs locally in your browser
+- Instant environment boot — typically 2-5 seconds vs minutes for cloud-based alternatives
+- Full npm ecosystem access — any package that runs in Node.js works in Bolt.new
+- File system, terminal, and process management all virtualized in the browser
+
+The practical impact is that you can generate an app during a meeting, iterate on it in real-time, and have a deployed version before the meeting ends. For rapid prototyping, this workflow is unmatched by any tool that requires local setup or cloud provisioning. The [Bolt.new Product Hunt launch](https://www.producthunt.com/posts/bolt-new) captured developer enthusiasm for this zero-setup approach, and the [StackBlitz blog](https://blog.stackblitz.com/) regularly covers WebContainer advances.
+
+## Application Quality and Limitations
+
+Generated applications are production-grade at the component level. React components use proper patterns. API routes follow Next.js conventions. Database schemas include indexes and relations. Styling uses Tailwind CSS with consistent design tokens.
+
+The quality degrades with complexity. A 5-page SaaS dashboard with authentication, payments, and a database works reliably. A 20-page enterprise application with role-based access control, multi-tenancy, and complex business logic will strain the system. The AI handles scope well up to about 15-20 files across frontend and backend, then context limitations begin to show.
+
+For production use, plan to treat Bolt.new output as a high-quality starting point rather than a finished product. The generated code should go through normal code review, security audit, and testing before handling real user data or payments.
+
+## Pricing Breakdown
+
+Bolt.new uses a daily credit system.
+
+| Plan | Monthly Price | Daily Credits | Deployments | Best For |
+|------|-------------|---------------|-------------|----------|
+| Free | $0 | 5 | 2 | Trying the platform |
+| Hobby | $20 | 50 | 10 | Individual builders |
+| Pro | $50 | 200 | Unlimited | Freelancers, startups |
+| Team | $100/seat | 500/seat | Unlimited | Teams, agencies |
+
+One generation consumes one credit. Complex multi-file generations with backend logic may consume 2-3 credits. The Free tier at 5 daily credits is enough for basic evaluation but not for serious prototyping. Hobby at $20/month is the right starting point for solo founders. Pro at $50/month removes deployment limits and provides enough credits for daily use. Visit the [Bolt.new pricing page](https://bolt.new/pricing) for current rates.
+
+Deployments on Free and Hobby plans are limited. Pro and Team plans include unlimited deployments with custom domains. All plans include HTTPS and CDN delivery for deployed apps.
+
+## Who Should Use Bolt.new
+
+**Bolt.new is a strong fit if you:**
+- Build MVPs and prototypes frequently
+- Want to validate ideas with working applications, not mockups
+- Hate spending time on environment setup and build tool configuration
+- Need full-stack output (frontend + backend + database)
+- Work in hackathons or fast-paced prototyping cycles
+
+**Bolt.new is not the best choice if you:**
+- Need to integrate with an existing large codebase (it starts from scratch)
+- Are building enterprise applications with complex security requirements
+- Only need UI components without backend (v0 by Vercel is better suited)
+- Want general-purpose AI coding assistance in your IDE (use Cursor or Claude Code)
+- Need fine-grained control over every file and configuration
+
+## vs v0 and Replit Agent
+
+Bolt.new and v0 by Vercel solve different problems. Bolt.new generates complete applications — frontend, backend, database, and deployment. v0 generates React UI components. Use Bolt.new when you need a working app. Use v0 when you need polished components for an existing codebase.
+
+Compared to Replit Agent, Bolt.new's advantage is the WebContainer runtime. Replit Agent runs on Replit's cloud infrastructure, which means server provisioning and network latency. Bolt.new runs entirely in the browser, making iteration faster and eliminating cloud costs during development. Replit Agent has a larger model context and handles more complex multi-file projects, but the iteration speed is slower.
+
+## FAQ
+
+**Is Bolt.new free?** Yes, the free tier includes 5 daily credits and 2 deployments. Commercial use requires a paid plan starting at $20/month.
+
+**What tech stack does Bolt.new use?** Primary stack is Next.js with React, Tailwind CSS, Prisma, and PostgreSQL. It also supports Express, Node.js, and other npm-ecosystem frameworks.
+
+**Can I export my code from Bolt.new?** Yes. All generated code can be downloaded as a zip file or connected to a GitHub repository. There is no lock-in.
+
+**Is Bolt.new suitable for production applications?** Generated code is a high-quality starting point but should go through code review, security audit, and testing before production use. It is best used for prototyping and MVP development.
+
+[Visit Bolt.new](https://bolt.new/)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-13
+Disclosure: Some links may contain affiliate partnerships.

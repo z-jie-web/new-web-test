@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <rect width="128" height="128" rx="24" fill="#4F46E5"/>
+  <path d="M68 12L28 70h24l-4 46 48-58H68l8-46z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+  <text x="64" y="116" text-anchor="middle" fill="#fff" font-size="12" font-family="system-ui, sans-serif" font-weight="600">Bolt.new</text>
+</svg>
