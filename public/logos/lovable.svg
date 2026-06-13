@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Lovable logo</title>
+  <desc id="desc">Custom wordmark style logo for Lovable review artwork.</desc>
+  <rect width="512" height="512" rx="104" fill="#fff5cf"/>
+  <path d="M256 385c-16-14-31-26-44-37-57-48-95-80-95-138 0-38 30-68 68-68 29 0 50 16 71 42 21-26 42-42 71-42 38 0 68 30 68 68 0 58-38 90-95 138-13 11-28 23-44 37z" fill="#111111"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Grammarly logo</title>
+  <desc id="desc">Custom wordmark style logo for Grammarly review artwork.</desc>
+  <rect width="512" height="512" rx="104" fill="#ebfff7"/>
+  <circle cx="256" cy="256" r="158" fill="#0f9d66"/>
+  <path d="M317 190c-18-21-41-32-69-32-58 0-98 41-98 98 0 57 40 98 96 98 44 0 79-23 92-60h-92v-32h131c1 10 1 18 1 26 0 78-52 130-132 130-75 0-138-57-138-162 0-87 64-158 151-158 42 0 76 15 102 46z" fill="#ffffff"/>
+</svg>
