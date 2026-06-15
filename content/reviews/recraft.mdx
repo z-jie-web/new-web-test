@@ -1,0 +1,120 @@
+---
+slug: "recraft"
+name: "Recraft"
+category: "ai-image"
+description: "Recraft is the AI image generator built for vector art, logos, and brand illustrations with editable SVG export — for graphic designers who need vectors, not pixels."
+lastUpdated: "2026-06-15T12:00:00Z"
+tags: ["Vector Generation", "Logo Design", "Brand Illustration", "SVG Export"]
+url: "https://www.recraft.ai/"
+pricing: "Freemium"
+pros: ["Native SVG vector generation with structured, editable layers", "Brand Kit system locks colors, fonts, and style references across all assets", "Custom style training from reference images for consistent illustration systems", "Design-tool integration with Figma, Illustrator, and Sketch via SVG export", "Node-based workflow editor for building multi-step generation pipelines"]
+cons: ["Limited photorealism compared to Midjourney or DALL-E 3", "Smaller community and fewer shared prompt resources", "Fewer curated style presets than established raster tools", "Raster-to-vector conversion can introduce imprecise geometry"]
+bestFor: ["Graphic designers producing logos, icons, and brand identity systems", "Brand designers who need visual consistency across all generated assets", "Illustrators who want editable vector output instead of locked raster files", "Creative teams building icon sets and illustration packs at scale"]
+
+---
+
+![Recraft official logo for AI vector image generator review](/logos/recraft.svg)
+
+Most AI image generators produce beautiful pixels. Recraft produces editable vectors. That distinction defines everything about this tool. While [Midjourney](/reviews/midjourney) renders cinematic raster art and [DALL-E 3](/reviews/dall-e-3) handles photorealism, Recraft generates SVG files with structured layers, clean paths, and editable geometry. For graphic designers who need to open a generated image in Illustrator and edit it directly, rather than tracing over a flattened JPG, Recraft solves a problem the raster-first tools never set out to address. It ranks as the top model on the Hugging Face Text-to-Image leaderboard as of 2026, and its V4.1 vector engine delivers production-grade SVG output that scales from app icons to billboard prints.
+
+[Visit Recraft](https://www.recraft.ai/)
+
+## Key Features
+
+**Native SVG Vector Generation**, Recraft generates actual vector files with structured layers and editable geometry, not raster images wrapped in SVG containers. When you open a Recraft vector output in Illustrator, Figma, or Sketch, you find separate color regions, clean anchor points, and layer-organized paths. This is distinct from the raster-to-vector tracing that most competitors offer under the "vector" label. The V4.1 Pro Vector model (released May 2026) produces higher-resolution vector illustrations with smoother gradients and stronger adherence to short prompts, making it viable for production logo work and icon design without manual cleanup. The Replicate team has published [detailed benchmarks for Recraft V4 models](https://replicate.com/blog/recraft-v4) documenting vector generation quality and speed improvements across versions.
+
+**Brand Kit System**, you upload brand colors, fonts, and style references once, and Recraft applies them to every asset you generate. Hex codes are locked in. Typography settings persist across sessions. The Brand Kit acts as a visual rulebook that prevents color drift and style inconsistency across an icon set, illustration pack, or marketing collateral series. For design teams shipping 50 icons for a product launch, this replaces the tedious process of manually recoloring and restyling each asset individually.
+
+**Custom Style Training**, you upload up to five reference images and Recraft learns the visual language, then produces new generations in that exact style. This matters more for brand work than for one-off creative exploration. A designer can train a style on a client's existing illustration library and generate 30 new assets that match the established look, without anyone spotting the AI join line. The style-training cycle is faster than Midjourney's style reference system and produces more reproducible results because it ties directly into the Brand Kit.
+
+**Design Tool Integration**, Recraft vectors export as standard SVG files that open natively in Illustrator, Figma, Sketch, and Inkscape. You do not need a proprietary viewer or converter. The exported layers are semantically organized: backgrounds, foreground elements, and decorative details sit on separate named layers. This integration turns Recraft from a generation toy into a production tool that fits into existing design workflows rather than demanding a separate pipeline.
+
+**Node-Based Workflow Editor**, Recraft Studio includes a visual workflow builder where you chain generation, background removal, upscaling, inpainting, and style application into automated pipelines. Instead of running each step manually and exporting between tools, you build the process once and reuse it. For teams producing 200 social media graphics with consistent branding, this eliminates repetitive manual steps.
+
+## Our Take
+
+Recraft is the AI image tool that graphic designers have been waiting for, provided they understand what it does not try to do. It does not compete with Midjourney on artistic aesthetics. It does not compete with DALL-E 3 on photorealism. It competes on editability, brand consistency, and vector output, three dimensions where raster-native tools are structurally incapable of matching it.
+
+The V4.1 vector engine is genuinely production-ready for logos, icons, flat illustrations, and brand identity assets. The output opens in design tools with clean geometry, not with the messy anchor bloat that automated tracing typically produces. The Brand Kit and style training features make Recraft the only AI image generator where you can enforce a brand palette across 100 generated assets and know they will all match, without manual correction.
+
+The limitations are real. Photorealistic scenes, complex lighting, and cinematic compositions are not what Recraft is built for. Its community is smaller than Midjourney's, so you will find fewer prompt-sharing resources and style exploration guides. The raster-to-vector conversion feature, while useful for resurrecting old assets, occasionally introduces geometry that needs manual cleanup. And text rendering inside images, while improved in V4 and V4.1, still requires proofreading.
+
+At $10/month for the Basic plan with commercial rights, Recraft is priced reasonably against [Leonardo AI](/reviews/leonardo-ai) ($12/month entry) and Midjourney ($10/month entry). The real value proposition, however, sits at the Advanced tier ($32/month annual), where SVG vector export becomes available. For a freelance designer billing $75/hour, the time saved by generating editable vectors instead of tracing raster outputs pays for the subscription in the first half-hour of avoided manual work each month. See the [Recraft docs](https://www.recraft.ai/docs) for technical specifications and model details.
+
+## What Recraft Really Does
+
+Recraft is a multi-model AI design platform, not a single-purpose image generator. Its vector engine runs alongside raster models, giving you both output formats from the same prompt and style system.
+
+The vector pipeline works differently from what most designers expect. Instead of generating a raster image and then vectorizing it through tracing, Recraft's V4 and V4.1 models generate vector output natively. The model predicts anchor points, curves, and color fills directly. This produces cleaner geometry than post-hoc tracing because the model understands the mathematical structure of vector graphics, not just pixel arrangement.
+
+When you prompt "minimalist mountain logo, blue and white, clean geometric lines," Recraft outputs an SVG where each mountain face is a separate path, each color region is its own shape, and the typography sits on an editable text layer. You can change "blue" to "teal" by selecting the path and swapping the fill color, not by regenerating the entire image. This is structurally different from pixel-based generation and opens a workflow that raster tools cannot offer.
+
+The Brand Kit deserves a closer look because it solves a problem that plague multi-asset design projects: style drift. When a designer generates 50 icons for a SaaS product using Midjourney or DALL-E, each generation is independent. Colors shift. Line weights vary. Corner radii drift. The Brand Kit solves this by binding every generation to a defined color palette, font set, and style reference. The output is not just aesthetically similar, it is brand-locked by hex code.
+
+The style training system is Recraft's most underrated feature. Upload five reference images and Recraft extracts the visual language: stroke weight, corner treatment, color temperature, composition density, and negative space ratio. Subsequent generations apply these parameters. For agencies building illustration systems for clients, this single feature replaces the manual art direction time that usually makes AI-generated assets unusable for brand work.
+
+Recraft Studio, the web-based workspace, includes a node-based workflow editor that chains generation, editing, and export steps. You might build a workflow that: generates a vector icon from prompt, removes its background, applies a brand style, upscales to 4x, and exports as SVG. Run it once, save the workflow, and apply it to 200 prompts. This is the kind of automation that makes Recraft relevant for production teams, not just individual designers.
+
+## Pricing Breakdown
+
+Recraft uses a credit-based system where each action consumes a specific number of credits. Vector generation costs 2 credits per image, raster generation costs 1 credit. Monthly subscription credits do not roll over; top-up credit packs do not expire.
+
+| Plan | Monthly | Annual (per month) | Key Features |
+|------|---------|-------------------|-------------|
+| Free | $0 | $0 | ~30 daily credits, public images only, no commercial rights, raster only |
+| Basic | $12 | $10 | 1,000 credits/month, private images, full commercial rights, Creative Upscale |
+| Advanced | $40 | $32 | 4,000 credits/month, native SVG vector export, API access, priority support |
+| Pro | $80 | $64 | 8,000 credits/month, high-volume generation, advanced API limits |
+| Team | Custom | ~$55/user | 9,000+ shared credits, workspace, SSO, premium support |
+
+A practical credit estimate: generating 100 vector icons at 2 credits each costs 200 credits. With the Advanced plan's 4,000 credits, you can produce roughly 2,000 raster images or 1,000 vector images per month. The Free plan's daily refresh makes it usable for casual exploration, but the lack of commercial rights and SVG export means professional designers need at least the Advanced tier. Check [Recraft's official pricing page](https://www.recraft.ai/pricing) for the latest plans and credit details.
+
+## Who Should Use Recraft
+
+**Recraft is a strong fit if you:**
+- Produce logos, icons, or brand identity assets that need to be edited after generation
+- Work with established brand guidelines that require exact color matching and style consistency
+- Build illustration systems or icon packs where every asset must look like it came from the same designer
+- Need to export generated work directly into Illustrator, Figma, or Sketch without tracing
+
+**Recraft is not the best choice if you:**
+- Need photorealistic or cinematic image output (use [Midjourney](/reviews/midjourney) or [DALL-E 3](/reviews/dall-e-3))
+- Want open-source flexibility or local self-hosting (use [Stable Diffusion](/reviews/stable-diffusion))
+- Primarily generate marketing photography or product lifestyle shots
+- Are a hobbyist who only needs occasional raster images and has no SVG requirement
+
+## vs Midjourney, DALL-E 3, and Other AI Image Tools
+
+Recraft occupies a specific lane in the AI image landscape. It does not try to be the best at everything, and that focus is its strength.
+
+**vs [Midjourney](/reviews/midjourney)**: Midjourney produces the most aesthetically refined raster images in the market. Its V7 model excels at composition, lighting, texture, and color harmony. For concept art, moodboards, and creative visual work, Midjourney is the better tool. Recraft counters with editable vectors and brand consistency. A designer creating a logo in Midjourney gets a beautiful raster image they cannot easily modify. The same prompt in Recraft produces an SVG with editable paths. Different tools for different jobs.
+
+**vs [DALL-E 3](/reviews/dall-e-3)**: DALL-E 3 offers the best photorealistic output and the most literal prompt understanding. It reads complex prompts accurately and produces images that look like photographs. Recraft cannot match this photorealism, nor does it try. For product mockups, lifestyle photography, and scenes that need to pass as real photos, DALL-E 3 is the stronger option. For design assets that need to stay editable, Recraft wins by offering a capability DALL-E 3 does not have.
+
+**vs [Adobe Firefly](/reviews/adobe-firefly)**: Firefly integrates natively with Photoshop, Illustrator, and Express, making it the path of least resistance for Adobe-centric workflows. Its generative fill and text-to-vector features are solid. Recraft's vector generation produces cleaner geometry and more structured layers, but Firefly's Adobe integration gives it an advantage for teams already committed to Creative Cloud. If you live in Adobe apps, Firefly is more convenient. If vector quality and brand consistency are the priority, Recraft edges ahead.
+
+**vs [Stable Diffusion](/reviews/stable-diffusion)**: Stable Diffusion offers open-source flexibility, local self-hosting, fine-tuning, and the massive model ecosystem on Civitai. It is the choice for developers and researchers who need full control. Recraft is a managed platform with opinionated design features; Stable Diffusion is a toolkit. For vector output specifically, Stable Diffusion requires external tracing tools, while Recraft generates vectors natively.
+
+**vs [Flux](/reviews/flux)**: Flux by Black Forest Labs delivers strong photorealism across nine models at $0.003 to $0.07 per image. It is a capable raster competitor. Recraft's vector capability has no Flux equivalent, so the comparison comes down to whether you need editable output or photorealistic pixels.
+
+**vs [Ideogram](/reviews/ideogram)**: Ideogram solves text rendering inside images with 93% accuracy, a problem Recraft handles well but not perfectly. For posters, typographic designs, and images where text readability is critical, Ideogram is the specialist. Recraft's text rendering has improved in V4.1 but is not its primary strength.
+
+## FAQ
+
+**Can Recraft generate editable SVG files?** Yes. Recraft generates native SVG vector files with structured layers and clean geometry. The output opens directly in Illustrator, Figma, Sketch, and Inkscape with editable paths, not flattened raster images. This is available on the Advanced plan and above.
+
+**Is Recraft free?** Recraft has a free tier with approximately 30 daily credits that refresh each day. Free plan images are public and cannot be used commercially. SVG vector export, private images, and commercial rights require a paid plan starting at $10/month (annual billing).
+
+**How does Recraft compare to Midjourney for logo design?** Recraft is the stronger tool for logos because it generates editable SVG vectors. Midjourney produces beautiful raster images but converting them into usable logo files requires manual tracing in Illustrator. Recraft outputs vector files with editable paths, which is the format logos need for production use.
+
+**What is the Brand Kit and how does it work?** The Brand Kit saves your brand colors, fonts, and style references, then automatically applies them to every generated asset. You upload hex codes, choose typefaces, and set style parameters once. Every subsequent generation stays within those brand boundaries, preventing color drift and style inconsistency across asset sets.
+
+**Does Recraft have an API?** Yes, Recraft provides an API starting at the Advanced plan tier. The API supports vector generation, raster generation, style creation, background removal, upscaling, inpainting, and vectorization of raster images. Vector API pricing starts at $0.08 per image for standard models and $0.30 for Pro models.
+
+**Can I use Recraft-generated images commercially?** Yes, all paid plans include full commercial usage rights. Free plan images are not licensed for commercial use and remain publicly visible in the Recraft community gallery.
+
+[Visit Recraft](https://www.recraft.ai/)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-06-15
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.
