@@ -1,0 +1,97 @@
+brief_version: 2
+run_id: otter-ai-vs-fireflies-ai-2026-06-13
+article_id: otter-ai-vs-fireflies-ai
+parent_brief_id: null
+current_mode: publish
+status: complete
+
+intent:
+  article_type: compare
+  category: ai-subtitles
+  primary_keyword: "otter ai vs fireflies ai"
+  search_intent: commercial investigation
+  audience: "sales leaders, recruiters, and knowledge workers choosing an AI meeting assistant"
+
+artifacts:
+  target_files:
+    - content/compare/otter-ai-vs-fireflies-ai.mdx
+
+decisions:
+  angle: "Otter wins for live transcription and broad team notes; Fireflies wins for CRM logging and sales coaching."
+  render_contract:
+    auto_rendered:
+      - compare_page_title
+      - compare_quick_table
+      - compare_cta_buttons
+    mdx_must_not_duplicate:
+      - compare quick table
+      - compare CTA buttons
+
+mode_outputs:
+  discover:
+    topic_source_summary:
+      - existing otter review
+      - existing fireflies review
+    duplicate_check_status: similar
+    category_health_snapshot: "AI Subtitles has 10 reviews, 2 blogs, and 15 compare pages."
+    serp_decision: write
+    hub_spoke_role: spoke
+    supporting_evidence:
+      - duplicate check allows new compare content
+      - both source reviews already exist
+  draft:
+    target_file: content/compare/otter-ai-vs-fireflies-ai.mdx
+    frontmatter_complete: true
+    structure_complete: true
+    word_count: 944
+    required_sections_confirmed:
+      - Pricing
+      - Who Should Choose
+      - FAQ
+    known_gaps: []
+  enhance:
+    ai_pattern_score: 0.00
+    ai_pattern_status: pass
+    images_present: true
+    image_paths_checked:
+      - /logos/otter-ai.png
+      - /logos/fireflies-ai.svg
+    internal_links_count: 3
+    external_links_count: 6
+    third_party_sources_count: 2
+    render_contract_conflicts: []
+    known_gaps: []
+  publish:
+    article_check_status: pass
+    build_status: pass
+    build_command: npm run build
+    date_validation_status: pass
+    schema_validation_status: pass
+    backlink_status: pass
+    backlink_targets_applied:
+      - content/reviews/otter-ai.mdx
+      - content/reviews/fireflies-ai.mdx
+      - content/blog/best-ai-meeting-transcription-tools.mdx
+    backlink_candidates_remaining: 24
+    delivery_ready: true
+    known_gaps: []
+  refresh: {}
+
+validation:
+  discover:
+    attempts: 1
+    last_exit_code: 0
+  draft:
+    attempts: 1
+    last_exit_code: 0
+  enhance:
+    attempts: 1
+    last_exit_code: 0
+  publish:
+    attempts: 1
+    last_exit_code: 0
+  refresh:
+    attempts: 0
+    last_exit_code: null
+
+history: []

@@ -1,0 +1,98 @@
+brief_version: 2
+run_id: best-ai-research-assistants-2026-06-13
+article_id: best-ai-research-assistants
+parent_brief_id: null
+current_mode: publish
+status: complete
+
+intent:
+  article_type: blog
+  category: ai-chatbots
+  primary_keyword: "best ai research assistants"
+  search_intent: commercial investigation
+  audience: "students, analysts, founders, and knowledge workers choosing an AI tool for web research, document analysis, and source checking"
+
+artifacts:
+  target_files:
+    - content/blog/best-ai-research-assistants.mdx
+
+decisions:
+  angle: "Perplexity is the safest default for source-first research, while Claude, ChatGPT, Gemini, and DeepSeek each win a narrower workflow."
+  render_contract:
+    auto_rendered:
+      - blog_title
+      - blog_description
+      - blog_related_review_cards
+    mdx_must_not_duplicate:
+      - blog hero metadata row
+      - related review card grid
+
+mode_outputs:
+  discover:
+    topic_source_summary:
+      - existing chatbot reviews cover five strong candidates
+      - no current blog targets the research-assistant angle
+    duplicate_check_status: clear
+    category_health_snapshot: "AI Chatbots has 7 reviews, 1 blog, and 9 compare pages."
+    serp_decision: write
+    hub_spoke_role: hub
+    supporting_evidence:
+      - duplicate check is clear
+      - supporting review coverage already exists
+  draft:
+    target_file: content/blog/best-ai-research-assistants.mdx
+    frontmatter_complete: true
+    structure_complete: true
+    word_count: 1287
+    required_sections_confirmed:
+      - The 30-Second Verdict
+      - How to Choose
+      - FAQ
+    known_gaps: []
+  enhance:
+    ai_pattern_score: 0.00
+    ai_pattern_status: pass
+    images_present: true
+    image_paths_checked:
+      - /logos/best-ai-research-assistants.svg
+    internal_links_count: 11
+    external_links_count: 7
+    third_party_sources_count: 6
+    render_contract_conflicts: []
+    known_gaps: []
+  publish:
+    article_check_status: pass
+    build_status: pass
+    build_command: npm run build
+    date_validation_status: pass
+    schema_validation_status: pass
+    backlink_status: pass
+    backlink_targets_applied:
+      - content/reviews/perplexity.mdx
+      - content/reviews/claude.mdx
+      - content/reviews/chatgpt.mdx
+      - content/reviews/google-gemini.mdx
+      - content/reviews/deepseek.mdx
+    backlink_candidates_remaining: 10
+    delivery_ready: true
+    known_gaps: []
+  refresh: {}
+
+validation:
+  discover:
+    attempts: 1
+    last_exit_code: 0
+  draft:
+    attempts: 1
+    last_exit_code: 0
+  enhance:
+    attempts: 1
+    last_exit_code: 0
+  publish:
+    attempts: 1
+    last_exit_code: 0
+  refresh:
+    attempts: 0
+    last_exit_code: null
+
+history: []

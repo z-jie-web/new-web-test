@@ -1,0 +1,96 @@
+brief_version: 2
+run_id: lovable-2026-06-13
+article_id: lovable
+parent_brief_id: null
+current_mode: publish
+status: complete
+
+intent:
+  article_type: review
+  category: ai-coding
+  primary_keyword: "lovable review"
+  search_intent: commercial investigation
+  audience: "founders, designers, and product teams choosing a prompt-to-app builder instead of a traditional coding IDE"
+
+artifacts:
+  target_files:
+    - content/reviews/lovable.mdx
+
+decisions:
+  angle: "Lovable is one of the fastest prompt-to-product builders for prototypes and internal tools, but it still needs human review before production launch."
+  render_contract:
+    auto_rendered:
+      - review_page_title
+      - review_tldr
+      - review_primary_cta
+    mdx_must_not_duplicate:
+      - review auto TLDR
+      - manual CTA placeholders
+
+mode_outputs:
+  discover:
+    topic_source_summary:
+      - no existing lovable review
+      - ai-coding category has room for more app-builder coverage
+    duplicate_check_status: clear
+    category_health_snapshot: "AI Coding has 7 reviews, 1 blog, and 5 compare pages."
+    serp_decision: write
+    hub_spoke_role: spoke
+    supporting_evidence:
+      - duplicate check is clear
+      - category benefits from app-builder coverage beside Cursor and Bolt
+  draft:
+    target_file: content/reviews/lovable.mdx
+    frontmatter_complete: true
+    structure_complete: true
+    word_count: 1332
+    required_sections_confirmed:
+      - Key Features
+      - Pricing
+      - FAQ
+    known_gaps: []
+  enhance:
+    ai_pattern_score: 0.50
+    ai_pattern_status: pass
+    images_present: true
+    image_paths_checked:
+      - /logos/lovable.svg
+    internal_links_count: 9
+    external_links_count: 4
+    third_party_sources_count: 1
+    render_contract_conflicts: []
+    known_gaps: []
+  publish:
+    article_check_status: pass
+    build_status: pass
+    build_command: npm run build
+    date_validation_status: pass
+    schema_validation_status: pass
+    backlink_status: pass
+    backlink_targets_applied:
+      - content/reviews/bolt-new.mdx
+      - content/reviews/v0.mdx
+      - content/blog/best-ai-coding-tools.mdx
+    backlink_candidates_remaining: 10
+    delivery_ready: true
+    known_gaps: []
+  refresh: {}
+
+validation:
+  discover:
+    attempts: 1
+    last_exit_code: 0
+  draft:
+    attempts: 1
+    last_exit_code: 0
+  enhance:
+    attempts: 1
+    last_exit_code: 0
+  publish:
+    attempts: 1
+    last_exit_code: 0
+  refresh:
+    attempts: 0
+    last_exit_code: null
+
+history: []
