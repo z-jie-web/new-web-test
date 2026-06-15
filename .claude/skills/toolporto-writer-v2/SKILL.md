@@ -43,6 +43,12 @@ Discover artifact proof:
 ~/.claude/state/toolporto-writer/<article-id>/discover-artifacts.txt
 ```
 
+Global keyword strategy config (auto-read by discover, no manual adjustment needed):
+
+```text
+~/.claude/state/toolporto-writer/keyword-strategy.yaml
+```
+
 State tool:
 
 ```text

@@ -15,6 +15,9 @@ This mode owns:
 - internal linking
 - external linking
 - SEO-ready polish that belongs in content, not in project config
+- frontmatter convention checks:
+  - review `name` must be plain tool name (template appends "Review (2026) — Is It Worth It?")
+  - blog `title`+`description` must contain search intent signal words
 - render-contract conflict detection
 
 This mode does **not** own:

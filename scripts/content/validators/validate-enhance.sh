@@ -253,6 +253,27 @@ elif awk -v density="$emdash_density" 'BEGIN { exit !(density >= 0.80) }'; then
   pass_item "em dash density is ${emdash_density}/100 words (advisory: slightly elevated)"
 fi
 
+# -- SEO frontmatter convention checks ----------------------------
+if [ "$TYPE" = "review" ]; then
+  review_name="$(frontmatter_value name "$TARGET_FILE")"
+  if echo "$review_name" | grep -qi "review"; then
+    fail_fixable "review name field contains 'Review' — use plain tool name only (page template appends 'Review (2026) — Is It Worth It?')"
+  else
+    pass_item "review name field is plain tool name (no duplicate with template)"
+  fi
+fi
+
+if [ "$TYPE" = "blog" ]; then
+  blog_title="$(frontmatter_value title "$TARGET_FILE")"
+  blog_desc="$(frontmatter_value description "$TARGET_FILE")"
+  combined="${blog_title} ${blog_desc}"
+  if echo "$combined" | grep -qiE "review|compare|best|guide|tested|hands-on|everything you need|how to|what is|vs"; then
+    pass_item "blog title/description contains search intent signal"
+  else
+    fail_fixable "blog title/description lacks search intent keywords (consider adding: review, compare, best, guide, tested, hands-on, how to, etc.)"
+  fi
+fi
+
 # -- exit routing ------------------------------------------------
 route_exit \
   "return to draft mode and rewrite the conflicting sections" \

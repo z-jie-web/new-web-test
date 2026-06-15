@@ -290,6 +290,11 @@ Recommended fields:
 - `topic_source_summary`
 - `duplicate_check_status`
 - `category_health_snapshot`
+- `keyword_tier_check` — `passed` or `redirected` (from strategy config tier enforcement)
+- `original_keyword` — if redirected, the broad keyword originally proposed
+- `selected_keyword` — the keyword actually chosen
+- `selected_pattern` — which allowed_pattern this keyword matches
+- `alternatives_suggested` — list of 2-3 alternatives if redirected
 - `serp_decision`
 - `hub_spoke_role`
 - `supporting_evidence`

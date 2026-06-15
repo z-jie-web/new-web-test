@@ -394,6 +394,9 @@ New required checks:
   - approved diagram paths
 - render-contract conflict detection:
   - detect MDX duplication of auto-rendered compare/review surfaces
+- SEO frontmatter convention checks:
+  - review `name` field must be plain tool name (no "Review" — template appends it)
+  - blog `title`+`description` must contain at least one search-intent signal word (review, compare, best, guide, tested, hands-on, how to, etc.)
 
 AI pattern policy:
 

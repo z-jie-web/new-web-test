@@ -190,6 +190,84 @@ Purpose:
 
 Write a compact summary into `mode_outputs.discover.category_health_snapshot`.
 
+### 3.5. Keyword feasibility check
+
+**This step enforces keyword strategy. Do not skip it.**
+
+Read the strategy config:
+
+```text
+~/.claude/state/toolporto-writer/keyword-strategy.yaml
+```
+
+The config defines three tiers keyed to site age:
+
+| Tier | Age | Rule |
+|------|-----|------|
+| `long_tail_only` | 0-3 months | Only long-tail, low-competition keywords |
+| `mixed` | 3-6 months | Long-tail primary, medium-competition allowed with unique angle |
+| `competitive` | 6+ months | All keyword types, data-driven selection |
+
+**How to use this step:**
+
+1. Determine the candidate `primary_keyword` for the proposed article
+2. Classify the keyword against the current tier's `allowed_patterns` and `avoid_patterns`
+3. If the keyword matches `avoid_patterns`:
+   - Do NOT proceed with a broad keyword
+   - Generate 2-3 long-tail alternatives that match `allowed_patterns`
+   - Present alternatives to the user (or auto-select the best one if running autonomously)
+   - Write the chosen alternative as `primary_keyword` in the brief
+4. If the keyword matches `allowed_patterns`:
+   - Proceed normally
+   - Record in brief: `keyword_tier_check: passed`
+
+**Pattern classification guide:**
+
+| Pattern | Examples | When allowed |
+|---------|----------|-------------|
+| `tool_vs_tool_for_use_case` | "elevenlabs vs fish audio for podcasters" | All tiers |
+| `specific_how_to` | "how to use kling ai for social media ads" | All tiers |
+| `niche_best_of` | "best free face swap tools for streamers" | All tiers |
+| `single_tool_for_audience` | "is elevenlabs good for youtube creators" | All tiers |
+| `problem_solution` | "how to add ai subtitles to tiktok videos" | All tiers |
+| `broad_best_of` | "best AI video generators" | mixed+, with unique angle |
+| `category_head_term` | "AI voice generator" | competitive only |
+| `generic_vs` | "midjourney vs stable diffusion" | mixed+, with specific angle |
+
+**Keyword tier check output must be recorded in brief:**
+
+```yaml
+mode_outputs:
+  discover:
+    keyword_tier_check: passed | redirected
+    original_keyword: "best AI video generators"      # if redirected
+    selected_keyword: "best AI video generator for social media creators 2026"  # if redirected
+    selected_pattern: niche_best_of
+    alternatives_suggested: ["...", "...", "..."]
+```
+
+**Site age auto-detection:**
+
+Calculate site age from `site_launch_date` in the strategy config. Do not ask the user for this — it is deterministic.
+
+```text
+site_age_months = (today - site_launch_date) / 30
+current_tier = lookup from tiers based on site_age_months
+```
+
+If the strategy config `current_tier` disagrees with the auto-calculated tier (e.g., the user manually upgraded after providing GSC data), trust the config's `current_tier` value. It represents an explicit strategy decision.
+
+**When the user provides GSC data:**
+
+The user may periodically share GSC screenshots or data. When they do:
+
+1. Update `last_gsc_update` in the strategy config to today
+2. Analyze the data: which categories are gaining impressions, which pages are close to top 10
+3. Discuss with the user whether to adjust `current_tier`
+4. Do NOT auto-upgrade the tier — it's a collaborative decision
+
+If no GSC data has been shared since launch, the agent should note this as a known gap but proceed with the current tier.
+
 ### 4. Decide article type
 
 Choose one of:
