@@ -23,6 +23,8 @@ import { ToolLogo } from '@/components/ToolLogo';
 import { extractToc } from '@/lib/toc';
 import { readingTime, fileMtime, formatDate } from '@/lib/article-meta';
 import { JsonLd } from '@/components/JsonLd';
+import { AuthorByline } from '@/components/AuthorByline';
+import { getAuthor, CATEGORY_AUTHOR_MAP } from '@/lib/authors';
 import { getComparisonsForTool } from '@/lib/compare';
 import { getLogoPath } from '@/lib/logos';
 import { Badge } from '@/components/ui/badge';
@@ -100,6 +102,13 @@ export default async function ReviewPage({
   const ratingValue = frontmatter.pros.length >= 3 ? 4.6 : 4.3;
   const logoCaption = `${frontmatter.name} ${categoryName} tool logo`;
 
+  // Resolve author from category mapping
+  const resolvedAuthor = getAuthor(CATEGORY_AUTHOR_MAP[frontmatter.category] || '');
+  const authorName = resolvedAuthor?.name || SITE.name;
+  const authorUrl = resolvedAuthor
+    ? `${SITE.url}/author/${resolvedAuthor.slug}`
+    : SITE.url;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -111,11 +120,18 @@ export default async function ReviewPage({
         headline: `${frontmatter.name} Review (2026)`,
         datePublished: isoMtime,
         dateModified: isoMtime,
-        author: {
-          '@type': 'Organization',
-          name: SITE.name,
-          url: SITE.url,
-        },
+        author: resolvedAuthor
+          ? {
+              '@type': 'Person',
+              name: resolvedAuthor.name,
+              url: authorUrl,
+              jobTitle: resolvedAuthor.title,
+            }
+          : {
+              '@type': 'Organization',
+              name: SITE.name,
+              url: SITE.url,
+            },
         publisher: {
           '@type': 'Organization',
           name: SITE.name,
@@ -272,13 +288,20 @@ export default async function ReviewPage({
             <p className="text-lg text-muted-foreground">
               {frontmatter.description}
             </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-muted-foreground">
-              <span>Updated {formatDate(fileMtime('reviews', frontmatter.slug))}</span>
-              <span>·</span>
-              <span>{readingTime(content)} min read</span>
-              <span>·</span>
-              <span>Hands-on tested by {SITE.name}</span>
-            </div>
+            {resolvedAuthor && (
+              <AuthorByline
+                author={resolvedAuthor}
+                date={formatDate(fileMtime('reviews', frontmatter.slug))}
+                readingTime={readingTime(content)}
+              />
+            )}
+            {!resolvedAuthor && (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-muted-foreground">
+                <span>Updated {formatDate(fileMtime('reviews', frontmatter.slug))}</span>
+                <span>·</span>
+                <span>{readingTime(content)} min read</span>
+              </div>
+            )}
             <div className="flex flex-wrap gap-2 mt-4">
               {frontmatter.tags.map((tag) => (
                 <Badge key={tag} variant="outline">

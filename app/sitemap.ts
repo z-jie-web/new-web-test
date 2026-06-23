@@ -1,5 +1,6 @@
 import { getAllSlugs } from '@/lib/content';
 import { getAllCompareSlugsWithContent } from '@/lib/compare';
+import { getAllAuthors } from '@/lib/authors';
 import { SITE } from '@/lib/constants';
 import { fileMtime } from '@/lib/article-meta';
 import type { MetadataRoute } from 'next';
@@ -11,12 +12,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/compare`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
     { url: `${baseUrl}/disclaimer`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${baseUrl}/how-we-test`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/how-we-test`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
   ];
+
+  const authorPages = getAllAuthors().map((author) => ({
+    url: `${baseUrl}/author/${author.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
 
   const reviewPages = getAllSlugs('reviews').map((slug) => ({
     url: `${baseUrl}/reviews/${slug}`,
@@ -48,6 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticPages,
+    ...authorPages,
     ...reviewPages,
     ...categoryPages,
     ...blogPages,

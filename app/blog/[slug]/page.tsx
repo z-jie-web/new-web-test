@@ -20,6 +20,8 @@ import { readingTime, fileMtime } from '@/lib/article-meta';
 import { TableOfContents } from '@/components/TableOfContents';
 import { extractToc } from '@/lib/toc';
 import { JsonLd } from '@/components/JsonLd';
+import { AuthorByline } from '@/components/AuthorByline';
+import { getAuthor, CATEGORY_AUTHOR_MAP } from '@/lib/authors';
 import { SITE } from '@/lib/constants';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -67,6 +69,15 @@ export default async function BlogPage({
     : (mtime ?? new Date()).toISOString();
   const dateModified = (mtime ?? new Date()).toISOString();
 
+  // Resolve author: prefer explicit author field, fall back to category→author mapping
+  const authorSlug = (frontmatter.author || '').toLowerCase().replace(/\s+/g, '-');
+  const resolvedAuthor = getAuthor(authorSlug) ??
+    (frontmatter.category ? getAuthor(CATEGORY_AUTHOR_MAP[frontmatter.category] || '') : null);
+  const authorName = resolvedAuthor?.name || frontmatter.author || SITE.name;
+  const authorUrl = resolvedAuthor
+    ? `${SITE.url}/author/${resolvedAuthor.slug}`
+    : SITE.url;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -80,11 +91,19 @@ export default async function BlogPage({
         datePublished,
         dateModified,
         image: `${SITE.url}/blog/${frontmatter.slug}/opengraph-image`,
-        author: {
-          '@type': 'Organization',
-          name: frontmatter.author || SITE.name,
-          url: SITE.url,
-        },
+        author: resolvedAuthor
+          ? {
+              '@type': 'Person',
+              name: resolvedAuthor.name,
+              url: authorUrl,
+              jobTitle: resolvedAuthor.title,
+              description: resolvedAuthor.bio,
+            }
+          : {
+              '@type': 'Organization',
+              name: SITE.name,
+              url: SITE.url,
+            },
         publisher: {
           '@type': 'Organization',
           name: SITE.name,
@@ -115,25 +134,34 @@ export default async function BlogPage({
         />
         <article>
           <header className="mb-8">
-            <div className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground mb-3">
-              {frontmatter.date && (
-                <time>
-                  {new Date(frontmatter.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
-              )}
-              {frontmatter.date && <span>·</span>}
-              <span>{readingTime(content)} min read</span>
-            </div>
+            {!resolvedAuthor && (
+              <div className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground mb-3">
+                {frontmatter.date && (
+                  <time>
+                    {new Date(frontmatter.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                )}
+                {frontmatter.date && <span>·</span>}
+                <span>{readingTime(content)} min read</span>
+              </div>
+            )}
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
               {frontmatter.title}
             </h1>
             <p className="text-lg text-muted-foreground mt-2">
               {frontmatter.description}
             </p>
+            {resolvedAuthor && (
+              <AuthorByline
+                author={resolvedAuthor}
+                date={frontmatter.date}
+                readingTime={readingTime(content)}
+              />
+            )}
             {frontmatter.category && (
               <div className="flex flex-wrap gap-2 mt-3">
                 <Link href={`/categories/${frontmatter.category}`}>

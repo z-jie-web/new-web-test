@@ -17,6 +17,7 @@ export interface ReviewFrontmatter {
   cons: string[];
   bestFor: string[];
   lastUpdated?: string;
+  author?: string;
 }
 
 export interface ToolFrontmatter {

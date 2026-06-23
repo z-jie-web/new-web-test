@@ -29,9 +29,9 @@ export default function HowWeTestPage() {
         <h1 className="text-3xl font-bold mb-6">How We Test AI Tools</h1>
         <div className="prose prose-invert max-w-none">
           <p>
-            Every tool on ToolPorto goes through hands-on testing. We don't
-            rewrite press releases. We sign up, run real tasks, and form
-            opinions based on actual use — not marketing claims.
+            Every tool on ToolPorto is tested by Jack, our founder and lead
+            reviewer. We don't rewrite press releases. We sign up, run real
+            tasks, and form opinions based on actual use — not marketing claims.
           </p>
 
           <h2>Our Testing Process</h2>
@@ -86,9 +86,10 @@ export default function HowWeTestPage() {
             affiliate program.
           </p>
           <p>
-            Our team has been building and evaluating software tools for years.
-            We know what a good tool looks like because we've used hundreds of
-            them.
+            Jack has been building and evaluating software tools for years.
+            He knows what a good tool looks like because he's used hundreds of
+            them. Every article on ToolPorto is written by someone who actually
+            used the product.
           </p>
         </div>
       </main>
