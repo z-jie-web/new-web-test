@@ -100,6 +100,7 @@ Load only the files for the active mode.
   - [references/modes/enhance.md](/Users/zhangjie/project/npm/new-web-test/.claude/skills/toolporto-writer-v2/references/modes/enhance.md)
   - [references/project-contract.md](/Users/zhangjie/project/npm/new-web-test/.claude/skills/toolporto-writer-v2/references/project-contract.md)
   - `.claude/skills/content-deai-engine/SKILL.md`
+  - `.claude/skills/humanizer/SKILL.md`
 - `publish`
   - [references/modes/publish.md](/Users/zhangjie/project/npm/new-web-test/.claude/skills/toolporto-writer-v2/references/modes/publish.md)
   - [references/validator-architecture.md](/Users/zhangjie/project/npm/new-web-test/.claude/skills/toolporto-writer-v2/references/validator-architecture.md)

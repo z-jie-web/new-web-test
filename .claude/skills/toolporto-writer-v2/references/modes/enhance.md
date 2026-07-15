@@ -108,14 +108,15 @@ If those need to change, the correct move is usually back to `draft`.
 
 ## Anti-AI Editing
 
-The de-AI engine is a sub-capability, not a second constitution.
+**Required step: invoke the `humanizer` skill on every draft before proceeding to publish.**
 
-Use `content-deai-engine` as the editorial heuristic source, but store only the
-scored results and remediation summary in the V2 brief.
+The humanizer skill applies Wikipedia's "Signs of AI writing" patterns — a broader and more current vocabulary than `content-deai-engine`.
 
-Source: invoke the `content-deai-engine` skill for diagnostic patterns.
+After humanizer pass, use `content-deai-engine` as secondary validation. Store scored results and remediation summary in the V2 brief.
 
-Do not re-maintain a second full vocabulary list inside V2 mode docs.
+Source: invoke the `humanizer` skill, then `content-deai-engine` for diagnostic patterns.
+
+**Humanizer pass must run before `validate-enhance.sh`.** If the validator flags AI pattern score ≥ 2.0, re-run humanizer on the flagged sections before attempting other fixes.
 
 ### Weighted scoring model
 
