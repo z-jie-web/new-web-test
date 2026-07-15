@@ -74,6 +74,56 @@ Brief state is the source of truth.
 If user wording conflicts with `brief.current_mode`, prefer the brief and tell
 the user which mode is currently active.
 
+## Pipeline Checklist
+
+Every article MUST pass through this exact sequence:
+
+```
+□ discover   → validate-discover.sh [exit 0]
+□ draft      → validate-draft.sh [exit 0]
+□ enhance    → humanizer pass → validate-enhance.sh [exit 0]
+□ publish    → validate-publish.sh [exit 0] → build pass → deploy
+```
+
+Each checkbox must be checked before the next one starts. If any validator returns non-zero, the pipeline PAUSES until the issue is resolved.
+
+## Gate Enforcement (HARD RULES — DO NOT SKIP)
+
+Every mode transition requires validator exit code `0`. No exceptions.
+
+### Mode transition gates
+
+| From | To | Gate | Failure action |
+|------|----|------|----------------|
+| discover | draft | `validate-discover.sh` → 0 | Fix brief/artifacts, rerun |
+| draft | enhance | `validate-draft.sh` → 0 | Fix MDX file, rerun |
+| enhance | publish | `validate-enhance.sh` → 0 | Apply humanizer, fix issues, rerun |
+| publish | deploy | `validate-publish.sh` → 0 + build pass | Fix issues, rerun |
+
+### Gate violations that MUST block progression
+
+1. **Exit code ≠ 0** — DO NOT proceed to the next mode. Fix and rerun.
+2. **AI pattern score ≥ 2.0** — invoke humanizer on the full draft before any other enhance action.
+3. **Humanizer not invoked in enhance** — enhance mode is NOT complete without a humanizer pass. The validator checks AI pattern score; if humanizer was skipped, the score will be high and the gate will catch it.
+4. **Brief not promoted** — after validator exit 0, promote `brief.candidate.yaml` → `brief.yaml` before mode transition.
+
+### Gate bypass is NOT allowed
+
+- "The issue is just brief formatting" → fix the brief
+- "It's a minor validator bug" → fix the issue, don't work around it
+- "Build passes so it's fine" → validator must pass first
+
+### humanizer enforcement in enhance
+
+The enhance mode MUST include these steps in order:
+1. Read the draft MDX file
+2. Invoke `humanizer` skill on the full draft
+3. Apply all humanizer-suggested changes
+4. Add external links and third-party sources
+5. Run `validate-enhance.sh`
+6. If AI pattern score ≥ 2.0 → goto step 2
+7. If exit 0 → promote brief, proceed to publish
+
 ## Exception Handling
 
 - No brief exists:
@@ -81,10 +131,12 @@ the user which mode is currently active.
   - existing article refresh/update task -> use `briefctl recover`
 - Brief exists but may be damaged:
   - run `briefctl validate <article-id>`
-  - if invalid and article exists -> `briefctl recover <article-id> <target-file>`
-  - if invalid and article does not exist -> restart at `discover`
+  - if invalid and article exists → `briefctl recover <article-id> <target-file>`
+  - if invalid and article does not exist → restart at `discover`
 - Refresh task with missing lineage:
   - use `briefctl recover` instead of hard-blocking
+- Validator exit ≠ 0 after 5+ retries:
+  - escalate to user with specific failure details and proposed fix
 
 ## Load Map
 
