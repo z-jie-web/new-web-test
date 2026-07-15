@@ -117,25 +117,20 @@ Minimum required contents:
 - raw output of `category-stats.sh`
 - any brief SERP / trend / hot-topic notes needed for the final decision
 
-Recommended pattern:
+Use the dedicated script (do NOT use heredoc-based manual creation — it breaks on `$()` expansion in this environment):
 
 ```bash
-mkdir -p ~/.claude/state/toolporto-writer/<article-id>
-{
-  echo "=== check-duplicate ==="
-  bash scripts/check-duplicate.sh "<topic>"
-  echo
-  echo "=== category-stats ==="
-  bash scripts/category-stats.sh
-  echo
-  echo "=== notes ==="
-  echo "article_type=compare"
-  echo "serp_decision=write"
-  echo "hub_spoke_role=spoke"
-} | tee ~/.claude/state/toolporto-writer/<article-id>/discover-artifacts.txt
+bash scripts/content/create-discover-artifacts.sh <article-id> "<topic-description>"
 ```
 
-If the validator cannot find the artifact file, `discover` did not complete.
+This single command:
+- Creates the state directory
+- Runs `check-duplicate.sh` and captures full stdout
+- Runs `category-stats.sh` and captures full stdout
+- Writes the metadata header (date, keyword strategy tier)
+- Produces a validator-compliant `discover-artifacts.txt`
+
+If the validator cannot find the artifact file or the artifact file is empty, `discover` did not complete.
 
 ## Decision Sequence
 
