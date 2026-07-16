@@ -50,10 +50,23 @@ export default function ContactPage() {
             />
           </div>
           <Button>Send Message</Button>
-          <p className="text-xs text-muted-foreground">
-            This form is a placeholder. Contact functionality will be wired up
-            in a future update.
+          <p className="text-xs text-muted-foreground mt-2">
+            This form is a placeholder — contact functionality coming soon.
           </p>
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-border/20">
+          <div className="prose prose-invert max-w-none">
+            <p>
+              In the meantime, reach us directly at:{' '}
+              <a
+                href="mailto:zjie7703@gmail.com"
+                className="text-primary hover:underline font-medium"
+              >
+                zjie7703@gmail.com
+              </a>
+            </p>
+          </div>
         </div>
       </main>
       <Footer />
