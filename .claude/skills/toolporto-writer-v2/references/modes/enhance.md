@@ -49,6 +49,19 @@ not "do your best anyway."
 - target MDX file
 - `project-contract.md`
 - `content-deai-engine` rules for de-AI logic
+- `humanizer` skill for anti-AI editing
+
+### Logo Extension Fix (MUST run first)
+
+Before any other enhance step, run:
+
+```bash
+bash scripts/content/fix-logo-extensions.sh <target-file>
+```
+
+This automatically detects `/logos/xxx.svg` references where only `.png` exists
+and fixes them. Without this, `validate-enhance.sh` will flag every article
+that references an SVG file missing from disk.
 
 Expected brief fields:
 

@@ -116,13 +116,14 @@ Every mode transition requires validator exit code `0`. No exceptions.
 ### humanizer enforcement in enhance
 
 The enhance mode MUST include these steps in order:
-1. Read the draft MDX file
-2. Invoke `humanizer` skill on the full draft
-3. Apply all humanizer-suggested changes
-4. Add external links and third-party sources
-5. Run `validate-enhance.sh`
-6. If AI pattern score ≥ 2.0 → goto step 2
-7. If exit 0 → promote brief, proceed to publish
+1. Run `scripts/content/fix-logo-extensions.sh <target-file>` to auto-fix SVG→PNG mismatches
+2. Read the draft MDX file
+3. Invoke `humanizer` skill on the full draft
+4. Apply all humanizer-suggested changes
+5. Add external links and third-party sources
+6. Run `validate-enhance.sh`
+7. If AI pattern score ≥ 2.0 → goto step 3
+8. If exit 0 → promote brief, proceed to publish
 
 ## Exception Handling
 
