@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <rect width="120" height="120" rx="24" fill="#0EA5E9"/>
+  <text x="60" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="26" font-weight="bold" fill="#ffffff">GLM</text>
+  <text x="60" y="94" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#e0f2fe">5.3</text>
+</svg>

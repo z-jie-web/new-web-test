@@ -1,0 +1,82 @@
+---
+toolA: "kimi-k3"
+toolB: "deepseek"
+verdict: "Kimi K3 wins open weights, web engineering benchmarks, and self-hosting freedom. DeepSeek V4 Pro wins price, output length, and the open-source Harness agent framework. For most agent builders on a budget, DeepSeek is the cheaper default; for teams that need open weights, Kimi K3 is the only option."
+winner: "depends"
+lastUpdated: "2026-08-18T12:00:00Z"
+---
+
+![Kimi K3 vs DeepSeek, AI coding model comparison for developers](/logos/kimi-k3-vs-deepseek.svg)
+
+[Kimi K3](https://kimi.com) and [DeepSeek](https://chat.deepseek.com) are the two Chinese models that reshaped the coding-agent market in August 2026. Moonshot AI's Kimi K3 is the 2.8-trillion-parameter open-weight model that topped Arena's Frontend Code Arena and beat Claude Fable 5 on several benchmarks, with weights on Hugging Face for anyone to download. DeepSeek V4 Pro is the API-only 1.6-trillion-parameter model that jumped DeepSWE from 12.8 to 62.7, shipped the open-source Harness agent framework, and priced itself at a fraction of both Kimi K3 and the US frontier. Both cost a fraction of Anthropic or OpenAI. The difference is what they ask you to give up in return.
+
+## Open Weights: Kimi K3's Ace vs DeepSeek's Retreat
+
+The biggest structural difference between the two models is not in benchmarks, it is in what you can do with them. Kimi K3's weights are public: roughly 1.4TB under MXFP4 quantization, runnable on about 18x80GB GPUs. You can self-host, fine-tune, and keep your data on your own infrastructure. The license is not true open source — MaaS businesses over $20M annual revenue need a separate agreement and 100M+ MAU products must show Kimi K3 branding — but the weights themselves are yours.
+
+DeepSeek V4 Pro is the opposite: API-only. The open-weight era of DeepSeek ended when the legacy model names were deprecated on July 24, 2026. What DeepSeek open-sourced instead is Harness, an MIT-licensed agent framework positioned against Claude Code, which [VentureBeat's launch coverage](https://venturebeat.com/technology/deepseek-harness-launches-as-open-source-rival-to-claude-code-alongside-v4-pro-on-api-with-higher-prices) pegged as the first serious open rival to Anthropic's terminal agent. That is genuinely useful, and it is the closest thing to an open Claude Code alternative in the category, but it does not give you the model. If your decision driver is data control, self-hosting, or fine-tuning, Kimi K3 is the only choice here.
+
+**Winner: Kimi K3** for open weights and self-hosting freedom. **DeepSeek** for open agent tooling.
+
+## Benchmarks: Kimi Leads the Web, DeepSeek Leads the Agents
+
+Both models claim frontier-adjacent results, but they lead in different places. Kimi K3 holds the #1 spot on Arena's Frontend Code Arena at 1,679 points, the first open model to top a full web engineering benchmark, and it leads SWE Marathon and Terminal-Bench 2.1 with scores ahead of Claude Fable 5 on those runs. Its design targets large-repo navigation and long-horizon agent loops.
+
+DeepSeek V4 Pro's numbers are agent-first: DeepSWE at 62.7 (up from 12.8 in the April preview), Terminal Bench 2.1 at 87.9, Toolathlon at 74.1. The company claims V4 Pro surpasses Claude Opus 4.8 on HLE, Terminal Bench, Cybergym, and DeepSWE, approaching Fable 5 on some runs. Both models' results are vendor-reported, and both have caveats: Kimi K3's reliability in long sessions has been questioned in early community testing, and DeepSeek's strongest numbers were produced inside its own Harness environment.
+
+**Winner: Kimi K3** for web engineering and frontend work. **DeepSeek** for agentic benchmark breadth, with vendor-reporting caveats on both.
+
+## Price and Context: DeepSeek's Numbers Are Hard to Beat
+
+DeepSeek's peak/off-peak pricing went into effect August 17. Off-peak, V4 Pro runs ¥4.5 per million input tokens (cache miss) and ¥13.5 per million output; even at peak rates the output costs ¥27. Against Kimi K3's $3.00 per million input and $15.00 per million output, off-peak DeepSeek is roughly 17% of Kimi K3's price, and about 10% of Claude Opus 4.8. Kimi K3 counters with a 90% cache discount on repeated context, which matters in agent loops where the same conversation is replayed constantly. For a busy agent processing millions of tokens a day, DeepSeek off-peak is the cheapest frontier-adjacent option in the market.
+
+Context windows are close to a tie: Kimi K3 offers 1M input, DeepSeek V4 Pro offers 1M input with up to 384K output tokens, which is the longest output allowance in class and a real advantage for long agent transcripts and code-generation tasks that produce large files.
+
+**Winner: DeepSeek** on headline price. **Kimi K3** on cache economics for replay-heavy workloads.
+
+## Pricing
+
+|  | [Kimi K3](/reviews/kimi-k3) | [DeepSeek V4 Pro](/reviews/deepseek) |
+|--|----------|----------|
+| **Free** | Web/API sign-up (capacity-gated at launch) | Web and mobile app free, Expert Mode toggle |
+| **API input** | $3.00/M (cache miss), $0.30/M (cache hit) | ¥4.5/M off-peak, ¥9.0/M peak (cache miss) |
+| **API output** | $15.00/M | ¥13.5/M off-peak, ¥27.0/M peak |
+| **Self-host** | Yes, weights public (18x80GB GPUs) | No, API-only |
+| **Agent framework** | None bundled | Harness, open source (MIT) |
+
+Both models undercut the US frontier by an order of magnitude, and the difference between them is small enough that task fit matters more than price. [DeepInfra's provider comparison](https://deepinfra.com/blog/kimi-k3-pricing-providers-cost) walks through the real-world Kimi K3 cost math across hosting providers, which matters when the official endpoint is capacity-gated. For the full pricing breakdowns, see our [Kimi K3 review](/reviews/kimi-k3) and [DeepSeek review](/reviews/deepseek). For how either model compares against Anthropic's lineup, our [DeepSeek vs Claude comparison](/compare/deepseek-vs-claude) and [Claude vs DeepSeek](/compare/claude-vs-deepseek) pages cover the cross-family trade-offs.
+
+## Who Should Choose Kimi K3
+
+- You need open weights for self-hosting, fine-tuning, or data-residency requirements
+- You work mostly in frontend and web engineering, where Kimi's benchmark lead is strongest
+- You want Anthropic/OpenAI-compatible endpoints for drop-in use with Claude Code or Cline
+- You accept a custom license with revenue thresholds and branding requirements
+
+## Who Should Choose DeepSeek
+
+- You run high-volume agent workloads and want the cheapest frontier-adjacent price, especially off-peak
+- You want the 384K output window for long agent transcripts and large code generation
+- You want an open-source agent framework (Harness) with the model wired in
+- You accept API-only access, latency from China, and content restrictions
+
+## FAQ
+
+**Which is better for coding agents, Kimi K3 or DeepSeek V4 Pro?**
+Both are frontier-adjacent at budget prices. Kimi K3 wins web engineering and open weights; DeepSeek V4 Pro wins headline price, output length, and the Harness framework. Test both against your actual workloads — the vendor-reported benchmarks differ enough that task fit decides.
+
+**Is Kimi K3 cheaper than DeepSeek?**
+No. Kimi K3 is $3/$15 per million tokens. DeepSeek V4 Pro is ¥4.5/¥13.5 off-peak and ¥9/¥27 peak, roughly 17-34% of Kimi K3's price. Kimi K3's 90% cache discount narrows the gap for replay-heavy agent loops.
+
+**Can I self-host either model?**
+Kimi K3, yes — weights are public under the Kimi K3 License (about 18x80GB GPUs). DeepSeek V4 Pro, no — it is API-only; what DeepSeek open-sourced is the Harness agent framework, not the model.
+
+**Are both models' benchmarks trustworthy?**
+Both are vendor-reported. Kimi K3's release drew community questions about hallucination and reliability in long sessions. DeepSeek's best numbers were produced inside its own Harness environment. Independent verification is still in progress for both.
+
+**Which model works with Claude Code?**
+Both. Kimi K3 ships Anthropic/OpenAI-compatible endpoints, and DeepSeek V4 Pro supports both API formats plus native OpenAI Responses API and a Codex integration script. A third Chinese option arrived the same week: [GLM-5.3](/reviews/glm-5-3) also works with Claude Code and beats both models on DeepSWE, with MIT-licensed weights due in late August. And if you are comparing against Google's budget model instead, our [Gemini 3.7 Flash setup guide](/blog/how-to-use-gemini-3-7-flash-for-coding-agents) covers that lane.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-08-18
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

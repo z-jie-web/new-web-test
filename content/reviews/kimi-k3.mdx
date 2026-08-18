@@ -1,0 +1,104 @@
+---
+slug: "kimi-k3"
+name: "Kimi K3"
+category: "ai-coding"
+description: "Kimi K3 review: is the 2.8T-parameter open-weight model from Moonshot AI good for coding agents? Benchmarks, API pricing, and real-world trade-offs."
+lastUpdated: "2026-08-18T12:00:00Z"
+tags: ["AI Coding", "Open-Weight LLM", "Coding Agent", "MoE Model"]
+url: "https://kimi.com"
+pricing: "Paid"
+pros: ["Frontier-level coding benchmarks as an open-weight model — #1 on Arena's Frontend Code Arena, leading SWE Marathon and Terminal-Bench 2.1 with scores that beat Claude Fable 5 on the same runs", "API pricing at roughly 30% of Claude Fable 5 — $3.00 per million input tokens versus Fable 5's $10.00, with a 90% cache discount for repeated context", "Drop-in compatibility with OpenAI- and Anthropic-compatible APIs — works directly with Claude Code, Cline, and existing agent tooling through SiliconFlow, Together AI, Fireworks, and DeepInfra", "1M token context window with native vision input — feed entire codebases or repositories into a single prompt, including images and diagrams"]
+cons: ["Weights are gated by the custom Kimi K3 License, not true open source — MaaS businesses over $20M annual revenue need a separate agreement and 100M+ MAU products must display Kimi K3 branding", "Benchmark results are Moonshot-reported and not yet independently verified — early community testing has surfaced hallucination and statistical errors on real coding tasks", "Demand has overwhelmed capacity at launch — new API sign-ups were temporarily paused, and latency spikes have been reported during peak hours"]
+bestFor: ["Developers and indie hackers who want frontier-grade coding capability on a budget — Kimi K3 delivers near-Fable-5 performance at one-third the API price", "Teams running high-volume coding agents or batch refactoring jobs where per-token cost compounds quickly", "Organizations that want open-weight flexibility for self-hosting or fine-tuning without paying the closed-API premium", "Hobbyists experimenting with agentic workflows and large-repo navigation on a single-prompt basis"]
+---
+
+![Kimi K3 official logo for AI coding model review](/logos/kimi-k3.svg)
+
+Is Kimi K3 good for coding agents? That is the question every developer who watched the August 2026 model wars has been asking, and the short answer is: it depends on what you are optimizing for. Moonshot AI's 2.8-trillion-parameter open-weight model topped the Frontend Code Arena, beat Claude Fable 5 on SWE Marathon and Terminal-Bench 2.1, and costs about 30% of what Anthropic charges per token. Those numbers made Kimi K3 the most downloaded open-weight release of the year. But benchmarks are not the whole story. The license is not open source, the results are unverified by third parties, and early users have found real reliability gaps. This review covers what the model does in practice, what it costs, and where the hype does not hold up.
+
+## Key Features
+
+- **Sparse MoE architecture at 2.8T total parameters** — Kimi K3 activates only 16 of 896 experts per token (104B active parameters), which is how it gets frontier performance without frontier inference cost. The scaling story is backed by two new mechanisms Moonshot published in the technical report: Kimi Delta Attention and Attention Residuals, which the company claims give 2.5x scaling efficiency over Kimi K2.
+- **1M token context window with native vision** — The full context window accepts both text and images, which matters for coding agents that need to navigate large repositories or understand UI mockups from screenshots. For context, that is 5x Claude's 200K and the same window size as DeepSeek's flagship.
+- **Open-weight release with commercial gates** — Weights landed on Hugging Face on July 27, 2026 at about 1.4 TB under MXFP4 quantization, requiring roughly 18x80GB GPUs to run. The Kimi K3 License allows self-hosting and fine-tuning, but it is not true open source: Model-as-a-Service businesses with over $20M revenue in 12 months need a separate agreement, and products with 100M+ MAU must display Kimi K3 branding.
+- **Agent-tooling compatibility out of the box** — Because Moonshot ships OpenAI- and Anthropic-compatible API endpoints, Kimi K3 plugs into Claude Code, Cline, and other existing agent frameworks without code changes. Providers like SiliconFlow, Together AI, Fireworks, and DeepInfra all host it.
+- **Long-horizon agentic design** — Moonshot explicitly tuned the model for tasks that take many turns: large-repo navigation, multi-file refactoring, and terminal-driven agent loops, which is where its Terminal-Bench 2.1 score of 88.8 comes from.
+
+## Our Take
+
+Kimi K3 is the first open-weight model that made me recheck the benchmark tables. On web engineering, repository-scale coding, and terminal agent execution, it lands in the same tier as Claude Fable 5, and it leads on several runs. At roughly 30% of Fable 5's API price, that combination is new. "Open weights at half the price" used to mean settling for less. Not this time.
+
+But the community is right to hold its breath. The benchmarks are Moonshot-reported, and the weight release is recent enough that independent verification is still in progress. Ethan Mollick and other AI researchers have flagged that benchmark scores do not capture reliability issues like hallucinated function calls or silent statistical errors in production pipelines. We saw the same pattern with DeepSeek R1 — the numbers were real, but the experience had rough edges that benchmarks cannot show.
+
+The license deserves its own look. Calling Kimi K3 "open source" is misleading. The weights are public, but the custom license gates commercial MaaS usage above revenue thresholds and requires branding for consumer-scale products. For an indie hacker or a team running internal agents, that is a non-issue. For a startup planning to resell model access, read the license before you build.
+
+Then there is the operational side. Launch demand got so high that Moonshot temporarily paused new API subscriptions, and peak-hour latency has been unpredictable. That is a big deal for coding agents, which are interactive by nature: a 5-second response is tolerable for a batch job and painful in a live agent loop. Providers like DeepInfra and SiliconFlow mitigate this with their own infra, and the open weights mean you can self-host if you have the GPUs. Our verdict: if you build coding agents and care about cost per quality unit, Kimi K3 is the strongest value play of 2026 so far. If you need guaranteed uptime and verified reliability today, stay with the closed frontier. For the broader picture of where Kimi K3 fits among coding assistants, our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the full workflow.
+
+## What Kimi K3 Does in Practice
+
+Kimi K3 is a 2.8-trillion-parameter sparse MoE model built for one job: long-horizon, agentic work at scale. Under the hood, the model routes each token through 16 of 896 experts, which is the architectural trick that keeps inference cheap while the total parameter count stays huge. The [Kimi K3 technical report](https://arxiv.org) details the two headline mechanisms — Kimi Delta Attention, which improves attention efficiency, and Attention Residuals, which stabilizes training at this scale. Moonshot also published infrastructure components (MoonEP for expert parallelism, FlashKDA for distributed attention) that matter if you plan to self-host.
+
+On coding benchmarks, the model is a genuine headline. It holds the #1 spot on Arena's Frontend Code Arena at 1,679 points — the first time an open model has topped a full web engineering benchmark, jumping 17 places from Kimi K2.6. It leads SWE Marathon with a score of 42 and Terminal-Bench 2.1 at 88.8, both ahead of Claude Fable 5, and scores 81.2 on FrontierSWE. On the broader Artificial Analysis Intelligence Index it ranks #3 overall at 57, behind Fable 5 (60) and GPT-5.6 Sol (59) but ahead of Claude Opus 4.8.
+
+In practice, that shows up in three places: frontend and web engineering (the Frontend Code Arena result is not a fluke; the model is unusually good at turning specs into working interfaces), repository-scale refactoring where the whole codebase stays in context, and terminal agent loops where the model drives shells and interprets tool output across many turns.
+
+The vision input deserves attention too. Being able to pass a screenshot of a Figma mockup or a diagram alongside the codebase context is a real workflow difference versus text-only models, and it is included at no extra charge in the API.
+
+What it does not do well yet, based on early community reports, is stay reliable over long sessions. [Community threads](https://news.ycombinator.com) have reported hallucinated API calls, dropped context in very long agent runs, and occasional statistical errors that a human reviewer catches instantly. These are exactly the failure modes that benchmarks underweight and production developers feel most.
+
+## Pricing Breakdown
+
+| Plan | Cost | What's Included |
+|------|------|----------------|
+| **API — first-party (Moonshot)** | $3.00/M input, $15.00/M output | Full K3 model, 1M context, vision input, 90% cache discount ($0.30/M cached input) |
+| **API — DeepInfra** | $2.85/M input, $14.25/M output | Slightly cheaper hosting, same model, cached input at $0.285/M |
+| **Self-hosted** | Infrastructure cost only | Weights free under Kimi K3 License (~1.4TB MXFP4, ~18x80GB GPUs), no per-token fees |
+
+Pricing is where the model changes the math. Claude Fable 5 charges $10.00 per million input tokens and $50.00 per million output; GPT-5.6 Sol charges $5/$30. Kimi K3 at $3/$15 runs about 30% of Fable 5 and 60% of Sol, and the 90% cache discount means repeated context, which is most of a coding agent's traffic, costs $0.30 per million input tokens. [DeepInfra's pricing analysis](https://deepinfra.com/blog/kimi-k3-pricing-providers-cost) walks through the real-world cost math across providers.
+
+For a coding agent processing 10 million tokens a day, the monthly bill at Kimi K3's rates versus Claude Fable 5's is the difference between a few hundred and a few thousand dollars. That math is why so many agent startups quietly switched their default model the week the weights dropped.
+
+One caveat: at the time of writing, first-party sign-ups have been paused intermittently due to demand, so the API availability story is provider-dependent. Shop across SiliconFlow, Together AI, Fireworks, and DeepInfra if the official endpoint is busy.
+
+## Who Should Use Kimi K3
+
+- **Strong fit if you:**
+  - Run high-volume coding agents or batch refactoring jobs where per-token cost compounds — the 30% price point versus Fable 5 pays for itself quickly
+  - Want frontier-level coding quality without lock-in — the Anthropic/OpenAI-compatible API means you can swap back to Claude or GPT anytime
+  - Have GPU capacity and want open weights for self-hosting, fine-tuning, or data residency reasons
+  - Work primarily in frontend or web engineering, where the model's benchmark lead is strongest
+
+- **Not the best if you:**
+  - Need guaranteed uptime and support for production-critical agent infrastructure — launch demand has caused sign-up pauses and latency spikes
+  - Require verified reliability over headline numbers — independent testing is still in progress and early reports show hallucination gaps
+  - Plan to resell model access as a service — the license's revenue threshold and branding requirements complicate that business model
+  - Prefer the polished product experience of [Claude](/reviews/claude) or [ChatGPT](/reviews/chatgpt) over raw model access
+
+## vs Claude and DeepSeek
+
+[Claude](/reviews/claude) remains the benchmark for reliability and reasoning depth in production agent loops. Anthropic's models have years of real-world hardening, verified safety behavior, and an ecosystem of tooling that Kimi K3 cannot match yet. Claude Fable 5 also wins on the broader intelligence index (60 vs 57). But Claude costs more than 3x per token, and on web engineering and terminal benchmarks, Kimi K3 is ahead. If you are building agents and quality-per-dollar is your metric, the gap is real. If you are shipping customer-facing products where uptime and verified behavior matter more, stay with Claude. Our [Claude vs DeepSeek comparison](/compare/claude-vs-deepseek) breaks down how the open-weight challengers stack up against Anthropic's lineup.
+
+[DeepSeek](/reviews/deepseek) is the other Chinese open-weight player, and the two models are worth comparing directly because they target the same users. DeepSeek R1-style models offer the longest context windows and the cheapest APIs in the industry, and they pioneered the "open weights at a fraction of the price" play that Kimi K3 is now executing at a bigger scale. Kimi K3's edge is quality: it is a full generation ahead on coding benchmarks, with vision input and agent-specific tuning that DeepSeek's general-purpose models lack. DeepSeek's edge is cost and simplicity: still cheaper per token, with a genuinely free web tier. For the direct head-to-head on coding agents, see our [Kimi K3 vs DeepSeek comparison](/compare/kimi-k3-vs-deepseek), and for a detailed breakdown, our [DeepSeek vs Claude comparison](/compare/deepseek-vs-claude).
+
+## FAQ
+
+**Is Kimi K3 good for coding agents?**
+Yes, on the evidence so far. It leads Arena's Frontend Code Arena, SWE Marathon, and Terminal-Bench 2.1, beating Claude Fable 5 on those benchmarks, and it plugs into existing agent tooling like Claude Code and Cline via Anthropic/OpenAI-compatible APIs. The caveats are that the results are Moonshot-reported and reliability issues have surfaced in early community testing.
+
+**How much does Kimi K3 cost?**
+The API is $3.00 per million input tokens and $15.00 per million output tokens from Moonshot (about $2.85/$14.25 on DeepInfra), with cached input at $0.30 per million — roughly 30% of Claude Fable 5's pricing. Self-hosting costs only infrastructure (about 18x80GB GPUs).
+
+**Is Kimi K3 open source?**
+The weights are public, but the license is not true open source. The Kimi K3 License allows self-hosting and fine-tuning, but MaaS businesses with over $20M annual revenue need a separate agreement, and products with 100M+ MAU must show Kimi K3 branding. Training data and processes remain proprietary.
+
+**How does Kimi K3 compare to Claude?**
+On coding benchmarks Kimi K3 is competitive or ahead of Claude Fable 5, and it costs about a third as much. Claude wins on verified reliability, broader intelligence (Artificial Analysis: 60 vs 57), and ecosystem maturity. For budget-constrained agent builders, Kimi K3 is the value pick; for production-critical workloads, Claude remains safer.
+
+**Can I run Kimi K3 myself?**
+Yes. The weights are ~1.4TB under MXFP4 quantization and need about 18x80GB GPUs. With those resources you can self-host, fine-tune, and never pay per-token fees, subject to the license's commercial terms.
+
+[Visit Kimi K3](https://kimi.com)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-08-18
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

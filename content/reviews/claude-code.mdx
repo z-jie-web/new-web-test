@@ -80,6 +80,12 @@ For browser-based rapid prototyping without a terminal or IDE, [Bolt.new](/revie
 
 For developers using Claude Code on side projects, our [Claude Code vs Windsurf for side projects](/blog/claude-code-vs-windsurf-for-side-projects) comparison breaks down which tool ships faster when you're coding in evenings and weekends.
 
+If you want Claude Code's workflow without Anthropic's API pricing, [Kimi K3](/reviews/kimi-k3) works as a drop-in model through Anthropic-compatible endpoints on SiliconFlow and DeepInfra. The open-weight model from Moonshot AI leads several coding benchmarks at about 30% of the token cost. It is a serious budget alternative for agent loops, with the caveat that launch demand has caused intermittent API pauses.
+
+Google's [Gemini 3.7 Flash](/blog/gemini-3-7-flash-vs-claude-for-coding) is the other model worth testing inside agent workflows. Its introductory rate of $0.75 per million input tokens undercuts Claude by about 2.5x, and it leads Claude on automation-heavy benchmarks like AutomationBench. Independent agent testing shows it still trails Claude on reliability and refusal behavior, so keep it for high-volume tasks where failures are cheap.
+
+If you want to skip the US models entirely, the [Kimi K3 vs DeepSeek comparison](/compare/kimi-k3-vs-deepseek) covers the two Chinese budget options: open weights versus the cheapest API in the category, both at a fraction of Claude's price.
+
 ## FAQ
 
 **What's the difference between Claude Code and Claude in the browser?**

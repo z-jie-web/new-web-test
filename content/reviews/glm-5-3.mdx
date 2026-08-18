@@ -1,0 +1,105 @@
+---
+slug: "glm-5-3"
+name: "GLM-5.3"
+category: "ai-coding"
+description: "Is GLM-5.3 good for coding agents? Zhipu's August 2026 release review: DeepSWE 66.9 beats DeepSeek V4 Pro, $18/mo Coding Plan, MIT license, security caveats."
+lastUpdated: "2026-08-18T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Open-Weight LLM", "Zhipu"]
+url: "https://z.ai"
+pricing: "Paid"
+pros: ["DeepSWE v1.1 at 66.9 beats DeepSeek V4 Pro's 62.7 and AutomationBench at 48.2 vs V4 Pro's 31.8 — the strongest open-source coding agent results of August 2026", "Terminal-Bench 3.0 jumped from 4.6 to 28.3, a sixfold gain that made GLM-5.3 the open-source #1 on terminal agent work", "MIT-licensed weights with open release expected late August 2026 — the same permissive licensing model as GLM-5.2, not a custom license", "Works with Claude Code, OpenCode, and ZCode out of the box, with ZCode's Goal Mode handling end-to-end goal-driven development", "Coding Plan at $18/month undercuts Claude Pro and competes directly with the budget Chinese models"]
+cons: ["All headline benchmarks are Zhipu-reported with no independent third-party verification yet — the sixfold Terminal-Bench jump needs outside confirmation", "Security capability emerged faster than expected: CyberGym at 84.5 and ExploitBench at 54.4 triggered a security review that delayed open-weight release", "Still trails closed frontier models (Claude Fable 5, GPT-5.6 Sol, Claude Opus 4.8) on the hardest agentic and exploit benchmarks", "Text-only model with no published safety model card — no vision input and limited documentation of alignment work", "API pricing above DeepSeek's off-peak rates, and GLM-5.3-specific per-token pricing was still unconfirmed at launch"]
+bestFor: ["Developers running coding agents who want open-source weights with frontier-adjacent results — GLM-5.3 is the strongest MIT-licensed coding model of the moment", "Teams comparing Chinese budget models who want the DeepSWE and AutomationBench leader over DeepSeek V4 Pro", "Users of Claude Code or OpenCode who want a cheaper model behind the same agent frontends", "Security researchers evaluating model offensive capability — with the caveat that the capability is real"]
+---
+
+![GLM-5.3 official logo for AI coding model review](/logos/glm-5-3.svg)
+
+Is GLM-5.3 good for coding agents? After the August 14 release from Zhipu AI, the answer is more interesting than most model launches. GLM-5.3 is not a new base model: it shares the same 743-billion-parameter MoE base as GLM-5.2, and every improvement comes from post-training. That makes its benchmark jumps remarkable. DeepSWE went from 46.2 to 66.9, beating DeepSeek V4 Pro's 62.7. Terminal-Bench 3.0 went from 4.6 to 28.3, a sixfold jump. AutomationBench doubled from 26.2 to 48.2. Zhipu says the model's coding and agent capabilities are on par with Claude Fable 5, and its security performance matches Mythos 5. This review covers what the model does, what it costs, and the caveats that should temper the numbers.
+
+## Key Features
+
+- **Post-training-only upgrade** — GLM-5.3 keeps GLM-5.2's architecture: 743B total parameters, roughly 39-40B active, a 1M context window, and the MIT license. The entire gain comes from expanded reinforcement learning with more task environments, including real-world engineering workflows and security tasks. If you can run GLM-5.2, you can run GLM-5.3 with the same hardware and a new checkpoint.
+- **Coding agent benchmarks** — DeepSWE v1.1 at 66.9 (beats DeepSeek V4 Pro's 62.7), Terminal-Bench 3.0 at 28.3 (open-source #1 after a sixfold jump), and Agents' Last Exam CLI at 28.5. On AutomationBench, the enterprise workflow benchmark, GLM-5.3 scores 48.2 against DeepSeek V4 Pro's 31.8. These are the strongest open-source agent results of August 2026, per [Zhipu's release reporting](https://z.ai).
+- **Security capability that surprised the company** — CyberGym vulnerability discovery at 84.5% and ExploitBench at 54.4 are self-reported SOTA numbers that emerged so quickly they prompted Zhipu to run a security review before releasing weights. The open release was pushed to late August 2026 while that review completes. This is a feature if you do security work and a caution flag if you deploy it in production.
+- **Agent frontend compatibility** — GLM-5.3 works with ZCode, Claude Code, and OpenCode. ZCode gets a 98%+ cache hit rate, a Goal Mode that runs end-to-end goal-driven development (planning, coding, testing, verification), and remote monitoring of long-running tasks through WeChat or Feishu.
+- **Coding Plan subscription** — $18/month for the GLM Coding Plan, with Pro and Max tiers from $72-168 depending on billing terms. The plan includes the credit/quota system where non-peak hours cost 50% of standard credits.
+
+## Our Take
+
+GLM-5.3 is the strongest argument yet that post-training is where the coding-model race is being won. Zhipu took an unchanged base model and nearly doubled its agent capability with reinforcement learning on real engineering workflows. The DeepSWE and AutomationBench numbers put it ahead of DeepSeek V4 Pro, which released the same week, and the Terminal-Bench jump from 4.6 to 28.3 is the kind of gain that changes how a model behaves in daily agent use.
+
+But three caveats matter more than the headline numbers.
+
+First, nothing is independently verified. Every benchmark in this review is Zhipu-reported, and the sixfold Terminal-Bench jump is exactly the kind of result that community testing will either confirm or walk back. DeepSeek and Moonshot faced the same scrutiny this month; GLM-5.3's turn has not happened yet.
+
+Second, the security capability is a double-edged sword. CyberGym at 84.5% and ExploitBench at 54.4 mean this model is genuinely good at finding and exploiting vulnerabilities. Zhipu's own delay of the open-weight release is the honest admission that this capability needs guardrails. If you are a security researcher, that is the feature. If you are deploying an agent in a production environment, it is a risk you need to think through, not ignore.
+
+Third, it is still behind the closed frontier on the hardest tasks. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 all beat GLM-5.3 on the hardest agentic and exploit benchmarks, and the model is text-only with no safety model card. For the price difference, that is a fair trade for most builders. For production-critical security-sensitive work, the closed frontier still earns its premium.
+
+The verdict: if you run coding agents on a budget and want open-source weights, GLM-5.3 is currently the strongest MIT-licensed option, ahead of DeepSeek V4 Pro on the benchmarks that matter most for agent work. Watch for the independent verification, and check Zhipu's own release notes at [z.ai](https://z.ai) before trusting the numbers in production. For the wider picture, our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the full category.
+
+## What GLM-5.3 Does in Practice
+
+Zhipu AI released GLM-5.3 on August 14, 2026, the same week DeepSeek V4 Pro went live, and both immediately appeared on Alibaba's Qianwen Office platform. The model shares GLM-5.2's 743B-parameter MoE base with roughly 39-40B active parameters per token, a 1M context window, and the MIT license. All gains come from post-training: expanded reinforcement learning environments covering real-world engineering workflows, security tasks, and long-horizon agent execution.
+
+The benchmark story is the most dramatic part. [Zhipu's coding test coverage](https://www.infoq.cn/article/xWyWwu4ZNptlhpb15tia) shows a GPT-5.6-designed coding test passed with a perfect 100/100 score in about 151 seconds, rated A- for constrained engineering execution. An independent-style review from [aitoolsreview](https://aitoolsreview.co.uk/insights/glm-5-3) and the [orcarouter model comparison](https://www.orcarouter.ai/blog/glm-5-3-vs-glm-5-2) both land on the same pattern: the model is dramatically better at long-horizon agent work than its predecessor, and the security capability is the surprise of the release.
+
+In daily use, the workflow is: connect GLM-5.3 to Claude Code, OpenCode, or ZCode, and run agent tasks with the same frontends you already know. ZCode's Goal Mode is the differentiator for Zhipu's own tooling: it handles planning, coding, testing, and verification as one end-to-end run, and you can monitor long tasks remotely through WeChat or Feishu. The cache hit rate above 98% matters for agent loops that replay the same context repeatedly.
+
+The model's limits are visible in three places: the hardest agentic benchmarks, where closed frontier models still lead; multimodal work, where the text-only GLM-5.3 cannot match Gemini's vision input; and security-sensitive deployments, where the model's offensive capability is a genuine operational consideration rather than a talking point.
+
+## Pricing Breakdown
+
+| Plan | Cost | What's Included |
+|------|------|----------------|
+| **Coding Plan** | $18/month | GLM-5.3 access in ZCode, Claude Code, OpenCode; credit-based quota, 50% credits off-peak |
+| **Pro** | $72-80/month | Higher quota tiers for heavier agent workloads |
+| **Max** | $160-168/month | Top quota tier with full ZCode features |
+| **API** | GLM-5.2 pricing carried over: $1.40/M input, $4.40/M output | GLM-5.3-specific per-token rates unconfirmed at launch; cached tokens billed lower |
+
+The $18/month Coding Plan is the number most developers will care about. It undercuts Claude Pro and puts GLM-5.3 in the same budget bracket as the other Chinese models. The credit system bills input, cached input, and output tokens separately, and non-peak hours (outside weekdays 14:00-18:00 Beijing time) consume 50% of standard credits. There is a 1.5x credit bonus until August 31, 2026.
+
+Against the competition, GLM-5.2's mixed API price runs about 2.2x DeepSeek V4 Pro's off-peak rate, and Kimi K3 sits between them. For teams already on a subscription plan, the pricing works; for pure API consumers, DeepSeek remains cheaper. Our [Kimi K3 vs DeepSeek comparison](/compare/kimi-k3-vs-deepseek) covers the two cheaper alternatives in detail.
+
+## Who Should Use GLM-5.3
+
+- **Strong fit if you:**
+  - Run coding agents and want open-source MIT-licensed weights with frontier-adjacent DeepSWE and AutomationBench results
+  - Already use Claude Code or OpenCode and want a cheaper model behind the same frontends
+  - Do security research or red-team work where CyberGym-grade vulnerability discovery is the feature
+  - Prefer subscription pricing over per-token API billing
+
+- **Not the best if you:**
+  - Need independently verified benchmarks before trusting a model in production
+  - Run security-sensitive production agents where the model's offensive capability needs careful risk assessment
+  - Need vision input or multimodal capabilities in your coding workflows
+  - Want the cheapest per-token API — DeepSeek V4 Pro's off-peak rates still win there
+
+## vs DeepSeek and Kimi K3
+
+[DeepSeek](/reviews/deepseek) is the direct rival, released the same week. GLM-5.3 beats V4 Pro on DeepSWE (66.9 vs 62.7) and AutomationBench (48.2 vs 31.8), and its MIT license beats DeepSeek's API-only model, since V4 Pro ships no weights. DeepSeek counters with the 384K output window, the open-source Harness agent framework, and off-peak prices that undercut GLM by about 2x. The choice is capability-leader versus price-leader, and both claims are vendor-reported. See our [DeepSeek review](/reviews/deepseek) for the full picture.
+
+[Kimi K3](/reviews/kimi-k3) is the open-weights champion with the #1 Frontend Code Arena result and a genuinely open (if custom-licensed) weight release, at $3/$15 per million tokens. GLM-5.3 is stronger on agentic benchmarks like DeepSWE and AutomationBench, while Kimi K3 leads web engineering and frontend work. For the head-to-head between the other two Chinese models, our [Kimi K3 vs DeepSeek comparison](/compare/kimi-k3-vs-deepseek) breaks down the trade-offs, and [DeepSeek vs Claude](/compare/deepseek-vs-claude) covers the cross-family comparison.
+
+## FAQ
+
+**Is GLM-5.3 good for coding agents?**
+On Zhipu's self-reported numbers, yes, and it is the strongest open-source option: DeepSWE 66.9 beats DeepSeek V4 Pro, and AutomationBench 48.2 nearly doubles it. Independent verification has not happened yet, and the model still trails closed frontier models on the hardest benchmarks.
+
+**How much does GLM-5.3 cost?**
+The Coding Plan is $18/month, with Pro at $72-80 and Max at $160-168. API pricing inherited GLM-5.2's $1.40/$4.40 per million tokens, with GLM-5.3-specific rates unconfirmed at launch.
+
+**Is GLM-5.3 open source?**
+The license is MIT and weights were expected in late August 2026 after a security review. The release was delayed because the model's security capability (CyberGym 84.5%, ExploitBench 54.4) emerged faster than expected.
+
+**How does GLM-5.3 compare to DeepSeek V4 Pro?**
+GLM-5.3 wins on DeepSWE and AutomationBench, has MIT-licensed weights, and works with Claude Code. DeepSeek V4 Pro wins on price (about 2x cheaper off-peak), offers the 384K output window, and ships the open-source Harness agent framework.
+
+**Which coding agents work with GLM-5.3?**
+ZCode (with Goal Mode and remote monitoring), Claude Code, and OpenCode all support it. The setup mirrors any Anthropic-compatible model.
+
+[Visit GLM-5.3](https://z.ai)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-08-18
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

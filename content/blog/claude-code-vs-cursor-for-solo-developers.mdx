@@ -75,6 +75,10 @@ Both tools cost roughly the same at the $20/month tier. The difference is not pr
 
 **The pragmatic answer for most solo developers:** Use both. Cursor for everyday coding, Claude Code for the hard problems. At $20/month each, the combined cost is less than a single freelance developer hour. If Claude Code saves you an hour per month on a complex refactor, it has paid for itself.
 
+If you run Claude Code for heavy agent workloads, the subscription model caps out eventually. That is where open-weight models like [Kimi K3](/reviews/kimi-k3) enter the picture: the API costs about 30% of Claude's rate, and it works with Claude Code through Anthropic-compatible endpoints. The trade-off is reliability — the model is new, benchmarks are vendor-reported, and early users have hit errors in long sessions. For solo developers on a budget, it is the difference between paying for one heavy month or several.
+
+Google's [Gemini 3.7 Flash](/blog/gemini-3-7-flash-vs-claude-for-coding) is the other budget lever. Its intro rate of $0.75 per million input tokens is about a third of Claude Sonnet 5, and it leads Claude on automation-heavy benchmarks. For solo projects where a wrong file edit costs you an hour instead of a client, the reliability gap matters less, and the price gap matters more. Our [setup guide](/blog/how-to-use-gemini-3-7-flash-for-coding-agents) walks through wiring it into your agent workflow with the cost controls that keep a solo budget healthy.
+
 ## FAQ
 
 **Can Claude Code replace Cursor entirely?**
