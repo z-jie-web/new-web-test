@@ -64,19 +64,19 @@ Many teams in August 2026 are running both behind an abstraction layer and routi
 ## FAQ
 
 **Is Gemini 3.7 Flash better than Claude for coding?**
-On single-pass coding benchmarks like FrontierCode 1.1, Gemini 3.7 Flash edges out Claude Sonnet 5 (43.6% vs 42.7%). On automation-heavy benchmarks like AutomationBench, it wins clearly (30.4% vs 10.7%). Claude remains stronger on verified reliability and independent agent benchmark results. Neither model wins everywhere.
+On single-pass coding benchmarks like FrontierCode 1.1, Gemini 3.7 Flash edges out Claude Sonnet 5 (43.6% vs 42.7%). On automation-heavy benchmarks like AutomationBench, it wins clearly (30.4% vs 10.7%). Claude remains stronger on verified reliability and independent agent benchmark results. Neither model wins everywhere. Google has since shipped Gemini 3.8 Flash, and our [Gemini 3.8 Flash review](/reviews/gemini-3-8-flash) covers whether the September update changes that answer.
 
 **What does Gemini 3.7 Flash cost?**
 The introductory rate is $0.75 per million input tokens and $3.75 per million output tokens through December 31, 2026. The standard rate from January 2027 is $1.50/$7.50. Claude Sonnet 5 costs $2.00/$10.00.
 
 **Can Gemini 3.7 Flash power coding agents like Claude Code?**
-Yes. Gemini models integrate with major agent frameworks through Google's API and the Gemini Spark agent service in Workspace. For a comparison of the agent frontends themselves, see our [Claude Code vs Windsurf for side projects](/blog/claude-code-vs-windsurf-for-side-projects) guide. And if your agent budget points at Chinese models instead, our [Kimi K3 vs DeepSeek comparison](/compare/kimi-k3-vs-deepseek) covers the two strongest budget options in that lane.
+Yes. Gemini models integrate with major agent frameworks through Google's API and the Gemini Spark agent service in Workspace. For a comparison of the agent frontends themselves, see our [Claude Code vs Windsurf for side projects](/blog/claude-code-vs-windsurf-for-side-projects) guide. And if your agent budget points at Chinese models instead, our [Kimi K3 vs DeepSeek comparison](/compare/kimi-k3-vs-deepseek) covers the two strongest budget options in that lane. For the September sequel between the new generations, our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) has the updated verdict.
 
 **Is the DeepSWE improvement real?**
 Gemini 3.7 Flash jumped from 48.6% to 65.3% on DeepSWE v1.1, the largest single gain in the release. Independent testing confirms the model handles long agentic chains substantially better than 3.6 Flash, though GPT-5.6 Terra still leads at 69.6%.
 
 **Should I switch my agents to Gemini 3.7 Flash?**
-For high-volume, latency-sensitive automation workloads, the cost difference makes it worth testing. For production-critical work where a silent failure is expensive, keep Claude until independent reliability data for 3.7 Flash matures. When you are ready to try it, our [step-by-step setup guide](/blog/how-to-use-gemini-3-7-flash-for-coding-agents) covers API access, framework wiring, and cost control.
+For high-volume, latency-sensitive automation workloads, the cost difference makes it worth testing. For production-critical work where a silent failure is expensive, keep Claude until independent reliability data for 3.7 Flash matures. When you are ready to try it, our [step-by-step setup guide](/blog/how-to-use-gemini-3-7-flash-for-coding-agents) covers API access, framework wiring, and cost control. Claude has since shipped Fable 5.1, its strongest coding model yet; our [Claude Fable 5.1 review](/reviews/claude-fable-5-1) covers the new flagship.
 
 > We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
 Last updated: 2026-08-18

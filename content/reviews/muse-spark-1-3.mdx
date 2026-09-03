@@ -1,0 +1,99 @@
+---
+slug: "muse-spark-1-3"
+name: "Muse Spark 1.3"
+category: "ai-coding"
+description: "Is Meta Muse Spark good for coding agents? September 2026 review: DeepSWE v1.1 75.4 leads the tier; $1.25/$4.25 per M tokens, Contributor tier at $0.20/M."
+lastUpdated: "2026-09-03T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Meta", "LLM"]
+url: "https://ai.meta.com"
+pricing: "Paid"
+pros: ["DeepSWE v1.1 at 75.4 leads the tier on Meta's self-reported numbers — ahead of Claude Opus 5's 74.0, GPT-5.6 Sol's 73.0, and Gemini 3.8 Flash's 73.7 — with Terminal-Bench 2.1 at 88.8", "Long-context results jumped dramatically: MRCR at 98.5 for 256K and 98.1 up to 1M tokens, versus 1.2's 66.3/55.5 — one of the largest context-window improvements in a point release", "Real-world usability training: asks clarifying questions on ambiguous prompts, confirms before irreversible actions, asks for help when stuck, and handles multiple workflows in one long thread", "$1.25/$4.25 per million tokens is unchanged from 1.2, and the Contributor tier ($0.10/$0.20) makes high-volume agent experiments nearly free — one user reported 60+ agent iterations for under $1", "Output speed of ~235 tokens/second, second only to Gemini 3.8 Flash among current releases, with an optional progress-report toggle for long background tasks"]
+cons: ["Benchmarks are Meta-reported and early community testing found a 'benchmark-to-repo gap': agents that loop, waste context re-reading and rewriting files, and even undo their own edits — reliability needs your own testing before production", "Artificial Analysis measured high verbosity — 120M output tokens versus a 72M peer median — which conflicts with Meta's ~25% fewer-tokens efficiency claim (vendor figure, not independently verified)", "Still trails the frontier on general agentic benchmarks: GDPval-AA v2 at 1754 Elo, DeepSearchQA 89.4, and Agentic IF Index 57.8 all sit behind Opus 5 and Fable 5.1 — strong on terminal and long-context tasks, first on none", "Max reasoning mode is not yet open pending safety testing, capping the ceiling available to developers", "Closed weights: unlike the open-source Llama line, Muse Spark is API-only for now — Meta says 1.2 weights come first and open Spark releases are planned, but today there is no self-hosting"]
+bestFor: ["High-volume, cost-sensitive coding-agent workloads where the Contributor tier's $0.20/M output changes the economics of running many parallel agents", "Teams that want frontier-adjacent DeepSWE and Terminal-Bench results (per Meta) without flagship pricing", "Long-context work — repository-scale Q&A and analysis that stresses the 1M window, where the MRCR jump over 1.2 is the largest in class", "Developers inside the Meta ecosystem using Muse Code or the Meta Model API who want the newest model with the behavior refinements built in"]
+---
+
+![Meta Muse Spark 1.3 official logo for AI coding model review](/logos/muse-spark-1-3.svg)
+
+Is Meta Muse Spark good for coding agents? Meta released Muse Spark 1.3 on September 2, 2026, the same day as Gemini 3.8 Flash and its fourth Spark release in five months. Meta's chief AI officer called it the company's biggest jump in model performance yet: DeepSWE v1.1 at 75.4 (self-reported), ahead of Claude Opus 5's 74.0 and GPT-5.6 Sol's 73.0, at an unchanged $1.25/$4.25 per million tokens with a Contributor tier at $0.20 output. The model also fixes what Meta calls "real-world usability": asking clarifying questions, confirming irreversible actions, and asking for help when stuck. The early community picture is more mixed: reviewers praise the speed and price but report reliability gaps between benchmarks and real repositories. This review covers what the model does, what it costs, and where the claims need independent confirmation.
+
+## Key Features
+
+- **Fourth release in five months**: Muse Spark 1.3 follows July's 1.1 and August's 1.2, with Artificial Analysis' Intelligence Index climbing 53 → 57 → 61 across the three releases. The standard config ties GPT-5.6 Sol and Grok 4.6 at 61; a limited-preview "max" variant scores 62, ranked 6th of 636 models behind Claude Fable 5.1 (66) and Opus 5.
+- **Coding and agentic focus**: DeepSWE v1.1 at 75.4 leads the tier on Meta's self-reported numbers (Opus 5: 74.0, GPT-5.6 Sol: 73.0, Gemini 3.8 Flash: 73.7), Terminal-Bench 2.1 at 88.8, and SWEAtlas CodeBase QnA at 59.4. Meta claims it beats GPT-5.6 Sol at coding and is competitive with Claude Fable 5.1. The model is multimodal (text, image, video, audio, and PDF input, with text output) inside a 1M context window and 131K output ceiling.
+- **Real-world usability training**: the headline change over 1.2 is behavioral: the model handles multiple workflows in a single long thread, asks clarifying questions on ambiguous prompts, confirms before irreversible actions (like destructive commands), and asks for help when stuck instead of guessing. Meta also invested training compute in outcome-score correction to reduce reward hacking and evasive answers.
+- **Long-context breakthrough**: MRCR scores jumped from 1.2's 66.3 (256K) and 55.5 (1M) to 98.5 and 98.1 on 1.3, one of the largest context-reliability improvements in a point release. Repository-scale inputs are now a genuine strength rather than a stress test.
+- **Dual pricing tiers**: standard API pricing is unchanged from 1.2: $1.25 input, $0.15 cached input, and $4.25 output per million tokens. The Contributor tier costs $0.10 input and $0.20 output (roughly 12-20x cheaper) in exchange for Meta using prompts for training, with tighter rate limits (60 requests/min vs 3,000).
+
+## Our Take
+
+Muse Spark 1.3 is the strongest case yet that Meta has turned its coding-model line into a serious budget-tier contender, and the release is priced and positioned like one. On Meta's own numbers, DeepSWE v1.1 at 75.4 leads every model in this review cycle, the long-context jump over 1.2 is the largest in class, and the Contributor tier's $0.20 output rate is the cheapest frontier-adjacent pricing anyone has shipped. For high-volume agent experiments, that combination is hard to argue with.
+
+The skepticism is equally serious. First, every headline number is Meta-reported, and Meta has been the least independently verified of the September wave: early community testing found a real gap between benchmarks and repositories, with agents that loop, re-read and rewrite files unnecessarily, and even undo their own edits. Second, Artificial Analysis measured heavy verbosity (120M output tokens versus a 72M peer median), which directly conflicts with Meta's ~25% fewer-tokens claim. Third, the model is not first on any general agentic benchmark. GDPval-AA v2, DeepSearchQA, and Agentic IF Index all trail the frontier, and the max reasoning mode is still gated behind safety testing.
+
+The verdict: Muse Spark 1.3 is the value pick of the September wave for cost-sensitive, high-volume agent work (especially through the Contributor tier), but treat it as a model to test against your own repository before committing production workflows. The benchmarks say "tier leader"; the community says "verify first." For teams that want the strongest general agentic reliability regardless of price, [Claude Fable 5.1](/reviews/claude-fable-5-1) remains the reference, and our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the wider field.
+
+## What Muse Spark 1.3 Does in Practice
+
+Meta shipped Muse Spark 1.3 on September 2, 2026, through Muse Code (Meta's terminal coding agent, available on macOS and Linux) and the Meta Model API. The release cadence is aggressive: 1.1 in July, 1.2 in August, 1.3 in September, each adding a few points on the Artificial Analysis index while holding price flat. Zuckerberg has announced that open-weight Spark releases are coming (Muse Spark 1.2 weights first, with future Spark versions following), but today the model is closed-weight and API-only.
+
+In daily use, the behavior changes are the differentiator. Give 1.3 an ambiguous prompt and it asks a clarifying question rather than guessing. Propose an irreversible action and it confirms first. Run a long task and it can report progress or run silently, via an optional behavior toggle. Meta says the model retains initial requirements across long-horizon coding tasks and reduces unnecessary iterations, claims backed by vendor efficiency figures (~20% fewer tool calls, ~25% fewer tokens than 1.2) that have not been independently confirmed.
+
+Independent testing tells a more complicated story. [Artificial Analysis](https://artificialanalysis.ai) ranks its output speed second among current releases at ~235 tokens/second and measures ~$0.40-0.55 per task at its intelligence tier (versus ~$0.86-0.95 for Kimi K3, GPT-5.6, and Grok 4.6 competitors). But the same testing found the verbosity problem, and hands-on reviewers report agents that loop on real repositories, re-reading and rewriting files and undoing their own edits. [Beam's agentic analysis](https://beam.ai/de/agentic-insights/muse-spark-1-3-ai-agents) called the pattern a "benchmark-to-repo gap." The model's strength profile is also uneven: excellent on terminal work and long-context tasks, not first on any general agentic benchmark.
+
+The practical takeaway: Muse Spark 1.3 is unusually cheap to test at scale (one user reported running 60+ agent iterations for under $1 on the Contributor tier), which is exactly the right way to resolve the reliability question. Run it against your own tasks before production.
+
+## Pricing Breakdown
+
+| Tier | Input / M tokens | Output / M tokens | Limits |
+|------|-----------------|-------------------|--------|
+| **Standard** | $1.25 ($0.15 cached) | $4.25 | 3,000 req/min, 4M tokens/min |
+| **Contributor** | $0.10 ($0.002 cached) | $0.20 | 60 req/min, 2.1M tokens/min; Meta may use data for training |
+| **vs Claude Fable 5.1** | $10 | $50 | — |
+| **vs Gemini 3.8 Flash** | $0.75 (doubles Jan 2027) | $3.75 (doubles Jan 2027) | — |
+
+The standard rate is unchanged from 1.2 and sits between Gemini 3.8 Flash and the frontier flagships: roughly a third of Fable 5.1's input price and under a tenth of its output price. The Contributor tier is the pricing story: at $0.10/$0.20 it undercuts everything in the frontier tier by an order of magnitude, at the cost of data-sharing and tight rate limits. Artificial Analysis measures ~$0.40-0.55 per task at Muse Spark's intelligence level versus ~$0.86-0.95 for its closest competitors. For agent workloads with heavy context reuse, the $0.15 cached-input rate compounds the savings.
+
+## Who Should Use Muse Spark 1.3
+
+- **Strong fit if you:**
+  - Run high-volume coding agents where per-task cost decides the model, especially on the Contributor tier
+  - Work with repository-scale context and need reliable 1M-token recall (MRCR 98+ at 256K and 1M)
+  - Use Muse Code or the Meta Model API and want the newest model with the behavior refinements
+  - Can tolerate vendor-reported benchmarks and plan to test against your own repos first
+
+- **Not the best if you:**
+  - Need independently verified reliability before production, since community testing found looping agents and self-undone edits
+  - Require the strongest general agentic reasoning (GDPval, DeepSearchQA, and Agentic IF still trail the frontier)
+  - Want the max reasoning mode, which is still gated behind safety testing
+  - Need open weights or self-hosting today; Spark is API-only until the planned open releases arrive
+
+## How Muse Spark 1.3 Compares
+
+Against [Gemini 3.8 Flash](/reviews/gemini-3-8-flash), the September same-day rival: Muse Spark 1.3 claims higher DeepSWE (75.4 vs 73.7, both vendor-reported), but 3.8 Flash answers with a cheaper standard rate ($0.75/$3.75 vs $1.25/$4.25), ~30% faster output (~304 vs ~235 tokens/second), and Google's independent-measurement track record. Muse counters with the Contributor tier, stronger claimed long-context reliability, and multimodal input. Both are closed-weight API models; 3.8 Flash's intro price doubles in January 2027 while Muse's is not time-limited.
+
+Against [Claude Fable 5.1](/reviews/claude-fable-5-1), the comparison is the same shape as Gemini's: Muse Spark 1.3 delivers tier-leading DeepSWE at a fraction of Fable's $10/$50, but Fable 5.1 leads on general agentic benchmarks (AA index 66 vs 61-62), long-horizon autonomy, and independent verification, and Anthropic has shipped in production longer. Meta's own positioning concedes the gap: "competitive with" Fable 5.1, not ahead of it.
+
+Against GPT-5.6 Sol, Muse Spark 1.3 ties it on the AA intelligence index (61) while claiming the coding lead on DeepSWE (75.4 vs 73.0) at roughly a tenth of the price. The recurring theme across all comparisons: Muse Spark 1.3 is the value contender whose ceiling is capped by verification gaps, gated max mode, and general-agentic weaknesses, exactly the profile of a tier challenger rather than a frontier leader.
+
+## FAQ
+
+**Is Meta Muse Spark good for coding agents?**
+On Meta's self-reported numbers, yes: DeepSWE v1.1 at 75.4 leads the September tier, ahead of Opus 5, GPT-5.6 Sol, and Gemini 3.8 Flash. Independent testing confirms the speed and price advantages but found reliability gaps on real repositories, so test it against your own tasks before production.
+
+**How much does Muse Spark 1.3 cost?**
+$1.25 per million input and $4.25 per million output tokens on the standard tier, with $0.15 cached input. The Contributor tier is $0.10 input and $0.20 output (roughly 12-20x cheaper) in exchange for data-sharing and tighter rate limits.
+
+**Is Muse Spark 1.3 open source?**
+Not yet. The model is closed-weight and API-only. Meta has announced open-weight Spark releases are coming (Muse Spark 1.2 weights first, then future versions), but there is no self-hosting today.
+
+**Muse Spark 1.3 vs Gemini 3.8 Flash, which is better for coding?**
+Both launched September 2 and claim tier-leading DeepSWE results (75.4 vs 73.7, vendor-reported). Gemini 3.8 Flash is cheaper standard ($0.75/$3.75), faster (~304 tokens/sec), and better independently measured; Muse Spark 1.3 counters with the ultra-cheap Contributor tier and claimed long-context reliability. Test both against your workloads.
+
+**Does Muse Spark 1.3 work with Claude Code?**
+Not natively; it is served through Meta's Muse Code and Meta Model API. The model is Anthropic-incompatible out of the box, so mixing ecosystems requires a proxy or multi-provider agent framework. For the September wave's pricing breakdown across all three models, see our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1).
+
+[Visit Muse Spark 1.3](https://ai.meta.com)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

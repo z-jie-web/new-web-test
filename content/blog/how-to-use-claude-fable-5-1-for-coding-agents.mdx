@@ -1,0 +1,80 @@
+---
+slug: "how-to-use-claude-fable-5-1-for-coding-agents"
+title: "How to Use Claude Fable 5.1 for Coding Agents (Setup, Caching, Tuning)"
+description: "Step-by-step guide to running Claude Fable 5.1 in coding agents: Claude Code setup, API breaking changes, $0.25/M caching, and effort tuning for long runs."
+date: "2026-09-03"
+category: "ai-coding"
+author: "jack"
+relatedReviews:
+  - "claude-fable-5-1"
+  - "claude-code"
+  - "claude"
+---
+
+![Claude Fable 5.1 coding agent setup guide](/logos/claude-fable-5-1.svg)
+
+Claude Fable 5.1 is Anthropic's strongest model for coding agents: SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8%, and documented autonomous runs measured in tens of hours. It is also the first frontier model whose cache-read price ($0.25 per million tokens, cut 75%) is cheap enough to change how you architect agent loops. This guide walks through the setup: switching Claude Code to Fable 5.1, the API changes that break existing Fable 5 integrations, exploiting the new cache economics, and tuning effort for long-horizon runs. For the benchmark analysis, see our [Claude Fable 5.1 review](/reviews/claude-fable-5-1); for the cost decision against Google's workhorse, our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1).
+
+## Step 1: Switch Claude Code to Fable 5.1
+
+If you run [Claude Code](/reviews/claude-code), Fable 5.1 is the model class it was built for. Set the model to `claude-fable-5-1` and you are done: effort defaults to high, adaptive thinking is always on, and the agent loop gets the model's self-verification behavior automatically.
+
+Two settings worth changing before serious runs:
+
+1. **Right-size the default effort.** Fable 5.1 supports low, medium, high, xhigh, and max effort levels. High is the Claude Code default, but Anthropic's own measurements show xhigh nearly matches max on professional work while using ~19-25% fewer output tokens (GDPval-AA: 1835 vs 1853 at max). Start agents at high, use xhigh for the hardest tasks, and reserve max for ceiling-chasing runs.
+2. **Keep the prompt cache warm.** Agent loops replay the same system prompt, tool definitions, and file context every iteration. Fable 5.1 bills cache reads at $0.25 per million tokens, a quarter of the $1.00 you paid on Fable 5, which turns context-heavy loops from the dominant cost into a rounding error.
+
+## Step 2: Update Your API Integrations (Breaking Changes)
+
+Fable 5.1 keeps the `claude-fable-5-1` model ID on the Anthropic API (Bedrock: `anthropic.claude-fable-5-1`), but three integration changes from Fable 5 will break existing code. Budget an afternoon for the migration, and read the [platform changelog](https://platform.claude.com) for the full details:
+
+1. **Forced tool use now returns HTTP 400.** `tool_choice: {"type": "any"}` or named-tool forcing fails on Messages, Batches, and token-counting APIs because thinking is always on. Replacements: `tool_choice: auto` with `strict: true`, structured outputs, naming the tool in the prompt, or a mid-conversation system message. Agents that "required" a specific tool on every turn should instead validate that the tool was called and retry otherwise.
+2. **Thinking blocks are model-bound one-way.** Fable 5.1 reads older models' thinking blocks, so upgrades preserve reasoning, but older models cannot read 5.1's blocks, and fallback routes silently drop them unless you set the `thinking-binding-controls-2026-08-01` beta header. If you route some traffic to older models, set that header or accept degraded reasoning on fallback turns.
+3. **Editing conversation history invalidates thinking blocks.** Append-only histories, server-side compaction, and `cache_control` moves are safe. Rebuilding system prompts, reordering turns, or rewriting earlier messages are not, and accounts created on or after August 31, 2026 get hard 400s on violations. If you sanitize or summarize conversation state between turns, restructure that logic to append rather than rewrite.
+
+Three new beta features are worth enabling. Per-message effort (`mid-conversation-output-config-2026-07-01`) switches effort mid-conversation without invalidating the prompt cache: drop a long refactor to medium after the first review pass, then raise it back for verification. Turn-scoped system messages (`mid-conversation-system-clear-at-2026-08-21`) let you scope context changes to single turns. Content provenance is on by default.
+
+## Step 3: Exploit the New Cache Economics
+
+The cache-read cut from $1.00 to $0.25 per million tokens is the pricing story of this release, and agent loops are exactly the workload it rewards:
+
+1. **Mark replay-heavy context with `cache_control`.** The system prompt, tool schemas, repository structure, and any large reference files replayed every loop iteration should carry cache markers. At $0.25/M reads, replaying a 200K-token context 20 times in an agent session costs about $1.00 instead of $4.00 on Fable 5.
+2. **Choose the right cache window.** Cache writes bill at $12.50 per million tokens for 5-minute windows and $20/M for 1-hour windows. The 1-hour window is new and exists for long agent sessions: if your run exceeds 5 minutes between writes, the 1-hour rate amortizes better.
+3. **Batch what can wait.** Batch mode halves prices to $5/$25 in and out. Background verification runs, nightly code-review sweeps, and bulk test generation are ideal batch workloads.
+
+One honesty note on cost expectations: Fable 5.1 emits roughly 1.7x more output tokens than Fable 5 per task, so bills can rise even with cheaper cache. [llm-stats' launch analysis](https://llm-stats.com/blog/research/claude-fable-5-1-launch) walks through the same math with real task examples. The economics favor workloads with genuinely reusable context; the model does not make verbose one-shot queries cheaper.
+
+## Step 4: Tune for Long-Horizon Runs
+
+Fable 5.1's differentiator is sustained autonomous work: Anthropic's documented runs include a 38-hour ML session and a multi-day vendor-library debugging case. To get that behavior reliably:
+
+1. **Write append-only agent state.** Because history edits invalidate thinking blocks, design your agent to accumulate state (tool outputs, decisions, file diffs) rather than rewrite it. Server-side compaction is safe and keeps sessions within the 1M context.
+2. **Verify, don't assume.** The model self-verifies results during runs; the system card's real-world pattern is the model checking its own work before declaring completion. Structure your prompts to request explicit verification passes on changes it makes, rather than trusting the first attempt.
+3. **Escalate effort only when stuck.** Start at high and let the agent work; if a task loops without converging, raise effort per-message (Step 2's beta) rather than restarting, since the mid-conversation switch keeps the cache intact, so escalation costs tokens but not context.
+
+## Where It Wins and Where to Be Careful
+
+Use Fable 5.1 for the workloads its design targets: long-horizon refactors, repository-scale debugging, autonomous test-and-fix cycles, and any agent task where a wrong silent result costs more than token spend. The system-card gains are concentrated exactly there: Terminal-Bench-Science more than doubled over Fable 5, AutomationBench nearly doubled, Browserbase jumped 25 points.
+
+Three cautions. First, the integration changes in Step 2 will bite if you skip the migration: forced tool use 400s and dropped thinking blocks on fallback routes are silent failure sources. Second, Fable 5.1 is a Covered Model with mandatory 30-day data retention; there is no zero-retention option, which matters for privacy-sensitive codebases. Third, the per-task token multiplier (~1.7x over Fable 5) means high-volume one-shot workloads may cost more than expected; for those, a workhorse model like [Gemini 3.8 Flash](/reviews/gemini-3-8-flash) at $0.75/$3.75 is the cheaper default, and our [head-to-head comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) works through when each wins. Independent measurements on [Artificial Analysis](https://artificialanalysis.ai) are a good way to sanity-check task-level costs before you commit.
+
+## FAQ
+
+**How do I use Claude Fable 5.1 in Claude Code?**
+Set the model to `claude-fable-5-1`. Effort defaults to high and adaptive thinking is always on. For long runs, keep the prompt cache warm and use per-message effort switching to escalate only when the agent is stuck.
+
+**How much does Claude Fable 5.1 cost for coding agents?**
+$10 per million input and $50 per million output tokens, with cache reads at $0.25 per million (down 75%). Anthropic estimates typical workloads land ~25% cheaper than Fable 5 and highly agentic workloads up to 45% cheaper. Batch mode halves prices to $5/$25.
+
+**What broke in the Fable 5 to 5.1 migration?**
+Three things: forced tool use (`tool_choice: any` or named tools) now returns HTTP 400, so use `auto` with `strict: true`; thinking blocks are model-bound one-way, so fallback routes drop them without the `thinking-binding-controls-2026-08-01` header; and editing conversation history invalidates thinking blocks, so append-only histories are required on new accounts.
+
+**Is Claude Fable 5.1 good for long autonomous agent runs?**
+Yes; it is the strongest generally available option for long-horizon work. Documented runs include a 38-hour autonomous ML session, and the model self-verifies results during multi-step tasks. The system card's biggest gains over Fable 5 are in tool-using, multi-step benchmarks, not raw IQ tests.
+
+**Claude Fable 5.1 vs Gemini 3.8 Flash, which should my agents use?**
+Fable 5.1 for long-horizon autonomy and the hardest agentic work; Gemini 3.8 Flash for high-volume software engineering at under a tenth of the price. Both are vendor-reported on different suites, so treat cross-vendor numbers as directional. Our [comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) breaks down the decision by workload.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

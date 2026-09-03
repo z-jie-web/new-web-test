@@ -1,0 +1,103 @@
+---
+slug: "gemini-3-8-flash"
+name: "Gemini 3.8 Flash"
+category: "ai-coding"
+description: "Is Gemini 3.8 Flash good for coding agents? Google's September 2026 review: DeepSWE v1.1 73.7% near Opus 5 at $0.75/$3.75 per M tokens; price doubles January 2027."
+lastUpdated: "2026-09-03T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Google", "LLM"]
+url: "https://aistudio.google.com"
+pricing: "Paid"
+pros: ["DeepSWE v1.1 at 73.7% sits 0.3 points behind Claude Opus 5 (74.0%) and ahead of GPT-5.6 Sol (72.7%) — Google's figure, with independent Datacurve measuring 74% ±1 at high effort, making this the cheapest model at frontier software-engineering level", "Terminal-Bench 2.1 at 89.4% edges past Opus 5's 89.1%, and it leads on domain agents too: Vals Finance Agent v2 at 61.4% vs Opus 5's 58.6% and Harvey legal at 10.0% vs 6.7%", "List price holds at $0.75/$3.75 per million tokens — the same as 3.7 Flash and under a tenth of Claude Fable 5.1 — and one DeepSWE task averaged $2.36 versus Opus 5's $11.84", "Fastest model Artificial Analysis has measured: ~304 output tokens per second across 195 models, with a 1M-token context window", "Deliberate cost-control design: three adjustable thinking-intensity levels let you trade reasoning depth for spend, and Google's own advice for budget teams is to drop effort or stay on 3.7 Flash"]
+cons: ["The headline price hides real cost growth: 3.8 Flash 'works harder' than 3.7 — ~30% more output tokens and more interaction rounds — so per-task costs run ~40% higher despite identical list prices", "The $0.75/$3.75 price is an intro rate that doubles to $1.50/$7.50 on January 1, 2027 — a scheduled 2x price increase most reviews miss", "Trails frontier models on harder general benchmarks: Terminal-Bench 4.0 at 19.1% vs Opus 5's 51.8%, GDPval-AA v2 knowledge work at 1545 Elo vs 1824, OSWorld 2.0 at 59.0% vs 75.4%", "Closes benchmark gaps through brute-force iteration rather than efficiency: ~166 steps and ~143K output tokens per DeepSWE task versus Opus 5's 99 steps and ~118K", "Monthly release cadence (3.6 → 3.7 → 3.8 in six weeks) means this review's numbers may be superseded within weeks, and hands-on tests still find 'runnable but wrong' outputs in some code-gen scenarios"]
+bestFor: ["Developer teams that want frontier-adjacent software-engineering results (DeepSWE, Terminal-Bench 2.1) at a fraction of flagship API prices", "High-volume coding-agent workloads where cost per task is the deciding metric — the cheapest model at its intelligence level per Artificial Analysis", "Teams already on 3.7 Flash that need more autonomous capability and can absorb ~40% higher per-task token consumption", "Speed-sensitive workflows — ~304 tokens/second is the fastest output measured across 195 models in Artificial Analysis' index"]
+---
+
+![Gemini 3.8 Flash official logo for AI coding model review](/logos/gemini-3-8-flash.svg)
+
+Is Gemini 3.8 Flash good for coding agents? Google released 3.8 Flash on September 2, 2026, three weeks after 3.7 Flash and the third Flash update in six weeks. The model is an iteration on 3.7, not a new base model, and its benchmark story is the most aggressive workhorse positioning Google has shipped: DeepSWE v1.1 at 73.7%, within 0.3 points of Claude Opus 5, at a list price of $0.75/$3.75 per million tokens. Two caveats complicate the picture. First, 3.8 Flash burns more tokens than 3.7 to reach those scores, so real per-task costs run about 40% higher despite identical prices. Second, the intro price doubles on January 1, 2027. This review covers what the model does, what it really costs, and where it still trails the frontier.
+
+## Key Features
+
+- **Iteration on 3.7 Flash, not a new base model**: Google built 3.8 Flash directly on the 3.7 Flash line with a ~1M-token context window and 65,536-token max output. It is available through the Gemini API, Google AI Studio, Android Studio, and Antigravity. A specialized [Gemini 3.8 Flash Cyber](https://security.googleblog.com) variant ships separately through the Fairwind Program for trusted defenders, with 650+ partner organizations already enrolled.
+- **Software-engineering capability near the frontier**: DeepSWE v1.1 at 73.7% (Google-reported; independent Datacurve measured 74% ±1 at high effort) versus 3.7 Flash's 65.3% and Opus 5's 74.0%. Terminal-Bench 2.1 at 89.4% edges Opus 5's 89.1%. On domain-specific agents it leads too: Vals Finance Agent v2 at 61.4% and Harvey legal-agent tests at 10.0% versus Opus 5's 58.6% and 6.7%.
+- **Three thinking-intensity levels**: low, medium, and high reasoning effort are selectable per request, and the model's agent loops make iterative tool calls until the task resolves. Google's guidance is explicit: budget-conscious teams should drop the effort level or stay on 3.7 Flash rather than pay for capability they will not use.
+- **Measured speed leader**: Artificial Analysis clocked ~304 output tokens per second, the fastest of 195 models in its index. For interactive agent loops and long refactors, latency matters as much as benchmark points.
+- **Honest weak spots on harder general benchmarks**: Terminal-Bench 4.0 at 19.1% versus Opus 5's 51.8%, GDPval-AA v2 knowledge work at 1545 Elo versus 1824, and OSWorld 2.0 computer operation at 59.0% versus 75.4%. The AI index reads 59 at high effort against Opus 5's 63 at max: close on coding, a real gap on general agentic reasoning.
+
+## Our Take
+
+Gemini 3.8 Flash is the strongest argument yet that the coding-model race now has two tiers: frontier flagships and workhorses that have nearly closed the gap on software engineering specifically. The DeepSWE and Terminal-Bench 2.1 numbers (within a point of Opus 5) were flagship territory three months ago. Getting them at $0.75/$3.75 list, with ~304 tokens/second throughput, changes what a default coding model looks like for most teams.
+
+The caveats are real, and they are about cost structure, not capability. 3.8 Flash reaches those scores by working harder: roughly 166 steps and 143K output tokens per DeepSWE task versus Opus 5's 99 steps and 118K. More output tokens at a lower rate still means per-task bills run about 40% higher than 3.7 Flash, and the intro price doubles on January 1, 2027. Google's own advice (drop the effort level, or stay on 3.7 if you only need cheaper iteration) is the most honest thing in the release notes. Meanwhile the cadence itself is a strategic question: three Flash releases in six weeks means benchmarks age faster than evaluation cycles.
+
+The verdict: if you run coding agents at volume and want Opus-5-adjacent software engineering at workhorse prices, Gemini 3.8 Flash is currently the best per-dollar option measured, the cheapest at its intelligence level per [Artificial Analysis](https://artificialanalysis.ai). If you need the hardest general agentic reasoning, or one model that does everything, [Claude Fable 5.1](/reviews/claude-fable-5-1) still earns its premium. Our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) lays out that decision, and the [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the wider field.
+
+## What Gemini 3.8 Flash Does in Practice
+
+Google shipped Gemini 3.8 Flash on September 2, 2026, three weeks after 3.7 Flash (August 13) and six weeks after 3.6 Flash (July 21). The release pattern is deliberate: Google is treating Flash as a continuously improving workhorse line rather than a yearly flagship, iterating roughly monthly. 3.8 Flash keeps the same API surface and context window as 3.7, so existing integrations move over by swapping the model name.
+
+In practice the model behaves differently from its predecessor. It reasons longer before acting (more hidden-reasoning steps and more iterative tool calls), which is how it converts 3.7-level capability into 3.8-level results. Independent testing ([Datacurve](https://datacurve.com), [Artificial Analysis](https://artificialanalysis.ai)) confirms the direction of Google's claims: Datacurve measured DeepSWE at 74% ±1 at high effort, and Artificial Analysis named it the cheapest model at its measured intelligence level at ~$0.58 per standardized task, while ranking its output speed first among 195 models.
+
+The speed matters in real agent work. At ~304 tokens/second, long refactors stream back fast enough to keep a human-in-the-loop workflow feeling interactive, and agent loops that would stall on slower models keep moving. The 1M context window handles repository-scale inputs in one prompt, mirroring the other frontier models.
+
+The weaknesses show up in hands-on testing. One independent test had the model generate runnable 3D code in minutes, but the results were "runnable but wrong": crude helicopter mechanics, leaking terrain in water simulations. High benchmark scores do not yet equal reliable real-world output on every task, and the verbose loop mechanism can become a cost trap on ambiguous tasks that never converge. Google's developer guidance addresses exactly this: if cost control is the priority, lower the thinking intensity or keep 3.7 Flash.
+
+## Pricing Breakdown
+
+| Item | Cost | Notes |
+|------|------|-------|
+| **Input (intro)** | $0.75 / million tokens | Valid until December 31, 2026 |
+| **Output (intro)** | $3.75 / million tokens | Valid until December 31, 2026 |
+| **Input (from Jan 1, 2027)** | $1.50 / million tokens | Scheduled 2x increase |
+| **Output (from Jan 1, 2027)** | $7.50 / million tokens | Scheduled 2x increase |
+| **Typical per-task cost** | ~40% higher than 3.7 Flash | ~30% more output tokens + more interaction rounds |
+| **DeepSWE task average** | $2.36 vs Opus 5's $11.84 | Artificial Analysis measurement |
+
+The list price is identical to 3.7 Flash ($0.75 input and $3.75 output per million tokens), and that is the number most coverage quotes. The two asterisks matter more. First, this is an intro rate that doubles on January 1, 2027; teams building long-term cost models should budget $1.50/$7.50 from next year. Second, 3.8 Flash consumes more tokens per task than 3.7 because it reasons longer and loops more: Artificial Analysis measured ~30% more output tokens and more interaction rounds, landing real task costs about 40% higher than 3.7 despite identical rates.
+
+Even with both asterisks, the model remains dramatically cheaper than the frontier flagships: one DeepSWE task averaged $2.36 versus Opus 5's $11.84 and Fable 5.1's higher still, and Artificial Analysis calls it the cheapest model at its measured intelligence level. For volume agent workloads the calculus holds; for light interactive use, 3.7 Flash or a lower effort setting is the cheaper default.
+
+## Who Should Use Gemini 3.8 Flash
+
+- **Strong fit if you:**
+  - Run high-volume coding agents where cost per task decides which model wins
+  - Want DeepSWE- and Terminal-Bench-class software engineering without flagship API prices
+  - Need speed; ~304 tokens/second makes long agent loops feel interactive
+  - Already run 3.7 Flash and need more autonomous capability, with budget headroom for ~40% higher token consumption
+
+- **Not the best if you:**
+  - Need the hardest general agentic reasoning: Terminal-Bench 4.0, GDPval, and OSWorld gaps versus the frontier are real
+  - Build cost models on today's list price without accounting for the January 1, 2027 doubling
+  - Prefer fewer tokens over more capability; 3.7 Flash remains the cheaper per-task option
+  - Run multi-day autonomous work that demands frontier self-verification: [Claude Fable 5.1](/reviews/claude-fable-5-1) is built for that
+
+## How Gemini 3.8 Flash Compares
+
+Against its own predecessor, 3.8 Flash is a capability jump with a cost consequence: DeepSWE v1.1 up 8.4 points (65.3 → 73.7), Terminal-Bench 2.1 up from 85.8 to 89.4, HLE-Verified up to 54.9, at ~40% higher per-task spend and a future 2x rate increase. Our [how-to guide for Gemini 3.7 Flash](/blog/how-to-use-gemini-3-7-flash-for-coding-agents) covers the setup that still applies to 3.8, and the older [Gemini 3.7 Flash vs Claude for coding](/blog/gemini-3-7-flash-vs-claude-for-coding) piece remains valid for teams staying on 3.7.
+
+Against [Claude Opus 5](/reviews/claude), 3.8 Flash matches or edges it on software engineering specifically (DeepSWE 73.7 vs 74.0, Terminal-Bench 2.1 89.4 vs 89.1) at roughly a tenth of Opus's $5/$25 price. On general agentic benchmarks Opus still leads clearly, which is what "software-engineering workhorse" means in practice.
+
+Against [Claude Fable 5.1](/reviews/claude-fable-5-1), the comparison is capability versus price at an extreme. Fable 5.1 posts stronger general agent results (SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8, AutomationBench 31.4) and is built for long-horizon autonomy, but costs $10/$50, 13x the output rate. Both claim vendor-reported numbers on different benchmark suites, so treat cross-vendor comparisons as directional. Our dedicated [Gemini 3.8 Flash vs Claude Fable 5.1](/compare/gemini-3-8-flash-vs-claude-fable-5-1) comparison works through the trade-offs in detail.
+
+## FAQ
+
+**Is Gemini 3.8 Flash good for coding agents?**
+Yes, for software-engineering work specifically. DeepSWE v1.1 at 73.7% sits 0.3 points behind Claude Opus 5, and Terminal-Bench 2.1 at 89.4% edges it, at a list price under a tenth of the frontier flagships. It trails on harder general agent benchmarks like Terminal-Bench 4.0 and OSWorld.
+
+**How much does Gemini 3.8 Flash cost?**
+$0.75 per million input tokens and $3.75 per million output, identical to 3.7 Flash, but this intro rate doubles to $1.50/$7.50 on January 1, 2027. Because 3.8 Flash uses ~30% more output tokens per task, real per-task costs run ~40% higher than 3.7 despite the same list price.
+
+**Gemini 3.8 Flash vs 3.7 Flash, which should I use?**
+3.8 Flash for autonomous capability: DeepSWE jumped 8.4 points to 73.7% and domain-agent scores lead the frontier. 3.7 Flash for cost control: ~40% cheaper per task, same list price, and Google's own recommendation for budget teams.
+
+**Does Gemini 3.8 Flash work with Claude Code or Cursor?**
+Not directly; it is a Google model served through the Gemini API, Google AI Studio, Android Studio, and Antigravity. Teams mixing ecosystems typically route Gemini through a proxy or use multi-provider agent frameworks.
+
+**Is Gemini 3.8 Flash free?**
+There is a free tier in Google AI Studio with rate limits; production API access is paid at the rates above. The Cyber variant is restricted to trusted defenders through the Fairwind Program.
+
+[Visit Gemini 3.8 Flash](https://aistudio.google.com)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

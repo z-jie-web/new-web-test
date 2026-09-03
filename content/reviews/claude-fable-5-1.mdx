@@ -1,0 +1,100 @@
+---
+slug: "claude-fable-5-1"
+name: "Claude Fable 5.1"
+category: "ai-coding"
+description: "Is Claude Fable 5.1 good for coding agents? Anthropic's September 2026 flagship review: 1M context, 128K output, SWE-bench Pro 81.2, cache reads cut 75% to $0.25/M."
+lastUpdated: "2026-09-03T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Anthropic", "LLM"]
+url: "https://claude.ai"
+pricing: "Paid"
+pros: ["Long-horizon agent gains are the real story: Terminal-Bench-Science more than doubled to 52.6% (from 24.7% on Fable 5), AutomationBench nearly doubled to 31.4%, and Browserbase jumped from 57% to 82% — the gains are in tool-using, multi-step work, not just raw IQ", "SWE-bench Pro at 81.2 leads Claude Opus 5 (79.2) and GPT-5.6 Sol (64.6), with SWE-bench Verified at 95.0% and FrontierCode at 63.6% — the strongest generally available coding numbers Anthropic has shipped", "Cache reads cut 75% to $0.25 per million tokens (2.5% of input price), which Anthropic estimates drops typical workload costs ~25% and highly agentic workloads up to 45%", "1M-token context with 128K max output and always-on adaptive thinking — documented runs include a 38-hour autonomous ML session that diagnosed a label artifact and launched six parallel experiments", "Safety safeguards improved dramatically: ~60% fewer cyber false positives and ~85% fewer biology false positives than Fable 5, plus Enterprise Frontier Safeguards that run misuse detection on your own cloud"]
+cons: ["$10/$50 per million tokens is unchanged and steep, and Fable 5.1 emits ~1.7x more output tokens than Fable 5 — so per-task costs can end up rising (~$3.76 vs $3.14 on one Artificial Analysis task) despite cheaper caching", "Three breaking integration changes vs Fable 5: forced tool use now returns HTTP 400, thinking blocks are model-bound one-way, and editing conversation history invalidates reasoning — existing agent code needs updates", "30-day mandatory data retention as a Covered Model — there is no zero-data-retention option, which is a blocker for some privacy-sensitive deployments", "All headline benchmarks are Anthropic self-reported with production safeguards on; independent verification is still in its first weeks", "Safety wrapper still routes guarded domains (exploit generation, binary vulnerability scanning) back to Opus, and the Fable 5 launch was temporarily pulled offline by an export directive in June 2026 — regulatory risk is real"]
+bestFor: ["Engineering teams running long-horizon coding agents — multi-hour or multi-day autonomous work where self-verification and tool reliability decide outcomes", "Teams that want the strongest generally available coding benchmarks (SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8) regardless of price", "Agent workloads with heavy context reuse — the $0.25/M cache-read price is the cheapest reasoning-grade cache in the frontier tier", "Enterprises that need data-residency controls and auditability: Enterprise Frontier Safeguards run on your own infrastructure, with output watermarking for EU AI Act compliance"]
+---
+
+![Claude Fable 5.1 official logo for AI coding model review](/logos/claude-fable-5-1.svg)
+
+Is Claude Fable 5.1 good for coding agents? Anthropic released Fable 5.1 on September 1, 2026 as the successor to Fable 5, and the benchmark story is unusual: the gains are not in IQ tests but in long-horizon, tool-using work. Terminal-Bench-Science more than doubled from 24.7% to 52.6%. AutomationBench nearly doubled from 17.1% to 31.4%. Browserbase jumped from 57% to 82%. The model keeps the $10/$50 per-million-token price but cuts cache reads by 75% to $0.25, which makes agent loops (the workloads that replay the same context constantly) dramatically cheaper. This review covers what Fable 5.1 does, what it costs in practice, and the integration changes that will break existing code.
+
+## Key Features
+
+- **Same weights as Mythos 5.1, different safety wrapper**: Fable 5.1 and the restricted Claude Mythos 5.1 share the same underlying model. Fable 5.1 ships with production safeguards that route guarded domains (cybersecurity exploits, binary vulnerability scanning, distillation) back to Opus; Mythos answers directly. Anthropic reports they land within 1-3 points on most benchmarks, with Mythos pulling ahead on the guarded categories (Terminal-Bench 4.0: Mythos 60.9% vs Fable 55.8%).
+- **Long-horizon agent capability**: the model runs complex tasks for hours while self-verifying results. Anthropic's documented case studies include tracing a crash bug in a vendor library that had stumped engineers for years, a 38-hour autonomous ML run that diagnosed a label artifact and launched six parallel experiments, and one-prompt agentic work spanning design, 3D rendering, and video. The per-message effort beta (`mid-conversation-output-config-2026-07-01`) lets you switch effort mid-conversation without invalidating the prompt cache.
+- **1M context, 128K output, thinking always on**: Fable 5.1 carries a 1,048,576-token context window and 128K maximum output tokens, with text and image input. Adaptive thinking cannot be disabled; effort defaults to high in Claude Code and medium in Claude.ai. The knowledge cutoff is June 2026, five months newer than Fable 5's January cutoff.
+- **Benchmark leaderboard position**: SWE-bench Pro 81.2 (Opus 5: 79.2, GPT-5.6 Sol: 64.6), SWE-bench Verified 95.0%, Terminal-Bench 4.0 55.8% (Opus 5: 52.3%, GPT-5.6 Sol: 37.3%), CursorBench 3.2.0 73.4%, AutomationBench 31.4% (GPT-5.6 Sol: 19.6%). Numbers are Anthropic self-reported with production safeguards on, from the [Fable 5.1 system card](https://platform.claude.com).
+- **Cheaper agent economics**: cache reads dropped from $1.00 to $0.25 per million tokens (2.5% of the $10 input price, versus 10% for other Claude models). Cache writes bill at $12.50/M for 5-minute and $20/M for 1-hour windows, and batch mode halves prices to $5/$25.
+
+## Our Take
+
+Claude Fable 5.1 is the strongest coding-agent model Anthropic has shipped, and the first one where the marketing and the benchmark pattern agree on what the model is for. Anthropic did not make Fable 5.1 smarter in the abstract; they made it better at staying on task for hours, using tools without derailing, and knowing when a result is truly done. That is exactly the axis that matters for coding agents, and it shows in the numbers: Terminal-Bench-Science doubling, AutomationBench nearly doubling, Browserbase up 25 points. If you run agents that touch real systems, this is the model to beat.
+
+The honest caveats are about cost and integration, not capability. Fable 5.1 produces roughly 1.7x more output tokens than Fable 5, which means per-task bills can go up even while the cache discount is generous; one [Artificial Analysis](https://artificialanalysis.ai) max-effort task cost $3.76 versus $3.14 on Fable 5. The cache-read cut only pays off for workloads with genuinely reusable context. Second, the 5.1 release carries three breaking API changes (forced tool use now returns a 400, thinking blocks are model-bound, history edits invalidate reasoning), so existing agent code will need attention. Third, all benchmarks are Anthropic-reported; the community verification cycle for 5.1 is only beginning, and [llm-stats' launch analysis](https://llm-stats.com/blog/research/claude-fable-5-1-launch) is a good starting point for independent takes.
+
+The verdict: if your team runs serious coding agents (multi-hour refactors, repository-scale tasks, autonomous debugging), Claude Fable 5.1 is currently the strongest generally available option, and the $0.25 cache-read price fixes the main cost objection to running it at scale. If you only want autocomplete or occasional pair coding, the premium over [Opus 5](/reviews/claude) or [Gemini 3.8 Flash](/reviews/gemini-3-8-flash) is hard to justify. For the full category picture, our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the alternatives.
+
+## What Claude Fable 5.1 Does in Practice
+
+Anthropic released Claude Fable 5.1 on September 1, 2026, three months after the Fable 5 / Mythos 5 launch of June 9. The 5.1 update is a checkpoint upgrade of the same model family: identical $10/$50 pricing, identical 1M context, and the same always-on adaptive thinking, with the gains concentrated where Fable 5 was already strongest.
+
+The practical picture since launch: multi-file refactoring loops that run without hand-holding, a case study of the model disassembling a vendor library to trace a crash that had resisted engineers for years, and the 38-hour autonomous ML run where the model diagnosed a label artifact, launched six parallel experiments, and reported its own findings. Anthropic's Alex Albert demoed a single-prompt workflow that went from a photo of an empty lot to a full house design, 3D render, and cinematic walkthrough video via headless Blender.
+
+For Claude Code users, Fable 5.1 slots in as the default model with effort set to high. The per-message effort beta means you can drop a long refactor to medium effort mid-run without flushing the prompt cache, then raise it back for the review pass. For API teams, the model ID is `claude-fable-5-1`, available on the Anthropic API, Amazon Bedrock (`anthropic.claude-fable-5-1`), Google Cloud, and Microsoft Foundry.
+
+Three breaking changes matter if you are upgrading integrations from Fable 5. First, forced tool use (`tool_choice: {"type": "any"}` or named tools) now returns HTTP 400 because thinking is always on; the replacements are `tool_choice: auto` with `strict: true`, structured outputs, or naming the tool in the prompt. Second, thinking blocks are model-bound one-way: Fable 5.1 reads older models' blocks but older models cannot read 5.1's, so fallback routes silently drop them unless you set the `thinking-binding-controls-2026-08-01` beta header. Third, editing conversation history invalidates thinking blocks: append-only histories, server-side compaction, and `cache_control` moves are safe, while rebuilding system prompts or reordering turns are not. Accounts created on or after August 31, 2026 get hard 400s on violations; older accounts must opt in.
+
+## Pricing Breakdown
+
+| Item | Cost | Notes |
+|------|------|-------|
+| **Input** | $10 / million tokens | Unchanged from Fable 5 |
+| **Output** | $50 / million tokens | Unchanged from Fable 5 |
+| **Cache read** | $0.25 / million tokens | Cut 75% from $1.00; 2.5% of input price |
+| **Cache write** | $12.50 (5-min) / $20 (1-hour) / million tokens | 1-hour window new for agent loops |
+| **Batch mode** | $5 in / $25 out | Half price, standard batch latency |
+
+The headline is the cache-read cut. At $0.25 per million tokens, Fable 5.1's cache is the cheapest reasoning-grade cache in the frontier tier, cheaper than Opus's effective rate at its own price level. Anthropic estimates typical workloads land ~25% cheaper than Fable 5, and highly agentic workloads (agents re-reading large cached prefixes on every loop iteration) up to 45% cheaper.
+
+The counterintuitive part: Fable 5.1 emits more output tokens per task than Fable 5, so subscription-credit and per-task costs can rise even as caching gets cheaper. On one Artificial Analysis max-effort comparison, the 5.1 run cost $3.76 against Fable 5's $3.14. Treat "75% cheaper cache" as "cheaper context reuse," not "75% cheaper bills."
+
+## Who Should Use Claude Fable 5.1
+
+- **Strong fit if you:**
+  - Run long-horizon coding agents where the model works for hours without supervision
+  - Need the strongest generally available coding benchmarks: SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8%
+  - Have agent workloads with heavy context reuse, where $0.25/M cache reads change the economics
+  - Need enterprise controls: EFS misuse detection on your own infrastructure, output watermarking for EU AI Act compliance
+
+- **Not the best if you:**
+  - Just want autocomplete or short pair-coding sessions: [Gemini 3.8 Flash](/reviews/gemini-3-8-flash) or [Claude Code](/reviews/claude-code) on a cheaper model covers it
+  - Require zero data retention, since Fable 5.1 is a Covered Model with a mandatory 30-day retention window
+  - Have a tight per-task token budget, because the ~1.7x output-token multiplier can raise bills despite cheaper cache
+  - Run unguarded security work: exploit generation and binary vulnerability scanning route back to Opus by design
+
+## How Fable 5.1 Compares to the Rest of the Family
+
+[Claude Opus 5](/reviews/claude) is Anthropic's reasoning-price leader at $5/$25 per million tokens with a 1M context, released in July 2026. Fable 5.1 beats it on the agentic benchmarks from the same system card (SWE-bench Pro 81.2 vs 79.2, Terminal-Bench 4.0 55.8 vs 52.3, AutomationBench 31.4 vs 26.9, Browserbase 82% vs 74%) at twice the price. For interactive coding, Opus 5 remains the value pick; for autonomous agent runs, Fable 5.1 earns the premium. [Claude Mythos 5.1](https://claude.ai) is the same model without the guarded-domain fallback, restricted to vetted US organizations; if you qualify, expect the ~5-point Terminal-Bench gap to show up in your own workloads.
+
+Against OpenAI's [GPT-5.6 family](https://openai.com), the same system card shows Fable 5.1 ahead on SWE-bench Pro (81.2 vs 64.6), Terminal-Bench 4.0 (55.8 vs 37.3), and AutomationBench (31.4 vs 19.6). Against Google's [Gemini 3.8 Flash](/reviews/gemini-3-8-flash), the trade-off is capability versus price at an extreme: 3.8 Flash costs $0.75/$3.75 (under a tenth of Fable 5.1) while delivering DeepSWE-class results that Google reports within a few points of the frontier. Our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) breaks down that decision in detail. One caveat on all cross-vendor numbers: benchmarks are vendor-reported on different suites and versions, so treat them as directional until independent runs appear.
+
+## FAQ
+
+**Is Claude Fable 5.1 good for coding agents?**
+Yes; it is currently the strongest generally available coding-agent model Anthropic has shipped. SWE-bench Pro 81.2 leads Opus 5 and GPT-5.6 Sol, and the biggest gains are in long-horizon tool-using work (Terminal-Bench-Science more than doubled over Fable 5). All numbers are Anthropic self-reported, and the premium over cheaper models only pays off for serious agent workloads.
+
+**How much does Claude Fable 5.1 cost?**
+$10 per million input tokens and $50 per million output tokens, unchanged from Fable 5. Cache reads dropped 75% to $0.25 per million tokens, which makes agent loops with heavy context reuse up to ~45% cheaper. Batch mode halves prices to $5/$25.
+
+**What is the difference between Claude Fable 5.1 and Mythos 5.1?**
+Nothing in the weights; they are the same model with different safety wrappers. Fable 5.1 is the generally available version with production safeguards that fall back to Opus on guarded domains; Mythos 5.1 answers directly but is restricted to vetted US-based cybersecurity and life-sciences organizations.
+
+**Claude Fable 5.1 vs Claude Opus 5, which should I use for coding?**
+For autonomous, long-running agent work, Fable 5.1 (SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8). For interactive coding and cost control, Opus 5 at $5/$25 (half Fable's price) trails by a few points on the same system-card benchmarks.
+
+**Does Claude Fable 5.1 work with Claude Code?**
+Yes; it is the default class of model for agentic work, with effort defaulting to high. Be aware of the breaking changes if you upgrade integrations: forced tool use now returns HTTP 400 (use `tool_choice: auto` with `strict: true`), thinking blocks are model-bound one-way, and editing conversation history invalidates reasoning.
+
+[Visit Claude Fable 5.1](https://claude.ai)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

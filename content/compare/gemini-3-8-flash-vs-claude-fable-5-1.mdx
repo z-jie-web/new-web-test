@@ -1,0 +1,98 @@
+---
+toolA: "gemini-3-8-flash"
+toolB: "claude-fable-5-1"
+verdict: "Claude Fable 5.1 wins agent autonomy and general agentic benchmarks (SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8, long-horizon reliability). Gemini 3.8 Flash wins software-engineering-per-dollar (DeepSWE v1.1 73.7% at a list price under a tenth) and throughput. Most teams with high-volume coding-agent workloads should start with Gemini 3.8 Flash; teams running long, autonomous, hard-to-verify agent work should pay for Fable 5.1."
+winner: "depends"
+lastUpdated: "2026-09-03T12:00:00Z"
+---
+
+![Gemini 3.8 Flash vs Claude Fable 5.1, AI coding model comparison for developers](/logos/gemini-3-8-flash-vs-claude-fable-5-1.svg)
+
+[Gemini 3.8 Flash](https://aistudio.google.com) and [Claude Fable 5.1](https://claude.ai) landed within 24 hours of each other in the first days of September 2026, and they define the two poles of the coding-model market. Google's 3.8 Flash is the workhorse: DeepSWE v1.1 at 73.7%, within 0.3 points of Claude Opus 5, at a list price of $0.75/$3.75 per million tokens. Anthropic's Fable 5.1 is the flagship: SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8%, built for long-horizon autonomous agent work, at $10/$50. Both are vendor-reported on different benchmark suites, so the honest framing is not "which scores higher" but "which workload do you really run." This comparison works through capability, real cost, cadence, and ecosystem fit.
+
+## Capability: Software Engineering vs Agent Autonomy
+
+The two models lead different benchmark families, and that is the first signal about what they are for.
+
+Gemini 3.8 Flash's numbers concentrate on software engineering and domain agents: DeepSWE v1.1 at 73.7% (Google-reported, with independent [Datacurve](https://datacurve.com) measuring 74% ±1 at high effort) against Opus 5's 74.0%, Terminal-Bench 2.1 at 89.4% edging Opus 5's 89.1%, and leads on Vals Finance Agent v2 and Harvey legal-agent tests. On harder general agentic benchmarks it drops off sharply: Terminal-Bench 4.0 at 19.1% versus Opus 5's 51.8%.
+
+Claude Fable 5.1's gains are concentrated in long-horizon, tool-using work: SWE-bench Pro 81.2 (Opus 5: 79.2, GPT-5.6 Sol: 64.6), SWE-bench Verified 95.0%, Terminal-Bench 4.0 55.8%, AutomationBench 31.4%, Browserbase 82%. Anthropic's documented runs include a 38-hour autonomous ML session and a vendor-library crash that took the model to diagnose. One caveat visible in its own system card: Fable 5.1 trails on a frontier engineering benchmark (FrontierCode 63.6%) where over-thorough implementation cost points against a single-reference grader.
+
+**Winner: Gemini 3.8 Flash** for software-engineering depth per benchmark point. **Claude Fable 5.1** for general agent autonomy and long-horizon reliability.
+
+## Real Cost Per Task: The List Price Is Not the Story
+
+Fable 5.1 charges $10/$50 per million tokens; Gemini 3.8 Flash charges $0.75/$3.75, under a tenth of Fable's output rate. But both models complicate their own pricing.
+
+Fable 5.1 cut cache reads 75% to $0.25 per million tokens, which Anthropic estimates drops typical workloads ~25% and heavy agentic workloads up to 45%. The model also emits ~1.7x more output tokens per task than Fable 5, so per-task bills can still rise.
+
+Gemini 3.8 Flash holds 3.7 Flash's list price, but it works harder than its predecessor: ~30% more output tokens and more interaction rounds, landing real task costs ~40% higher than 3.7. And the $0.75/$3.75 rate is an intro price that doubles to $1.50/$7.50 on January 1, 2027.
+
+Measured per task, the gap stays enormous: [Artificial Analysis](https://artificialanalysis.ai) put a DeepSWE task at $2.36 on 3.8 Flash versus $11.84 on Opus 5, and Fable 5.1 sits above Opus 5's rate. For a team processing millions of tokens a day, the difference is six figures a year.
+
+**Winner: Gemini 3.8 Flash** on every price axis, with the January 2027 doubling noted. **Fable 5.1**'s $0.25 cache-read rate is the best reasoning-grade cache price if your workload replays context heavily.
+
+## Release Cadence: Monthly Iteration vs Quarterly Flagship
+
+Google shipped 3.6 Flash on July 21, 3.7 Flash on August 13, and 3.8 Flash on September 2: three workhorse releases in six weeks, each adding a few points of DeepSWE-class capability. Buying 3.8 Flash means accepting that a 3.9 may supersede these numbers within a month, and that the model line improves faster than evaluation cycles.
+
+Anthropic's cadence is slower but heavier: Fable 5 in June, Fable 5.1 in September, a checkpoint upgrade focused on agentic behavior and cost structure rather than a new capability tier. A 5.2-style update is plausible on a quarterly cycle, but the model you integrate today is more likely to stay the default for a quarter than a month.
+
+**Winner: Claude Fable 5.1** for integration stability. **Gemini 3.8 Flash** for riding the fastest-improving line per dollar.
+
+## Ecosystem: Native Claude Code vs Google's Agent Stack
+
+Fable 5.1 is the default-class model for [Claude Code](/reviews/claude-code): effort defaults to high, per-message effort switching is available as a beta, and the tool-using loop is the product's core design. The cost is integration friction: three breaking changes landed with 5.1 (forced tool use returns HTTP 400, thinking blocks are model-bound, history edits invalidate reasoning) that existing agent code must accommodate.
+
+Gemini 3.8 Flash serves through the Gemini API, Google AI Studio, Android Studio, and Antigravity, and does not drop into Claude Code directly; teams usually route through a proxy or a multi-provider framework. Google's advantage is scale and latency: ~304 output tokens per second, the fastest measured across 195 models, with three adjustable thinking-intensity levels for cost control. Google's own guidance for budget teams (drop the effort level or stay on 3.7 Flash) is worth quoting in any cost review.
+
+**Winner: Claude Fable 5.1** for teams already inside the Claude ecosystem. **Gemini 3.8 Flash** for latency-sensitive or Google-stack teams.
+
+## Pricing
+
+|  | [Gemini 3.8 Flash](/reviews/gemini-3-8-flash) | [Claude Fable 5.1](/reviews/claude-fable-5-1) |
+|--|----------|----------|
+| **API input** | $0.75/M (doubles Jan 1, 2027) | $10/M |
+| **API output** | $3.75/M (doubles Jan 1, 2027) | $50/M |
+| **Cache read** | ~$0.075/M (10% of input) | $0.25/M (cut 75% from $1.00) |
+| **Typical per-task cost** | ~40% higher than 3.7 Flash | ~25% lower than Fable 5 typical; up to 45% lower agentic |
+| **DeepSWE task (AA)** | ~$2.36 | Above Opus 5's $11.84 |
+| **Output speed** | ~304 tokens/sec (#1 of 195) | Not speed-rated |
+| **Context / output** | ~1M / 64K | 1M / 128K |
+
+The pricing gap is the largest in the frontier segment: 3.8 Flash's full-year output rate after the January doubling ($7.50/M) is still 15% of Fable 5.1's $50. Fable 5.1's answer is not price but capability: no workhorse model matches its long-horizon autonomy, and its cache-read rate undercuts every other reasoning model's cache economics for replay-heavy workloads. Full breakdowns live in our [Gemini 3.8 Flash review](/reviews/gemini-3-8-flash) and [Claude Fable 5.1 review](/reviews/claude-fable-5-1).
+
+## Who Should Choose Gemini 3.8 Flash
+
+- You run high-volume coding-agent workloads and cost per task decides which model wins
+- You want Opus-5-adjacent software engineering (DeepSWE, Terminal-Bench 2.1) at workhorse prices
+- You need speed and low latency in interactive agent loops
+- You are on Google's stack (AI Studio, Android Studio, Antigravity) or route through a multi-provider framework
+
+## Who Should Choose Claude Fable 5.1
+
+- You run long-horizon autonomous agent work: multi-hour or multi-day runs that must self-verify
+- You need the strongest general agentic benchmarks (SWE-bench Pro, Terminal-Bench 4.0, AutomationBench)
+- You live inside [Claude Code](/reviews/claude-code) and want the default-class model with per-message effort control
+- You have enterprise requirements: data-residency controls, watermarking, and Frontier Safeguards on your own infrastructure
+
+## FAQ
+
+**Which is better for coding agents, Gemini 3.8 Flash or Claude Fable 5.1?**
+It depends on workload. Gemini 3.8 Flash delivers frontier-adjacent software engineering at a fraction of the price and is the value pick for high-volume agent workloads. Claude Fable 5.1 is stronger on general agent autonomy, long-horizon reliability, and the hardest agentic benchmarks, worth the premium for teams running serious autonomous agents.
+
+**Is Gemini 3.8 Flash as capable as Claude Fable 5.1?**
+On software-engineering benchmarks, close: 3.8 Flash's DeepSWE v1.1 at 73.7% trails Opus 5 by 0.3 points, while Fable 5.1 leads SWE-bench Pro at 81.2 with SWE-bench Verified at 95.0%. On broader agentic benchmarks, no: Fable 5.1 leads clearly on Terminal-Bench 4.0 (55.8 vs 19.1) and the agent-autonomy measures it was built to win. Both sets are vendor-reported on different suites, so treat cross-vendor numbers as directional.
+
+**Which model is cheaper?**
+Gemini 3.8 Flash by an order of magnitude: $0.75/$3.75 versus $10/$50, with one DeepSWE task measured at ~$2.36 versus $11.84+ for the flagships. Note both models have cost asterisks: 3.8 Flash's price doubles January 1, 2027, and Fable 5.1's generous cache reads only pay off with heavy context reuse.
+
+**Do both models work with Claude Code?**
+No. Fable 5.1 is Anthropic's native default for Claude Code. Gemini 3.8 Flash is served through Google's own stack; teams typically need a proxy or multi-provider agent framework to mix it into Claude Code workflows.
+
+**Which model should I pick for a new agent project in September 2026?**
+Start with Gemini 3.8 Flash if you are budget-constrained or workload-volume-driven, and re-evaluate in January when its price doubles. Choose Claude Fable 5.1 if your agents run long, autonomously, and on tasks where a wrong silent result costs more than the token premium. For the wider field, see our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide.
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.
