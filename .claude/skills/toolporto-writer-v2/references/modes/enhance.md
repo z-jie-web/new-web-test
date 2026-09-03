@@ -50,6 +50,7 @@ not "do your best anyway."
 - `project-contract.md`
 - `content-deai-engine` rules for de-AI logic
 - `humanizer` skill for anti-AI editing
+- `geo-rules.md` for AI-engine citation optimization
 
 ### Logo Extension Fix (MUST run first)
 
@@ -130,6 +131,38 @@ After humanizer pass, use `content-deai-engine` as secondary validation. Store s
 Source: invoke the `humanizer` skill, then `content-deai-engine` for diagnostic patterns.
 
 **Humanizer pass must run before `validate-enhance.sh`.** If the validator flags AI pattern score ≥ 2.0, re-run humanizer on the flagged sections before attempting other fixes.
+
+### Execution discipline (em dash / 标点清理)
+
+历史事故: 对含 YAML frontmatter 与跨句插入语的文件跑全局正则替换 em dash,
+曾把多值行与句子错误配对导致文件损坏。
+
+规则:
+- **禁止**对整文件跑跨行/跨句正则替换(`perl -0pi`, 非贪婪配对等)
+- em dash 降量 = 逐处人工决策: 单 dash 补充语 → 逗号/冒号; 双 dash 插入语 → 括号
+- 先跑诊断拿到目标值, 再动手:
+  ```bash
+  python3 scripts/content/check-prose-metrics.py <target-file> <article-id>
+  ```
+- 每篇改完复跑诊断确认达标, 再进 validate-enhance
+
+## Fact Re-Review (独立事实复审)
+
+enhance 的 AI 清理与措辞修改可能引入事实漂移。validate-enhance 前,
+用 **fresh context 视角**执行一次事实复审(不沿用写作时的假设):
+
+1. 列出正文 top claims(前 5-8 个含数字/定价/基准的断言)
+2. 与素材来源逐条核对: 数字未变、口径未混、来源链接仍指向正确出处
+3. 重点核对改写后是否仍区分 "vendor-reported" 与独立验证
+4. 将结果写入 brief: `enhance.facts_verified: true` + 备注核查过的断言数
+
+同一批次多篇时, 可对每篇做该核对; 复查发现的冲突记入 `known_gaps`。
+
+## GEO Check (AI 引擎引用优化)
+
+按 `references/geo-rules.md` 对每篇执行 GEO 自检(开篇是否 answer-first、
+是否存在可独立摘引的结论句、关键数字是否带来源口径、FAQ 首句是否即答案)。
+自检结论写入 brief: `enhance.geo_check: pass`。
 
 ### Weighted scoring model
 

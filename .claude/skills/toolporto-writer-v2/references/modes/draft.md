@@ -217,6 +217,34 @@ Examples:
 
 So `draft` should focus on the MDX body that adds value beyond those surfaces.
 
+## Draft-Time Prose Constraints (Validator 前置, 避免 enhance 返工)
+
+以下阈值在 `validate-enhance.sh` 与 `article-check.sh` 中硬性执行。
+**写 draft 时就应满足**, 否则 enhance 阶段必须全篇返工:
+
+| 约束 | 阈值 | 违反后果 |
+|------|------|---------|
+| em dash(—)密度 | 正文 ≤1.0/100 词(≈ 每 100 词 1 个) | >1.0 fixable, >2.0 rewrite |
+| AI 词(actually/enhance/crucial 等 45 词表) | 正文 0 命中 | article-check 扣分 |
+| `description` 长度 | 110-165 字符 | article-check Check 8 扣分 |
+| review `name` | 纯工具名, 不含 "Review" | SEO title 双重拼写 |
+| blog title 中冒号后长度 | 建议 ≤70 字符 | — |
+
+写作时替代习惯(本站实际采用):
+
+- em dash 用逗号 / 冒号 / 括号 / 分句替代;双 dash 插入语用括号
+- AI 词表全文见 `scripts/content/validators/lib/ai-patterns.sh`, 常见雷区:
+  `actually, effectively, significantly, notably, crucial, enhance(d), showcase`
+
+**draft 完成后自查**(写文件后、跑 validate-draft 前, 必须执行):
+
+```bash
+python3 scripts/content/check-prose-metrics.py <target-file> <article-id>
+```
+
+该脚本按 validator 同口径输出 em dash 密度 / AI 词命中 / description 长度 /
+review name / 关键词密度。exit 0 再进 enhance, 否则先修。
+
 ## Minimum Draft Content Standards
 
 The draft validator should own these checks:

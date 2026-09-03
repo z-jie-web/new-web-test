@@ -27,7 +27,7 @@ mkdir -p "$STATE_DIR"
   bash "${SCRIPT_DIR}/check-duplicate.sh" "$TOPIC" 2>&1 || true
   echo ""
   echo "=== category-stats ==="
-  bash "${SCRIPT_DIR}/category-stats.sh" 2>&1
+  "${SCRIPT_DIR}/category-stats.sh" 2>&1
   echo ""
   echo "=== keyword strategy ==="
   echo "current_tier: long_tail_only (site age: ~42 days)"
