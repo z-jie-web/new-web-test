@@ -90,7 +90,7 @@ Step 3: 筛选：单次最多在 3-5 篇老文章中留反向链接（含编辑�
 # 验证：登录 GSC → URL Inspection → Test Live URL
 
 # Bing IndexNow（推荐，2024+ 生效）— 走代理
-curl -x http://127.0.0.1:${PROXY_PORT:-33210} -X POST "https://www.bing.com/indexnow" \
+curl -x http://127.0.0.1:${PROXY_PORT:-7890} -X POST "https://www.bing.com/indexnow" \
   -H "Content-Type: application/json" \
   -d '{
     "host": "toolporto.com",

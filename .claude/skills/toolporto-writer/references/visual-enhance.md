@@ -19,10 +19,10 @@ Every article must have visual elements — no pure text walls.
 # export https_proxy=http://127.0.0.1:${PROXY_PORT}
 
 # Download logo to public/logos/ (with proxy)
-curl -x http://127.0.0.1:${PROXY_PORT:-33210} -sL --max-time 10 -o public/logos/{slug}.png "https://{tool-website}/favicon.ico"
+curl -x http://127.0.0.1:${PROXY_PORT:-7890} -sL --max-time 10 -o public/logos/{slug}.png "https://{tool-website}/favicon.ico"
 
 # Or for SVG
-curl -x http://127.0.0.1:${PROXY_PORT:-33210} -sL --max-time 10 -o public/logos/{slug}.svg "https://{tool-website}/logo.svg"
+curl -x http://127.0.0.1:${PROXY_PORT:-7890} -sL --max-time 10 -o public/logos/{slug}.svg "https://{tool-website}/logo.svg"
 
 # Verify file exists and is valid
 file public/logos/{slug}.png
