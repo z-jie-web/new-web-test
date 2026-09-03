@@ -256,7 +256,7 @@ fi
 # -- SEO frontmatter convention checks ----------------------------
 if [ "$TYPE" = "review" ]; then
   review_name="$(frontmatter_value name "$TARGET_FILE")"
-  if echo "$review_name" | grep -qi "review"; then
+  if echo "$review_name" | grep -qiw "review"; then
     fail_fixable "review name field contains 'Review' — use plain tool name only (page template appends 'Review (2026) — Is It Worth It?')"
   else
     pass_item "review name field is plain tool name (no duplicate with template)"

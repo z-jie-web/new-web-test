@@ -97,8 +97,8 @@ def main():
         if len(desc) < 110 or len(desc) > 165:
             issues.append(f"description 长度 {len(desc)} 超出 110-165")
 
-    # 4) review name 检查
-    if typ == "review" and re.search(r"review", fm.get("name", ""), re.I):
+    # 4) review name 检查 (word boundary: "Preview" 含 "review" 子串但不算)
+    if typ == "review" and re.search(r"\breview\b", fm.get("name", ""), re.I):
         issues.append("review name 含 'Review', 页面模板会重复拼标题")
 
     # 5) 关键词密度 (advisory)
