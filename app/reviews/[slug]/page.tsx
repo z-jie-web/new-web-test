@@ -16,6 +16,8 @@ import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
 import { Disclosure } from '@/components/Disclosure';
+import { ShareButtons } from '@/components/ShareButtons';
+import { NewsletterSignup } from '@/components/NewsletterSignup';
 import { mdxComponents } from '@/components/MdxComponents';
 import { TldrBox, MobileStickyCta } from '@/components/TldrBox';
 import { TableOfContents } from '@/components/TableOfContents';
@@ -403,6 +405,8 @@ export default async function ReviewPage({
           </section>
         )}
 
+        <ShareButtons title={`${frontmatter.name} Review`} />
+        <NewsletterSignup compact />
         <CompareWith currentSlug={frontmatter.slug} currentName={frontmatter.name} />
         <Disclosure />
       </main>

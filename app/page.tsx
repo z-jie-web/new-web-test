@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAll, getCategories, type ReviewFrontmatter } from '@/lib/content';
+import { getAll, getCategories, type ReviewFrontmatter, type BlogFrontmatter } from '@/lib/content';
 import { getAllComparePairsWithContent } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE } from '@/lib/constants';
@@ -28,6 +28,25 @@ export default function HomePage() {
     return db.localeCompare(da);
   });
   const featuredTools = sortedByLatest.slice(0, 9);
+
+  const blogs = getAll<BlogFrontmatter>('blog');
+  const updates = [
+    ...allReviews.map((r) => ({
+      slug: r.frontmatter.slug,
+      kind: 'review' as const,
+      label: r.frontmatter.name,
+      date: r.frontmatter.lastUpdated ?? '',
+    })),
+    ...blogs.map((b) => ({
+      slug: b.frontmatter.slug,
+      kind: 'blog' as const,
+      label: b.frontmatter.title,
+      date: b.frontmatter.date ?? '',
+    })),
+  ]
+    .filter((u) => u.date)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 8);
 
   const sortByReviewDate = (pairs: ReturnType<typeof getAllComparePairsWithContent>) =>
     [...pairs].sort((a, b) => {
@@ -112,6 +131,55 @@ export default function HomePage() {
               );
             })}
           </div>
+        </section>
+
+        {/* Latest Updates */}
+        <section className="container mx-auto max-w-6xl px-4 py-16 border-t border-border/20">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <div>
+              <div className="text-xs font-bold tracking-widest text-primary mb-1">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse mr-1.5 align-middle" />
+                WHAT'S NEW
+              </div>
+              <h2 className="text-2xl font-bold">Latest Updates</h2>
+            </div>
+            <div className="flex gap-3 text-sm">
+              <Button variant="ghost" asChild>
+                <Link href="/reviews">
+                  New reviews <ArrowRight className="ml-1 h-3 w-3" />
+                </Link>
+              </Button>
+              <Button variant="ghost" asChild>
+                <Link href="/blog">
+                  Blog <ArrowRight className="ml-1 h-3 w-3" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+          <ul className="divide-y divide-border/60 border rounded-xl overflow-hidden bg-card/40">
+            {updates.map((u) => (
+              <li key={`${u.kind}-${u.slug}`}>
+                <Link
+                  href={u.kind === 'review' ? `/reviews/${u.slug}` : `/blog/${u.slug}`}
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-accent/50 transition-colors text-sm"
+                >
+                  <span
+                    className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wide uppercase ${
+                      u.kind === 'review'
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-amber-500/10 text-amber-600'
+                    }`}
+                  >
+                    {u.kind === 'review' ? 'Review' : 'Blog'}
+                  </span>
+                  <span className="flex-1 truncate font-medium">{u.label}</span>
+                  <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                    {u.date.slice(0, 10)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Featured Tools */}

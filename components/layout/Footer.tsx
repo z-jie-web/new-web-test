@@ -58,6 +58,12 @@ export function Footer() {
             >
               About
             </Link>
+            <Link
+              href="/feed.xml"
+              className="hover:text-foreground transition-colors"
+            >
+              RSS
+            </Link>
           </nav>
         </div>
       </div>

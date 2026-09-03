@@ -15,6 +15,8 @@ import { Footer } from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ReviewCard } from '@/components/ReviewCard';
 import { Disclosure } from '@/components/Disclosure';
+import { ShareButtons } from '@/components/ShareButtons';
+import { NewsletterSignup } from '@/components/NewsletterSignup';
 import { mdxComponents } from '@/components/MdxComponents';
 import { readingTime, fileMtime } from '@/lib/article-meta';
 import { TableOfContents } from '@/components/TableOfContents';
@@ -176,6 +178,9 @@ export default async function BlogPage({
             <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
         </article>
+
+        <ShareButtons title={frontmatter.title} />
+        <NewsletterSignup compact />
 
         {relatedReviews.length > 0 && (
           <>
