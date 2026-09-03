@@ -1,0 +1,100 @@
+---
+slug: "qwen3-8-flash-next"
+name: "Qwen3.8-Flash-Next"
+category: "ai-coding"
+description: "Is Qwen3.8-Flash-Next good for coding agents? Alibaba's Qwen4 preview review: 6B active params, DeepSWE 58.7, $0.16/M input."
+lastUpdated: "2026-09-03T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Alibaba", "LLM"]
+url: "https://qwen.ai"
+pricing: "Paid"
+pros: ["Ridiculous efficiency per token: 125B total parameters with only ~6B active (512-expert MoE, ~95% sparse), trained at roughly 1/9 the cost of Qwen3.7-Plus — the cheapest frontier-adjacent architecture Alibaba has shipped", "Self-reported coding results are a generational jump: DeepSWE v1.1 at 58.7 (Qwen3.7-Plus scored 16.5), SWE-bench Pro 62.5, multilingual SWE-bench at 81.0", "Within ~1 point of the 2.4T-parameter Qwen3.8-Max flagship on shared benchmarks (CoWorkBench, AndroidWorld, Agents' Last Exam), and ahead on JobBench and RealWorldQA", "API pricing undercuts the China tier: $0.16/M input (¥1), $0.47/M output (¥3) via the sibling Qwen3.8-Flash, with cache input at $0.016/M — roughly 1/12 of Qwen3.8-Max", "OpenAI- and Anthropic-compatible endpoints, so it plugs into Claude Code and Codex directly, and 262K native context extends to 1M via YaRN"]
+cons: ["Every headline benchmark is Alibaba self-reported with no third-party verification; the strongest numbers also lack the Artificial Analysis independent scoring that the Qwen3.8-Max flagship has", "'Next' is an architecture preview, not the production model: the API face is the sibling Qwen3.8-Flash, so what you benchmark against weights is not exactly what you pay for", "Agentic ceiling still trails: NL2Repo-Bench repository-level code generation and one-shot frontier-agent completion rates sit below DeepSeek-V4-Flash", "General reasoning lags flagship class: HLE at 35.9 trails Claude Opus 4.6's 40.0, and multimodal-video support is new enough that ecosystem tooling is thin", "License is qwen-community-1.0, not MIT or Apache — open weights with community license terms to review before commercial self-hosting"]
+bestFor: ["Cost-sensitive coding-agent builders who want a frontier-adjacent model behind Claude Code or Codex at ~1/12 flagship API prices", "Teams evaluating the Qwen4 architecture early: Flash-Next is the clearest preview of where Alibaba's efficiency work is heading", "High-volume office-agent workloads: CoWorkBench 73.9 beats Claude Opus 4.6's 68.2 and JobBench 55.7 leads even the Max flagship", "Developers who want an open-weight model with 262K-to-1M context at an extreme sparse-activation cost profile"]
+---
+
+![Qwen3.8-Flash-Next official logo for AI coding model review](/logos/qwen3-8-flash-next.svg)
+
+Is Qwen3.8-Flash-Next good for coding agents? Alibaba open-sourced Flash-Next on August 26, 2026 as the first public look at its Qwen4 architecture, and the model is best understood as a preview of where Qwen efficiency is going: 125B total parameters, roughly 6B active per token, trained at a fraction of the cost of its predecessors, with self-reported DeepSWE at 58.7 and API pricing at $0.16 per million input tokens. The production API face is the sibling Qwen3.8-Flash, which is what most teams will end up calling. This review covers the architecture story, the numbers, the pricing, and the caveats that come with a "Next" release.
+
+## Key Features
+
+- **Qwen4 architecture preview**: Flash-Next is to Qwen4 what Qwen3-Next was to Qwen3.5, a shippable early build of the next generation. Three new structures carry the design: Gated DeltaNet plus Qwen Sparse Attention for long-context memory and retrieval (7.6x/4.9x prefill/decode speedups claimed at 1M context), Gated Residual with four parallel gated branches, and a 51B N-gram embedding table stored in host memory instead of GPU VRAM. A ~4B multi-token prediction module sits on top.
+- **Extreme sparsity**: 125B total parameters, ~6B active per token across 512 experts (roughly 95% sparse). Training cost is about 1/9 of Qwen3.7-Plus. This is the architecture-level cost reduction Alibaba is betting on, distinct from the cloud-subsidy price wars of earlier 2026.
+- **Coding and agent benchmarks (self-reported)**: DeepSWE v1.1 at 58.7 (up from Qwen3.7-Plus's 16.5), SWE-bench Pro 62.5, multilingual SWE-bench 81.0, GPQA Diamond 91.7%, LiveCodeBench v6 91.9%. Repository-level NL2Repo-Bench trails DeepSeek-V4-Flash.
+- **Office-agent strength**: CoWorkBench 73.9 beats Claude Opus 4.6's 68.2; JobBench 55.7 leads even the 2.4T Qwen3.8-Max flagship. AndroidWorld 84.5 and RealWorldQA 88.5 round out the agentic picture, with the latter passing the Max flagship.
+- **Open weights, dual-compatible API**: weights on Hugging Face and ModelScope under the qwen-community-1.0 license (bf16 and FP8). The production API (as Qwen3.8-Flash on QwenCloud) supports OpenAI Chat Completions/Responses and Anthropic-compatible endpoints, so Claude Code and Codex integrations work by swapping the base URL.
+
+## Our Take
+
+Qwen3.8-Flash-Next is the strongest signal yet that the Chinese model race has moved from subsidy pricing to architecture pricing. Six billion active parameters producing DeepSWE 58.7-class results, within a point of a 2.4T flagship on shared benchmarks, is not a marketing claim you could have made twelve months ago. The Qwen4 structures (sparse attention plus gated residual plus host-resident embeddings) are the actual product here, and Flash-Next is a working demonstration at $0.16 per million input tokens.
+
+The caveats are structural to a "Next" release. First, all of the benchmarks are Alibaba self-reported; unlike the Max flagship, Flash-Next has no [Artificial Analysis](https://artificialanalysis.ai) independent scoring yet, and the strongest claims (JobBench beating Max, RealWorldQA leading the lineup) deserve third-party confirmation. Independent analyses such as [orcarouter's release breakdown](https://www.orcarouter.ai/blog/qwen3-8-flash-next-release) reach the same caution. Second, what you benchmark is not exactly what you pay for: the open weights are Flash-Next, but the API serves the sibling Qwen3.8-Flash, a separately tuned build. Third, the agentic ceiling is real: repository-level code generation and one-shot frontier-agent completion still trail DeepSeek-V4-Flash, and HLE at 35.9 sits below the flagship class.
+
+The verdict: if you run coding agents on a budget and want an Anthropic-compatible backend at roughly a twelfth of flagship prices, Qwen3.8-Flash (the API face of this architecture) is currently one of the two cheapest credible options in the China tier, alongside [GLM-5.3-Flash](/reviews/glm-5-3-flash). Treat Flash-Next itself as an architecture preview: read the paper, test the weights, and wait for independent runs before production. For the wider category, our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the field.
+
+## What Qwen3.8-Flash-Next Does in Practice
+
+Alibaba's Qwen team released Flash-Next late on August 26, 2026, in the same 48-hour window as Zhipu's GLM-5.3-Flash and Tencent's Hy4 preview, a wave [Chinese tech media framed](https://eu.36kr.com/zh/p/3956555141430402) as the flash-tier price war resetting around DeepSeek. The release included weights on Hugging Face and ModelScope, a technical report, and same-day multi-chip adaptation through the FlagOS community covering 10 domestic accelerator families at BF16/FP8/INT8.
+
+The efficiency story is the practical story. Six billion active parameters means smaller serving footprints and lower per-token costs than any flagship-class model, which is how QwenCloud prices the API face at $0.16 input and $0.47 output per million tokens (¥1/¥3), with cached input at $0.016. That is roughly 1/12 of Qwen3.8-Max pricing and about 33% below DeepSeek-V4-Flash's adjusted off-peak rate.
+
+In practice, teams connect it the same way they connect any Anthropic-compatible model: point Claude Code or Codex at the Qwen endpoint with the model name qwen3.8-flash, and agent loops run against a 262K-token context (extendable to 1M via YaRN) with text, image, and video input. The 51B N-gram embedding table lives in host memory, which keeps GPU VRAM free for longer contexts.
+
+The weak spots show up in hands-on and third-party context. Repository-level generation trails DeepSeek-V4-Flash on NL2Repo-Bench, one-shot completion rates on frontier agent tasks are lower than the DeepSeek sibling, and video-input support is new enough that ecosystem tooling is thin. For teams that mostly run text-and-image agent loops at volume, those gaps rarely bind; for teams pushing repository-scale autonomous work, the flagship class still leads.
+
+## Pricing Breakdown
+
+| Item | Cost | Notes |
+|------|------|-------|
+| **API input** | $0.16 / million tokens (¥1) | Qwen3.8-Flash production model |
+| **API output** | $0.47 / million tokens (¥3) | ~1/12 of Qwen3.8-Max |
+| **Cache input** | $0.016 / million tokens | 10% of input rate |
+| **vs DeepSeek-V4-Flash** | ~33% below its adjusted off-peak | Price-war positioning |
+| **Self-host** | Open weights (qwen-community-1.0), bf16/FP8 | ~6B active; N-gram table in host RAM |
+
+The pricing is the bottom of the China tier alongside GLM-5.3-Flash's promo rates (¥0.4/¥1.4 through September 9). Alibaba's 千问办公 (Qwen Office) launched the model first, matching the model-plus-agent-product pattern Tencent showed with CodeBuddy. For a heavy agent month at 20M input tokens with 60% cache hits, the Qwen bill lands in the single-digit dollars, which changes the economics of running many parallel agents.
+
+## Who Should Use Qwen3.8-Flash-Next
+
+- **Strong fit if you:**
+  - Run high-volume coding or office agents where per-token cost dominates
+  - Want an Anthropic/OpenAI-compatible backend for Claude Code or Codex without the flagship price
+  - Evaluate architectures early and want the clearest public preview of Qwen4
+  - Need multimodal input (text/image/video) at an efficiency-tier price
+
+- **Not the best if you:**
+  - Need independently verified benchmarks before production: everything here is Alibaba-reported
+  - Push repository-scale autonomous agents: NL2Repo and one-shot agent completion still trail DeepSeek-V4-Flash
+  - Want the strongest general reasoning in the Qwen family: Qwen3.8-Max leads on HLE-class benchmarks
+  - Prefer MIT/Apache licensing: qwen-community-1.0 has commercial terms to review
+
+## How It Fits the China Model Matrix
+
+Against [GLM-5.3-Flash](/reviews/glm-5-3-flash), the same-week rival, Qwen3.8-Flash-Next claims stronger DeepSWE (58.7 vs GLM-Flash's ~53-class per Zhipu's tiering) and office-agent benchmarks, while GLM-5.3-Flash counters with a higher Artificial Analysis index (57, tying Opus 4.8) and domestic-chip serving at scale. Both sit at the same price floor; the choice is architecture-efficiency versus verified-efficiency.
+
+Against [DeepSeek](/reviews/deepseek) V4 Pro and V4 Flash, Qwen3.8-Flash-Next is cheaper than both, ahead of V4 Flash on most self-reported benchmarks, but behind on repository-level code generation and one-shot agent completion. DeepSeek retains the off-peak pricing structure and the Harness agent framework.
+
+Against the flagship [GLM-5.3](/reviews/glm-5-3) and [Kimi K3](/reviews/kimi-k3) reviews, Qwen sits in the new efficiency tier: those models chase coding depth, Qwen3.8-Flash chases cost per capability point. The matrix now covers all four Chinese labs: Zhipu, Moonshot, DeepSeek, Alibaba, plus [Tencent's Hy4 preview](/reviews/hy4-preview) in this batch.
+
+## FAQ
+
+**Is Qwen3.8-Flash-Next good for coding agents?**
+On Alibaba's self-reported numbers, yes for cost-sensitive agent work: DeepSWE v1.1 at 58.7 and SWE-bench Pro 62.5 at $0.16/M input. Repository-level generation and one-shot frontier-agent completion still trail DeepSeek-V4-Flash, and nothing is independently verified yet.
+
+**How much does Qwen3.8-Flash cost?**
+$0.16 per million input tokens (¥1) and $0.47 per million output (¥3) for the production Qwen3.8-Flash, with cache input at $0.016. Roughly 1/12 of Qwen3.8-Max pricing and ~33% below DeepSeek-V4-Flash off-peak.
+
+**Is Qwen3.8-Flash-Next open source?**
+Weights are public on Hugging Face and ModelScope under the qwen-community-1.0 license in bf16 and FP8. Not MIT or Apache: review the license before commercial self-hosting.
+
+**What is the difference between Qwen3.8-Flash-Next and Qwen3.8-Flash?**
+Flash-Next is the open-weights architecture preview of Qwen4 (125B total, ~6B active). Qwen3.8-Flash is the production-tuned model served on QwenCloud, what API users end up calling. Benchmarks of the weights may not match API behavior exactly.
+
+**Does Qwen3.8-Flash work with Claude Code?**
+Yes: the QwenCloud API is Anthropic-compatible, so Claude Code and Codex connect by pointing at the Qwen endpoint. GLM-5.3-Flash, Hy4 preview, and the older [GLM-5.3](/reviews/glm-5-3) all do the same, which makes the China tier unusually easy to A/B test against your own agent workloads.
+
+[Visit Qwen3.8-Flash-Next](https://qwen.ai)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

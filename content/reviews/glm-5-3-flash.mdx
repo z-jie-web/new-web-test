@@ -1,0 +1,98 @@
+---
+slug: "glm-5-3-flash"
+name: "GLM-5.3-Flash"
+category: "ai-coding"
+description: "Is GLM-5.3-Flash good for coding agents? Zhipu's first native multimodal GLM review: 320B/18B active, AA index 57, ¥0.4-1.4 promo pricing, domestic-chip serving."
+lastUpdated: "2026-09-03T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Zhipu", "LLM"]
+url: "https://z.ai"
+pricing: "Paid"
+pros: ["First natively multimodal GLM: text, image, video, and audio input on a 320B-total / 18B-active MoE, which is a real capability gap-fill versus the text-only flagship GLM-5.3", "Verified efficiency signal: Artificial Analysis Intelligence Index at 57 ties Claude Opus 4.8 and clears DeepSeek V4 Flash's 50 — the AA score matters because it is independent, unlike most China-tier claims", "Cost floor pricing: ~¥0.8/¥2.7 per million tokens, with a 50% promo through September 9 (¥0.4/¥1.4) that matches Qwen3.8-Flash at the bottom of the China tier", "Domestic-chip serving at scale: roughly 100K accelerated-chip cluster with 3x backend performance over baseline and per-token cost at parity with mainstream Nvidia-GPU serving", "Hybrid linear attention plus sparse attention cuts long-context cost, and the anonymous 'Ox-Alpha' model that topped leaderboards before launch was confirmed to be this model"]
+cons: ["Coding depth trails the flagship: GLM-5.3-Flash is an efficiency-and-multimodal tier model, so teams chasing DeepSWE-class coding results should use the flagship GLM-5.3 or Hy4 preview instead", "The AA 57 index measures general intelligence, not coding agents; its actual DeepSWE/Terminal-Bench numbers are thinner in public reporting than the flagship's", "Promo pricing (50% off to September 9) obscures the real post-promo rate, and cache-pricing specifics at launch were still being confirmed", "Zhipu's domestic-chip serving advantage is real but region-bound: international API latency and routing through Chinese infrastructure is a factor for non-Asia teams", "Open weights ship under Zhipu's MIT-style licensing per model line, but Flash-tier model-card documentation is thinner than the flagship's security-reviewed release"]
+bestFor: ["Cost-sensitive agent builders who want a multimodal, AA-57-verified model at the China price floor", "Teams that need vision, video, or audio input alongside agent work, where the text-only GLM-5.3 flagship cannot go", "Chinese-market deployments that benefit from domestic-chip serving economics and low latency", "Zhipu users who want one API family across two tiers: flagship GLM-5.3 for deep coding, Flash for volume and multimodal"]
+---
+
+![GLM-5.3-Flash official logo for AI coding model review](/logos/glm-5-3-flash.svg)
+
+Is GLM-5.3-Flash good for coding agents? Zhipu open-sourced GLM-5.3-Flash in the same late-August window as Qwen3.8-Flash-Next and Tencent's Hy4 preview, and its job in the lineup is clear: it is the cost-tier, first-natively-multimodal member of the GLM-5.3 family. The headline is efficiency with independent backing: a 320B-total / 18B-active MoE that scores 57 on the Artificial Analysis Intelligence Index, tying Claude Opus 4.8 and clearing DeepSeek V4 Flash, at promo pricing of ¥0.4 input per million tokens. The model also revealed itself as "Ox-Alpha", the anonymous leaderboard-topper Zhipu later confirmed. This review covers what the Flash tier does, what it costs after the promo, and how it splits the GLM family with the coding-focused [GLM-5.3](/reviews/glm-5-3).
+
+## Key Features
+
+- **First native multimodal GLM**: GLM-5.3-Flash accepts text, image, video, and audio input on a 320B-parameter MoE with roughly 18B active. The flagship GLM-5.3 is text-only, so the Flash tier is where Zhipu's multimodal work lands first.
+- **Independent efficiency signal**: the [Artificial Analysis](https://artificialanalysis.ai) Intelligence Index reads 57, tying Claude Opus 4.8 and above DeepSeek V4 Flash's 50. Independent scoring matters in this tier because most China-model claims are vendor-reported; AA is the exception.
+- **Hybrid attention for long context**: linear attention handles the memory stream while sparse attention handles retrieval, which Zhipu says cuts long-context serving cost versus pure attention. The anonymous "Ox-Alpha" model that topped community leaderboards before the launch was confirmed post-launch to be this model.
+- **Domestic-chip economics**: served on a roughly 100K-accelerator domestic cluster with 3x backend performance over baseline and per-token cost at parity with mainstream Nvidia-GPU serving. This is the architecture-level cost story, not cloud subsidy.
+- **Dual pricing with promo**: ~¥0.8 input / ¥2.7 output per million tokens, with 50% off through September 9 (¥0.4/¥1.4), landing at the same floor as Qwen3.8-Flash. Context caching applies across the API.
+
+## Our Take
+
+GLM-5.3-Flash is the model that completes Zhipu's two-tier strategy: flagship GLM-5.3 for coding depth, Flash for efficiency, multimodality, and volume. The independent AA 57 score is the strongest reason to pay attention: it is the rare China-tier claim verified outside the vendor, tying Claude Opus 4.8 at a flash price point. The multimodal input is a genuine gap-fill, and the domestic-chip serving story gives Chinese-market teams an economics argument no US model can match.
+
+The honest limits are about role, not quality. This is not a coding-depth model: if your workload is DeepSWE-class autonomous engineering, the flagship [GLM-5.3](/reviews/glm-5-3) or Tencent's [Hy4 preview](/reviews/hy4-preview) is the better pick, and Flash's own coding benchmarks are reported more thinly than the flagship's. The 50%-off promo (through September 9) makes current pricing look better than the real post-promo rate. And the AA 57 index is general intelligence, not an agent benchmark, so treat it as a capability floor rather than a coding-agent verdict.
+
+The verdict: if you want a verified-efficient multimodal model at the China price floor, GLM-5.3-Flash is one of the two best options (with [Qwen3.8-Flash-Next](/reviews/qwen3-8-flash-next)), and the AA score plus Ox-Alpha pedigree make it the easiest to trust of the flash-tier trio. If you need coding depth, buy the flagship. For the wider field, our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the category.
+
+## What GLM-5.3-Flash Does in Practice
+
+Zhipu released GLM-5.3-Flash on August 26, 2026, alongside open weights and immediate multi-chip adaptation through the FlagOS community covering ten domestic accelerator families, in a window [Chinese tech media covered](https://www.zhidx.com/p/588362.html) as the flash-tier price war opening beneath DeepSeek. The launch confirmed that "Ox-Alpha", an anonymous model that had been topping community leaderboards for days, was this model all along, which gave the release unusual third-party interest before any official benchmark.
+
+In practice, the Flash tier is what most Zhipu API users will default to for volume work. The 18B-active architecture keeps per-token costs at the floor of the China tier, and the hybrid attention design makes long-context sessions cheaper than pure-attention models at the same size. Teams serving Chinese users get the domestic-chip latency and cost profile; teams outside Asia should factor in China-based routing.
+
+The multimodal input is the practical differentiator versus the flagship. Image and video understanding in the same API family means a GLM shop can handle vision tasks without a second vendor, and the AA-57-verified general intelligence keeps quality predictable across those modalities. Zhipu's own tiering guidance is consistent with our review: Flash for cost and modality, flagship for coding depth.
+
+## Pricing Breakdown
+
+| Item | Cost | Notes |
+|------|------|-------|
+| **API input** | ~¥0.8 / million tokens | ¥0.4 with 50% promo to Sept 9 |
+| **API output** | ~¥2.7 / million tokens | ¥1.4 with promo |
+| **Context cache** | Applies across API | Flash-specific rates confirmed at launch |
+| **vs Qwen3.8-Flash** | ~At parity | Both at the China floor |
+| **vs DeepSeek V4 Flash** | Below its adjusted rates | AA 57 vs 50 |
+
+The promo pricing through September 9 puts GLM-5.3-Flash at the same floor as Qwen3.8-Flash, roughly ¥0.4/¥1.4. After the promo, the standard ~¥0.8/¥2.7 rate still sits below most of the China tier but loses the headline advantage. Budget teams should model the post-promo rate, not the launch headline.
+
+## Who Should Use GLM-5.3-Flash
+
+- **Strong fit if you:**
+  - Run high-volume multimodal agent workloads (text, image, video, audio) at the China price floor
+  - Want independent verification: AA 57 is third-party, unlike most flash-tier claims
+  - Serve Chinese-market users and benefit from domestic-chip economics
+  - Already use the GLM API family and want one vendor across two tiers
+
+- **Not the best if you:**
+  - Need DeepSWE-class autonomous coding: the flagship [GLM-5.3](/reviews/glm-5-3) or [Hy4 preview](/reviews/hy4-preview) leads there
+  - Are outside Asia and sensitive to China-based routing and latency
+  - Budget on the promo rate: the real rate after September 9 is roughly double
+  - Need the deepest coding-agent benchmark documentation: Flash-tier reporting is thinner than the flagship's
+
+## How GLM-5.3-Flash Fits the Family and the Tier
+
+Against its own flagship [GLM-5.3](/reviews/glm-5-3), Flash is the cost-and-modality tier: text-only flagship with DeepSWE 66.9-class coding depth versus multimodal Flash with AA-57-verified efficiency at a fraction of the price. Zhipu's own line now mirrors the industry split, and the two reviews in our [China model matrix](/reviews/glm-5-3) read as one buying decision across two tiers.
+
+Against the same-week flash rivals, GLM-5.3-Flash and [Qwen3.8-Flash-Next](/reviews/qwen3-8-flash-next) sit at the same price floor: Qwen claims stronger coding benchmarks (DeepSWE 58.7) and office-agent scores, GLM-Flash answers with the independent AA 57 index and natively multimodal input. [Hy4 preview](/reviews/hy4-preview) is the flagship-priced alternative for teams that want 1M context and frontier-adjacent coding from the same release window.
+
+Against [DeepSeek](/reviews/deepseek), the flash tier undercuts V4 Flash on AA index (57 vs 50) and price, while DeepSeek retains off-peak scheduling and the Harness agent framework. The [Kimi K3](/reviews/kimi-k3) and flagship comparisons stay as before: this Flash model is the new budget entry in a matrix that now covers Zhipu, Alibaba, Tencent, Moonshot, and DeepSeek.
+
+## FAQ
+
+**Is GLM-5.3-Flash good for coding agents?**
+For cost-efficient, multimodal agent work, yes: AA index 57 (third-party verified) at flash-tier pricing. For DeepSWE-class autonomous coding depth, the flagship GLM-5.3 or Hy4 preview leads; Flash is the efficiency tier of the family.
+
+**How much does GLM-5.3-Flash cost?**
+~¥0.8 input and ~¥2.7 output per million tokens, with 50% off through September 9 (¥0.4/¥1.4). After the promo the standard rate still undercuts most of the China tier but loses the headline floor advantage.
+
+**Is GLM-5.3-Flash open source?**
+Yes, weights are open under Zhipu's per-release licensing terms for the GLM line (the flagship GLM-5.3 is MIT), released alongside the August 26 launch with immediate multi-chip adaptation across ten domestic accelerator families. Check the Flash repository for the exact license before commercial use.
+
+**GLM-5.3-Flash vs GLM-5.3, which should I use?**
+GLM-5.3 for coding depth (DeepSWE 66.9-class, security-reviewed release). GLM-5.3-Flash for volume, multimodality (text/image/video/audio), and cost, with AA-57-verified general intelligence. Same API family, two tiers.
+
+**Is the Ox-Alpha model GLM-5.3-Flash?**
+Yes. Zhipu confirmed that the anonymous "Ox-Alpha" model topping community leaderboards before launch was GLM-5.3-Flash, which is why the release drew unusual third-party attention before official benchmarks.
+
+[Visit GLM-5.3-Flash](https://z.ai)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.

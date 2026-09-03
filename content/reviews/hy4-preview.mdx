@@ -1,0 +1,100 @@
+---
+slug: "hy4-preview"
+name: "Hy4 Preview"
+category: "ai-coding"
+description: "Is Tencent Hy4 preview good for coding agents? Hunyuan flagship review: 770B/49B active, DeepSWE 64.3, ¥6/¥18 per M tokens, open weights with CodeBuddy."
+lastUpdated: "2026-09-03T12:00:00Z"
+tags: ["AI Coding", "Coding Agent", "Tencent", "LLM"]
+url: "https://hunyuan.tencent.com"
+pricing: "Paid"
+pros: ["Tencent's first genuinely frontier-sized open model: 770B total / 49B active MoE with 1M context, up from Hy3's 295B/24B, and DeepSWE jumped 28.0 to 64.3 between generations", "Internal blind test of 163 experts across 203 engineering tasks scored it 2.99/4.00, edging GLM-5.3 (2.92) and Kimi K3 (2.94) — the only China-tier flagship rated above both rivals this cycle", "Terminal-Bench 2.1 at 85.4 ties Claude Opus 5 and clears DeepSeek V4 Pro, with Code Arena WebDev ranking ~5th overall and 3rd among open models", "Co-designed with CodeBuddy and WorkBuddy: hands-on tests show self-correction loops (fixing its own physics bugs and JS crashes mid-build) and a 19-page investment deck from one prompt", "Pricing undercuts the flagship class: ¥6/¥18 per million tokens with ¥0.3 cache, below DeepSeek V4 Pro's peak rates, and weights are open on Hugging Face, GitHub, ModelScope, and Gitcode"]
+cons: ["Preview caveats are explicit: Tencent lists long thinking and over self-verification on complex tasks as known issues, which translates into slower and more token-hungry agent runs than the flagship class", "The 163-expert blind test is an internal evaluation, not an independent benchmark; Code Arena and DeepSWE numbers need third-party confirmation", "DeepSWE 64.3 still trails the closed frontier (Claude Fable 5.1, GPT-5.6-class) and the flash-tier rivals on some efficiency metrics", "Ecosystem is younger than DeepSeek's or Qwen's: fewer third-party hosting providers, less community tooling, and the model is the first post-reorg release from Tencent's AI team", "CodeBuddy/WorkBuddy free access was time-limited to two weeks at launch, so the bundled-agent experience needs its own budget line after that window"]
+bestFor: ["Engineering teams that want a 1M-context open model with frontier-adjacent coding benchmarks and Tencent's agent products already wired in", "Developers comparing the China flagship tier: Hy4 preview is the first Tencent model that legitimately competes with GLM-5.3 and Kimi K3 on engineering tasks", "Long-context office and analysis workloads, where the 1M window and the 19-page-deck hands-on results show real strength", "Teams that value open weights plus commercial backing: Hunyuan has Tencent Cloud, TokenHub, and OpenRouter serving behind it"]
+---
+
+![Tencent Hy4 preview official logo for AI coding model review](/logos/hy4-preview.svg)
+
+Is Tencent Hy4 preview good for coding agents? Tencent open-sourced Hunyuan Hy4 preview on August 28, 2026, and the model is a different animal from anything the company has shipped before: 770B total parameters with 49B active, a 1M context window, and DeepSWE that jumped from 28.0 on Hy3 to 64.3. Tencent's internal blind test of 163 experts across 203 engineering tasks rated it above GLM-5.3 and Kimi K3, and hands-on tests show the model fixing its own physics bugs mid-build. It is also explicitly a preview, with known long-thinking and over-verification habits. This review covers the numbers, the hands-on evidence, the pricing, and what a preview label should mean for your decision.
+
+## Key Features
+
+- **Frontier-scale open MoE**: Hy4 preview more than doubles Hy3's size (770B total versus 295B) and doubles active parameters to 49B, with a 1M context window (up from 256K), attention rebuilt from GQA into Gated DSA plus MLA plus IndexCache, four parallel residual streams, and native FP8 precision. This is Tencent's AI-team post-reorg statement model.
+- **Productivity-first design**: co-developed with CodeBuddy and WorkBuddy through a co-design process with Tencent's internal software engineering, gaming, finance, and security experts supplying high-quality data. The model is a first-party companion to Tencent's agent products, not a standalone experiment.
+- **Coding results (vendor-reported)**: DeepSWE 64.3 (from 28.0 on Hy3), Terminal-Bench 2.1 at 85.4 tying Claude Opus 5 and clearing DeepSeek V4 Pro, Code Arena WebDev ranked ~5th overall and 3rd among open models. The internal 163-expert blind test scored 2.99/4.00 versus GLM-5.3's 2.92 and Kimi K3's 2.94.
+- **Hands-on self-correction**: media tests through CodeBuddy show the model checking its own environment before acting, fixing its own JavaScript crashes and color-rendering bugs during a complex frontend build, and iterating a 3D pinball game until physics bugs (ball escaping the table, launch failures) were resolved on its own. A 19-page investment research deck was produced from a single prompt in office mode.
+- **Open weights and serving**: Hugging Face, GitHub, ModelScope, and Gitcode hosts; API on Tencent TokenHub and OpenRouter. A recursive self-improvement loop (the model helping optimize its own training, data, evaluation, and operators) and a 31.8% end-to-end throughput gain over baseline round out the release.
+
+## Our Take
+
+Hy4 preview is the model that finally puts Tencent in the China-frontier conversation rather than next to it. The numbers justify the claim: DeepSWE more than doubling to 64.3, Terminal-Bench 2.1 at parity with Claude Opus 5, and an internal blind test that places it marginally above GLM-5.3 and Kimi K3, the two models our own reviews rate as the strongest Chinese coding options of August. The hands-on self-correction behavior (fixing its own physics bugs rather than papering over them) matches what DeepSWE-class scores should feel like in daily agent use.
+
+The caveats are the word "preview" and the word "internal." Tencent itself lists long thinking and over self-verification as known issues on complex tasks: agents will run slower and burn more tokens than the flagship class until a follow-up release lands. The 163-expert blind test is an internal evaluation with no published methodology for independent replication, and the Code Arena and DeepSWE figures need third-party confirmation. The ecosystem is also the youngest of the Chinese majors: fewer hosting providers, less community tooling, and CodeBuddy's free window was two weeks.
+
+The verdict: Hy4 preview is the strongest open-model option from a Chinese lab with full commercial backing, and the first Tencent model we would put in the same sentence as [GLM-5.3](/reviews/glm-5-3) and [Kimi K3](/reviews/kimi-k3). If you need open weights with frontier-adjacent engineering scores, test it now. If you need production predictability, wait for the non-preview release or stick with the closed frontier. For the full category picture, our [Best AI Coding Tools](/blog/best-ai-coding-tools) guide covers the field.
+
+## What Hy4 Preview Does in Practice
+
+Tencent released Hy4 preview on August 28, 2026, per [the company's announcement](https://www.tencent.com/zh-cn/tencent-releases-and-open-sources-tencent-hy4-preview/), the same 48-hour window as GLM-5.3-Flash and Qwen3.8-Flash-Next, and immediately surfaced it in WorkBuddy, CodeBuddy (domestic and international), Yuanbao, and ima. The release included open weights across four hosting communities and same-day multi-chip adaptation covering ten domestic accelerator families.
+
+In daily use through CodeBuddy, the pattern that stands out is self-correction. In one hands-on test, the model was asked to build an Art Deco blog site; it checked the environment first, planned the approach, then found and fixed its own JavaScript crash and accent-color rendering errors before delivering. In another, a 3D pinball game with physics and scoring: the ball escaping the table, the launcher failing, and the flippers missing were all diagnosed and fixed by the model itself after it ran and observed its own output. A separate test had the model generate a playable shooting-game demo through an Unreal Engine 5 MCP connection from pure conversation. These are the behaviors DeepSWE 64.3 predicts, and they are visible in practice. Independent hands-on coverage from [zhidx](https://www.zhidx.com/p/588800.html) confirms the pattern across longer sessions, including the model fixing its own bugs during a 3D open-world demo build.
+
+Office work is the other pillar. The 19-page investment research deck produced from a single prompt (scoring a robotics company across growth, earnings quality, and cash-flow safety) is representative of the WorkBuddy positioning. For engineering teams, the 1M context window and the CodeBuddy integration matter most: repository-scale sessions fit without summarization, and the agent product is first-party rather than community-built.
+
+The rough edges match the preview label. Long, complex tasks show extended thinking and repeated self-verification, which costs time and tokens. The ecosystem is young: OpenRouter and TokenHub serve the API, but third-party hosting options and community integrations are thinner than DeepSeek's or Qwen's. And as a first post-reorg release, the model's roadmap (Tencent says a follow-up Hy4 is coming soon) is the main source of version risk.
+
+## Pricing Breakdown
+
+| Item | Cost | Notes |
+|------|------|-------|
+| **API input** | ¥6 / million tokens | Below DeepSeek V4 Pro peak rates |
+| **API output** | ¥18 / million tokens | Flagship tier, under the closed frontier |
+| **Cache input** | ¥0.3 / million tokens | At parity with DeepSeek V4 Pro's cache |
+| **CodeBuddy / WorkBuddy** | Free for 2 weeks at launch | Then subscription/credit based |
+| **Self-host** | Open weights (HF/GitHub/ModelScope/Gitcode) | 770B total / 49B active; large deployment footprint |
+
+At ¥6/¥18, Hy4 preview undercuts DeepSeek V4 Pro's peak rates while matching its cache price, and sits well below the closed frontier's $10/$50-class pricing. It is not a flash-tier price: this is a flagship positioned against GLM-5.3 and Kimi K3, where the API differences are small and the deciding factors are benchmarks, ecosystem, and agent-product fit. Teams on CodeBuddy should budget for the post-promo window, and self-hosting 770B parameters requires a serious cluster, so most teams will consume it through the API.
+
+## Who Should Use Hy4 Preview
+
+- **Strong fit if you:**
+  - Want a 1M-context open model with frontier-adjacent engineering scores
+  - Already use CodeBuddy or WorkBuddy and want the newest Hunyuan model wired in
+  - Are comparing the China flagship tier and want the model that internal blind tests rate above GLM-5.3 and Kimi K3
+  - Need Tencent Cloud / TokenHub / OpenRouter as trusted serving channels
+
+- **Not the best if you:**
+  - Need production predictability now: preview-stage long thinking and over-verification are real cost and latency factors
+  - Require independently verified benchmarks before adopting
+  - Want the cheapest per-token option: the flash tier ([GLM-5.3-Flash](/reviews/glm-5-3-flash), [Qwen3.8-Flash-Next](/reviews/qwen3-8-flash-next)) undercuts this at ¥0.4-1/¥1.4-3
+  - Prefer mature ecosystems with many hosting providers and community tools
+
+## How Hy4 Preview Fits the China Matrix
+
+Against [GLM-5.3](/reviews/glm-5-3) and [Kimi K3](/reviews/kimi-k3), the August flagship rivals: Hy4 preview edges both in Tencent's internal 163-expert blind test (2.99 vs 2.92/2.94), matches or clears them on Terminal-Bench 2.1, and brings a larger 1M context than GLM-5.3's offering. GLM-5.3 counters with MIT licensing and stronger open-source positioning; Kimi K3 counters with its open-weight download and lower API price. All three remain vendor-reported on different suites.
+
+Against [DeepSeek](/reviews/deepseek) V4 Pro, Hy4 preview undercuts its peak pricing and matches its cache rate while claiming parity-or-better engineering scores; DeepSeek retains off-peak discounts and the Harness agent framework as differentiators.
+
+Against the flash tier arriving the same week, Hy4 preview is the flagship price point: [GLM-5.3-Flash](/reviews/glm-5-3-flash) and [Qwen3.8-Flash-Next](/reviews/qwen3-8-flash-next) cost a fraction per token and are the better default for high-volume cost-driven workloads, while Hy4 targets the top of the open-model capability range.
+
+## FAQ
+
+**Is Tencent Hy4 preview good for coding agents?**
+Yes, on the evidence so far: DeepSWE jumped to 64.3, Terminal-Bench 2.1 at 85.4 ties Claude Opus 5, and hands-on tests show genuine self-correction during builds. The internal blind test edges GLM-5.3 and Kimi K3. Caveats: it is a preview with long-thinking habits, and the headline tests are Tencent-internal.
+
+**How much does Hy4 preview cost?**
+¥6 per million input and ¥18 per million output tokens, with cache input at ¥0.3. Below DeepSeek V4 Pro's peak rates and at cache parity with it. CodeBuddy and WorkBuddy offered two weeks of free access at launch.
+
+**Is Hy4 preview open source?**
+Weights are open on Hugging Face, GitHub, ModelScope, and Gitcode, with API serving on Tencent TokenHub and OpenRouter. The license terms follow Tencent's open-model program; check the repository for exact terms before commercial use.
+
+**Hy4 preview vs GLM-5.3 vs Kimi K3, which is best for coding?**
+Tencent's internal 163-expert blind test ranks Hy4 preview marginally above both (2.99 vs 2.92/2.94). GLM-5.3 brings MIT licensing, Kimi K3 brings lower API pricing and downloadable weights. All three are vendor-reported; test against your own tasks.
+
+**Does Hy4 preview work with Claude Code?**
+Not natively; it is served through Tencent's own agents (CodeBuddy, WorkBuddy) and API channels. Anthropic-compatible routing requires a proxy or multi-provider framework, as with most non-Anthropic models. For Claude-Code-native setups, the flash-tier models like [Qwen3.8-Flash-Next](/reviews/qwen3-8-flash-next) are the drop-in options.
+
+[Visit Hy4 Preview](https://hunyuan.tencent.com)
+
+> We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
+Last updated: 2026-09-03
+Disclosure: Some links may contain affiliate partnerships at no extra cost to you.
