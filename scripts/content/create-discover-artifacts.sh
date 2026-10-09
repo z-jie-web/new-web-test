@@ -30,7 +30,23 @@ mkdir -p "$STATE_DIR"
   "${SCRIPT_DIR}/category-stats.sh" 2>&1
   echo ""
   echo "=== keyword strategy ==="
-  echo "current_tier: long_tail_only (site age: ~42 days)"
+  STRATEGY_FILE="$HOME/.claude/state/toolporto-writer/keyword-strategy.yaml"
+  if [ -f "$STRATEGY_FILE" ]; then
+    TIER=$(grep -E "^current_tier:" "$STRATEGY_FILE" | head -1 | awk '{print $2}')
+    LAUNCH=$(grep -E "^site_launch_date:" "$STRATEGY_FILE" | head -1 | sed 's/.*"\([0-9-]*\)".*/\1/')
+    LAUNCH_TS=""
+    if [ -n "$LAUNCH" ]; then
+      LAUNCH_TS=$(date -j -f "%Y-%m-%d" "$LAUNCH" "+%s" 2>/dev/null || date -d "$LAUNCH" "+%s" 2>/dev/null)
+    fi
+    if [ -n "$LAUNCH_TS" ]; then
+      DAYS=$(( ( $(date "+%s") - LAUNCH_TS ) / 86400 ))
+      echo "current_tier: ${TIER} (site age: ~${DAYS} days)"
+    else
+      echo "current_tier: ${TIER}"
+    fi
+  else
+    echo "current_tier: unknown (strategy config not found)"
+  fi
   echo "keyword_tier_check: passed"
 } > "$ARTIFACT_FILE"
 
