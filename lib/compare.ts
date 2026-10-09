@@ -1,4 +1,4 @@
-import { getAll, ReviewFrontmatter, getBySlug, ContentType } from './content';
+import { getAll, getAllSlugs, ReviewFrontmatter, getBySlug, ContentType } from './content';
 
 export interface CompareFrontmatter {
   toolA: string;
@@ -20,6 +20,7 @@ export interface ComparePair {
 export function getAllComparePairs(): ComparePair[] {
   const reviews = getAll<ReviewFrontmatter>('reviews');
   const pairs: ComparePair[] = [];
+  const indexBySlug = new Map(reviews.map((r, i) => [r.frontmatter.slug, i]));
 
   for (let i = 0; i < reviews.length; i++) {
     for (let j = i + 1; j < reviews.length; j++) {
@@ -38,6 +39,35 @@ export function getAllComparePairs(): ComparePair[] {
         });
       }
     }
+  }
+
+  // Cross-category compares that have a dedicated MDX file (e.g. models that
+  // live in different categories but are commonly compared). The compare file
+  // is the source of truth; slug order still follows the review array order so
+  // canonical URLs stay consistent with sitemap generation.
+  const seen = new Set(pairs.map((p) => `${p.slugA}-vs-${p.slugB}`));
+  for (const fileSlug of getAllSlugs('compare')) {
+    const idx = fileSlug.indexOf('-vs-');
+    if (idx < 0) continue;
+    const ix = indexBySlug.get(fileSlug.slice(0, idx));
+    const iy = indexBySlug.get(fileSlug.slice(idx + 4));
+    if (ix === undefined || iy === undefined) continue;
+    if (reviews[ix].frontmatter.category === reviews[iy].frontmatter.category) continue;
+    const [first, second] = ix < iy ? [ix, iy] : [iy, ix];
+    const a = reviews[first].frontmatter;
+    const b = reviews[second].frontmatter;
+    const key = `${a.slug}-vs-${b.slug}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const compareResult = getCompareContent(a.slug, b.slug);
+    pairs.push({
+      a,
+      b,
+      slugA: a.slug,
+      slugB: b.slug,
+      compareContent: compareResult?.content,
+      compareData: compareResult?.frontmatter,
+    });
   }
 
   return pairs;

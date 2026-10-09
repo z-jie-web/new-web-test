@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
-import { getComparePair, getAllCompareSlugsWithContent, getAllComparePairsWithContent } from '@/lib/compare';
+import { getComparePair, getAllCompareSlugsWithContent, getAllComparePairsWithContent, ComparePair } from '@/lib/compare';
 import { generateMetadata as seoMeta } from '@/lib/seo';
 import { SITE } from '@/lib/constants';
 import { Header } from '@/components/layout/Header';
@@ -397,18 +397,28 @@ export default async function ComparePage({
 
 function RelatedComparisons({ current }: { current: ReturnType<typeof getComparePair> }) {
   if (!current) return null;
+  const cur = current;
 
   const allPairs = getAllComparePairsWithContent();
+
+  // Prefer comparisons that share a tool with the current one — more relevant
+  // for readers and spreads internal links across less-connected compare pages.
+  const sharesTool = (p: ComparePair) =>
+    p.slugA === cur.slugA ||
+    p.slugB === cur.slugA ||
+    p.slugA === cur.slugB ||
+    p.slugB === cur.slugB;
 
   const related = allPairs
     .filter(
       (p) =>
-        p.a.category === current.a.category &&
+        p.a.category === cur.a.category &&
         !(
-          (p.slugA === current.slugA && p.slugB === current.slugB) ||
-          (p.slugA === current.slugB && p.slugB === current.slugA)
+          (p.slugA === cur.slugA && p.slugB === cur.slugB) ||
+          (p.slugA === cur.slugB && p.slugB === cur.slugA)
         )
     )
+    .sort((p1, p2) => Number(sharesTool(p2)) - Number(sharesTool(p1)))
     .slice(0, 6);
 
   if (related.length === 0) return null;
