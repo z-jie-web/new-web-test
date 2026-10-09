@@ -423,7 +423,9 @@ function CompareWith({
   currentSlug: string;
   currentName: string;
 }) {
-  const pairs = getComparisonsForTool(currentSlug).slice(0, 6);
+  const pairs = getComparisonsForTool(currentSlug)
+    .filter((p) => p.compareContent != null)
+    .slice(0, 6);
   if (pairs.length === 0) return null;
 
   return (

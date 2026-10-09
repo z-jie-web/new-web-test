@@ -13,7 +13,7 @@ relatedReviews:
 
 ![Claude Fable 5.1 coding agent setup guide](/logos/claude-fable-5-1.svg)
 
-Claude Fable 5.1 is Anthropic's strongest model for coding agents: SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8%, and documented autonomous runs measured in tens of hours. It is also the first frontier model whose cache-read price ($0.25 per million tokens, cut 75%) is cheap enough to change how you architect agent loops. This guide walks through the setup: switching Claude Code to Fable 5.1, the API changes that break existing Fable 5 integrations, exploiting the new cache economics, and tuning effort for long-horizon runs. For the benchmark analysis, see our [Claude Fable 5.1 review](/reviews/claude-fable-5-1); for the cost decision against Google's workhorse, our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1).
+Claude Fable 5.1 is Anthropic's strongest model for coding agents: SWE-bench Pro 81.2, Terminal-Bench 4.0 55.8%, and documented autonomous runs measured in tens of hours. It is also the first frontier model whose cache-read price ($0.25 per million tokens, cut 75%) is cheap enough to change how you architect agent loops. This guide walks through the setup: switching Claude Code to Fable 5.1, the API changes that break existing Fable 5 integrations, exploiting the new cache economics, and tuning effort for long-horizon runs. For the benchmark analysis, see our [Claude Fable 5.1 review](/reviews/claude-fable-5-1); for the cost decision against Google's workhorse, our [Gemini 3.8 Flash vs Claude Fable 5.1 comparison](/compare/claude-fable-5-1-vs-gemini-3-8-flash).
 
 ## Step 1: Switch Claude Code to Fable 5.1
 
@@ -56,7 +56,7 @@ Fable 5.1's differentiator is sustained autonomous work: Anthropic's documented 
 
 Use Fable 5.1 for the workloads its design targets: long-horizon refactors, repository-scale debugging, autonomous test-and-fix cycles, and any agent task where a wrong silent result costs more than token spend. The system-card gains are concentrated exactly there: Terminal-Bench-Science more than doubled over Fable 5, AutomationBench nearly doubled, Browserbase jumped 25 points.
 
-Three cautions. First, the integration changes in Step 2 will bite if you skip the migration: forced tool use 400s and dropped thinking blocks on fallback routes are silent failure sources. Second, Fable 5.1 is a Covered Model with mandatory 30-day data retention; there is no zero-retention option, which matters for privacy-sensitive codebases. Third, the per-task token multiplier (~1.7x over Fable 5) means high-volume one-shot workloads may cost more than expected; for those, a workhorse model like [Gemini 3.8 Flash](/reviews/gemini-3-8-flash) at $0.75/$3.75 is the cheaper default, and our [head-to-head comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) works through when each wins. Independent measurements on [Artificial Analysis](https://artificialanalysis.ai) are a good way to sanity-check task-level costs before you commit.
+Three cautions. First, the integration changes in Step 2 will bite if you skip the migration: forced tool use 400s and dropped thinking blocks on fallback routes are silent failure sources. Second, Fable 5.1 is a Covered Model with mandatory 30-day data retention; there is no zero-retention option, which matters for privacy-sensitive codebases. Third, the per-task token multiplier (~1.7x over Fable 5) means high-volume one-shot workloads may cost more than expected; for those, a workhorse model like [Gemini 3.8 Flash](/reviews/gemini-3-8-flash) at $0.75/$3.75 is the cheaper default, and our [head-to-head comparison](/compare/claude-fable-5-1-vs-gemini-3-8-flash) works through when each wins. Independent measurements on [Artificial Analysis](https://artificialanalysis.ai) are a good way to sanity-check task-level costs before you commit.
 
 ## FAQ
 
@@ -73,7 +73,7 @@ Three things: forced tool use (`tool_choice: any` or named tools) now returns HT
 Yes; it is the strongest generally available option for long-horizon work. Documented runs include a 38-hour autonomous ML session, and the model self-verifies results during multi-step tasks. The system card's biggest gains over Fable 5 are in tool-using, multi-step benchmarks, not raw IQ tests.
 
 **Claude Fable 5.1 vs Gemini 3.8 Flash, which should my agents use?**
-Fable 5.1 for long-horizon autonomy and the hardest agentic work; Gemini 3.8 Flash for high-volume software engineering at under a tenth of the price. Both are vendor-reported on different suites, so treat cross-vendor numbers as directional. Our [comparison](/compare/gemini-3-8-flash-vs-claude-fable-5-1) breaks down the decision by workload.
+Fable 5.1 for long-horizon autonomy and the hardest agentic work; Gemini 3.8 Flash for high-volume software engineering at under a tenth of the price. Both are vendor-reported on different suites, so treat cross-vendor numbers as directional. Our [comparison](/compare/claude-fable-5-1-vs-gemini-3-8-flash) breaks down the decision by workload.
 
 > We test AI tools hands-on. [Learn how we evaluate →](/how-we-test)
 Last updated: 2026-09-03

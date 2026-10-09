@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import { getComparePair, getAllCompareSlugsWithContent, getAllComparePairsWithContent } from '@/lib/compare';
@@ -42,7 +42,7 @@ export async function generateMetadata({
   return seoMeta({
     title,
     description: `Compare ${pair.a.name} and ${pair.b.name} head-to-head on features, pricing, quality, and use cases. Find out which tool is right for your workflow.`,
-    path: `/compare/${slug}`,
+    path: `/compare/${pair.slugA}-vs-${pair.slugB}`,
     type: 'article',
     ogImage: `/api/og/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`,
   });
@@ -60,6 +60,13 @@ export default async function ComparePage({
 
   const pair = getComparePair(a, b);
   if (!pair || !pair.compareContent) notFound();
+
+  // Canonical URL order is defined by the review array order (same source as sitemap).
+  // Redirect reversed-order URLs so the same content never lives at two addresses.
+  const canonicalSlug = `${pair.slugA}-vs-${pair.slugB}`;
+  if (slug !== canonicalSlug) {
+    permanentRedirect(`/compare/${canonicalSlug}`);
+  }
 
   const { a: toolA, b: toolB, compareContent, compareData } = pair;
 
